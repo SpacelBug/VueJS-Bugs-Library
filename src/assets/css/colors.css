@@ -1,0 +1,11 @@
+:root {
+    --background-color: #232323;
+    --panels-color: #1a1a1a;
+    --border-color: #515151;
+    
+    --accent-color: #933dde;
+    --second-accent-color: #111111;
+
+    --font-color: white;
+    --second-font-color: grey;
+}
