@@ -10,13 +10,9 @@
 <script>
 export default {
   name: 'Switch',
-  data() {
-    return {
-      roundHeight: {type: Number, default: 30},
-    }
-  },
   props: {
     modelValue: { type: Boolean, default: false, required: true },
+    roundHeight: { type: Number, default: 30 },
   },
 };
 </script>
