@@ -8,3 +8,7 @@
     src: url('../fonts/Montserrat-Italic-VariableFont_wght.ttf');
     font-style: italic;
 }
+ :root {
+    --primary-font-size: 14px;
+    --big-font-size: 18px;
+ }
