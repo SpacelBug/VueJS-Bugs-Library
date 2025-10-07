@@ -19,6 +19,12 @@
               Switch
             </router-link>
             <router-link
+                to="spoiler"
+                class="side-link"
+            >
+              Spoiler
+            </router-link>
+            <router-link
                 to="drop-down"
                 class="side-link"
             >

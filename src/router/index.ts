@@ -7,9 +7,19 @@ const router = createRouter({
       path: "/inputs",
       children: [
         {
+          name: "switch",
+          path: "/switch",
+          component: () => import("../views/inputs/SwitchView.vue"),
+        },
+        {
           name: "drop-down",
           path: "/drop-down",
           component: () => import("../views/inputs/DropDownView.vue"),
+        },
+        {
+          name: "spoiler",
+          path: "/spoiler",
+          component: () => import("../views/inputs/SpoilerView.vue"),
         },
       ],
     },
