@@ -1,10 +1,12 @@
 <template>
   <div class="component-view">
-    <Switch v-model="testValue" />
+    <Switch v-model="testValue">
+      switch something
+    </Switch>
     <div class="description">
       <h3>Switch component</h3>
       <div class="description">
-        <p>Component return bool value.</p>
+        <p>Component return bool value. Also have slot for captioning</p>
         <p><b>Props:</b></p>
         <p>modelValue: </p>
         <p>roundHeight: </p>

@@ -1,9 +1,14 @@
 <template>
-  <div class="track">
-    <div
-        :class="['round', { 'disabled': !modelValue, 'active': modelValue }]"
-        @click="$emit('update:modelValue', !modelValue)"
-    />
+  <div class="component-box">
+    <div class="track">
+      <div
+          :class="['round', { 'disabled': !modelValue, 'active': modelValue }]"
+          @click="$emit('update:modelValue', !modelValue)"
+      />
+    </div>
+    <slot>
+      {{ caption }}
+    </slot>
   </div>
 </template>
 
@@ -13,10 +18,21 @@ export default {
   props: {
     modelValue: { type: Boolean, default: false, required: true },
     roundHeight: { type: Number, default: 30 },
+
+    caption: { type: String, default: null }
   },
 };
 </script>
 <style scoped>
+.component-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  height: fit-content;
+}
+
 .track {
   position: relative;
   height: v-bind(roundHeight + 'px');
