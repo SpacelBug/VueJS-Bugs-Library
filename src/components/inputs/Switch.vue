@@ -19,7 +19,10 @@ export default {
     modelValue: { type: Boolean, default: false, required: true },
     roundHeight: { type: Number, default: 30 },
 
-    caption: { type: String, default: null }
+    caption: { type: String, default: null },
+
+    activeColor: { type: String, default: 'var(--accent-color)' },
+    trackColor: { type: String, default: 'var(--panels-color)' },
   },
 };
 </script>
@@ -37,7 +40,7 @@ export default {
   position: relative;
   height: v-bind(roundHeight + 'px');
   width: v-bind((roundHeight * 2) + 'px');
-  background-color: var(--panels-color);
+  background-color: v-bind(trackColor);
   border-radius: v-bind(roundHeight + 'px');
   padding: 5px;
 }
@@ -49,16 +52,15 @@ export default {
   aspect-ratio: 1/1;
   height: v-bind(roundHeight + 'px');
   transition: all ease 0.3s;
+  background-color: v-bind(activeColor)
 }
 
 .disabled {
   left: 5px;
-  background-color: var(--accent-color);
   filter: grayscale(1);
 }
 
 .active {
   left: v-bind(roundHeight + 'px');
-  background-color: var(--accent-color);
 }
 </style>
