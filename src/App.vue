@@ -18,6 +18,12 @@
             >
               Switch
             </router-link>
+            <router-link
+                to="drop-down"
+                class="side-link"
+            >
+              DropDown
+            </router-link>
           </div>
         </div>
       </div>
