@@ -11,6 +11,11 @@ const router = createRouter({
           path: "/switch",
           component: () => import("../views/inputs/SwitchView.vue"),
         },
+        {
+          name: "spoiler",
+          path: "/spoiler",
+          component: () => import("../views/inputs/SpoilerView.vue"),
+        },
       ],
     },
   ],

@@ -18,6 +18,12 @@
             >
               Switch
             </router-link>
+            <router-link
+                to="spoiler"
+                class="side-link"
+            >
+              Spoiler
+            </router-link>
           </div>
         </div>
       </div>
