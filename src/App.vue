@@ -12,19 +12,17 @@
           </div>
 
           <div class="section-options">
-            <div class="section-option" @click="currentComponent = 'Switch'">
+            <router-link
+                to="switch"
+                class="side-link"
+            >
               Switch
-            </div>
+            </router-link>
           </div>
         </div>
       </div>
       <div class="component-view">
-        <div class="component-example">
-          <component :is="currentComponent" v-model="testBoolValue"></component>
-        </div>
-        <div class="component-description">
-
-        </div>
+        <router-view></router-view>
       </div>
     </div>
 
@@ -35,18 +33,10 @@
 </template>
 
 <script>
-import Switch from './components/inputs/Switch.vue';
 
 export default {
   name: 'App',
   components: {
-    Switch,
-  },
-  data() {
-    return {
-      currentComponent: null,
-      testBoolValue: false,
-    }
   },
 }
 
@@ -98,6 +88,15 @@ header {
 .section-option {
   user-select: none;
   cursor: pointer;
+}
+
+.side-link {
+  color: white;
+  text-decoration: none;
+}
+
+.router-link-active {
+  color: var(--accent-color)
 }
 
 .component-view {
