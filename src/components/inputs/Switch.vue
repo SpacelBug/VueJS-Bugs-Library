@@ -20,7 +20,7 @@ export default {
 .track {
   position: relative;
   height: v-bind(roundHeight + 'px');
-  min-width: v-bind((roundHeight * 2) + 'px');
+  width: v-bind((roundHeight * 2) + 'px');
   background-color: var(--panels-color);
   border-radius: v-bind(roundHeight + 'px');
   padding: 5px;
