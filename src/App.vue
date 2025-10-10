@@ -30,6 +30,12 @@
             >
               DropDown
             </router-link>
+            <router-link
+                to="time-input"
+                class="side-link"
+            >
+              TimeInput
+            </router-link>
           </div>
         </div>
       </div>
