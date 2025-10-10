@@ -7,30 +7,27 @@
     <div class="main-box">
       <div class="navigation-panel">
         <div class="section">
-          <div class="section-caption">
+          <div
+              class="section-caption"
+              @click="selectedSection = 'InputSection'"
+          >
             Inputs
           </div>
-
-          <div class="section-options">
-            <router-link
-                to="switch"
-                class="side-link"
-            >
-              Switch
-            </router-link>
-            <router-link
-                to="spoiler"
-                class="side-link"
-            >
-              Spoiler
-            </router-link>
-            <router-link
-                to="drop-down"
-                class="side-link"
-            >
-              DropDown
-            </router-link>
+          <InputSection v-if="selectedSection === 'InputSection'" />
+          <div
+              class="section-caption"
+              @click="selectedSection = 'ContentSection'"
+          >
+            Content
           </div>
+          <ContentSection v-if="selectedSection === 'ContentSection'" />
+          <div
+              class="section-caption"
+              @click="selectedSection = 'SpecialSection'"
+          >
+            Special
+          </div>
+          <SpecialSection v-if="selectedSection === 'SpecialSection'" />
         </div>
       </div>
       <div class="component-view">
@@ -45,11 +42,22 @@
 </template>
 
 <script>
+import InputSection from './views/sections/InputSection.vue';
+import ContentSection from './views/sections/ContentSection.vue';
+import SpecialSection from './views/sections/SpecialSection.vue';
 
 export default {
   name: 'App',
   components: {
+    InputSection,
+    ContentSection,
+    SpecialSection,
   },
+  data() {
+    return {
+      selectedSection: 'InputSection'
+    }
+  }
 }
 
 </script>
@@ -87,6 +95,8 @@ header {
 }
 
 .section-caption {
+  cursor: pointer;
+  user-select: none;
   font-size: var(--big-font-size);
 }
 
@@ -95,20 +105,6 @@ header {
   flex-direction: column;
   gap: 8px;
   padding: 0 0 0 16px;
-}
-
-.section-option {
-  user-select: none;
-  cursor: pointer;
-}
-
-.side-link {
-  color: white;
-  text-decoration: none;
-}
-
-.router-link-active {
-  color: var(--accent-color)
 }
 
 .component-view {
