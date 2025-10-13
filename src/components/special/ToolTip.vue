@@ -17,7 +17,8 @@
 export default {
   name: 'ToolTip',
   props: {
-    description: {type: String, default: null},
+    description: { type: String, default: null },
+    tipWidth: { type: Number, default: null }
   },
   data() {
     return {
@@ -41,6 +42,5 @@ export default {
 
 .tool-tip {
   position: absolute;
-}
-
+  width: v-bind(tipWidth + 'px');
 </style>
