@@ -1,15 +1,24 @@
 <template>
-  <div class="tool-tipped-box">
-    <slot class="">
+  <div
+      class="tool-tipped-box"
+      @mouseenter="isShowToolTip = true"
+      @mouseleave="isShowToolTip = false"
+  >
+    <slot>
 
     </slot>
-    <div class="tool-tip">
-      <slot name="text">
-        <div class="simple-description">
-          {{ description }}
-        </div>
-      </slot>
-    </div>
+    <transition name="fade">
+      <div
+          class="tool-tip"
+          v-if="isShowToolTip"
+      >
+        <slot name="text">
+          <div class="simple-description">
+            {{ description }}
+          </div>
+        </slot>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -22,6 +31,7 @@ export default {
   },
   data() {
     return {
+      isShowToolTip: false,
       toolTipPosition: {
         top: null,
         left: null,
@@ -35,7 +45,6 @@ export default {
 </script>
 
 <style scoped>
-
 .tool-tipped-box {
   position: relative;
   height: fit-content;
@@ -48,4 +57,22 @@ export default {
   background-color: var(--panels-color);
   border-radius: 5px;
   width: v-bind(tipWidth + 'px');
+}
+
+/*Animation*/
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
 </style>
