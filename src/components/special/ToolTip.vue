@@ -42,5 +42,8 @@ export default {
 
 .tool-tip {
   position: absolute;
+  padding: 4px 8px;
+  background-color: var(--panels-color);
+  border-radius: 5px;
   width: v-bind(tipWidth + 'px');
 </style>
