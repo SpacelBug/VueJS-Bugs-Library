@@ -21,6 +21,11 @@ const router = createRouter({
           path: "/spoiler",
           component: () => import("../views/inputs/SpoilerView.vue"),
         },
+        {
+          name: "color-picker",
+          path: "color-picker",
+          component: () => import("../views/inputs/ColorPickerView.vue"),
+        },
       ],
     },
   ],

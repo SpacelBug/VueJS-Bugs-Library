@@ -12,6 +12,12 @@
     >
       DropDown
     </router-link>
+    <router-link
+        :to="{ name: 'color-picker' }"
+        class="side-link"
+    >
+      ColorPicker
+    </router-link>
   </div>
 </template>
 
