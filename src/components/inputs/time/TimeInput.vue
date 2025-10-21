@@ -1,36 +1,32 @@
 <template>
   <div class="component-box">
     <div class="time-text">
-      <div class="hour">
-        <input
-            type="text"
-            ref="hours"
-            :value="hours"
-            @click="select"
-            placeholder="00"
-            @keydown.prevent="checkValue(23, $refs.minutes)"
-        >
-      </div>
-      <div class="minute">
-        <input
-            type="text"
-            ref="minutes"
-            :value="minutes"
-            @click="select"
-            placeholder="00"
-            @keydown.prevent="checkValue(59, $refs.seconds)"
-        >
-      </div>
-      <div class="seconds">
-        <input
-            type="text"
-            ref="seconds"
-            :value="seconds"
-            @click="select"
-            placeholder="00"
-            @keydown.prevent="checkValue(59)"
-        >
-      </div>
+      <input
+          type="text"
+          ref="hours"
+          :value="hours"
+          @click="select"
+          placeholder="00"
+          @keydown.prevent="checkValue(23, $refs.minutes)"
+      >
+      <span class="divider">:</span>
+      <input
+          type="text"
+          ref="minutes"
+          :value="minutes"
+          @click="select"
+          placeholder="00"
+          @keydown.prevent="checkValue(59, $refs.seconds)"
+      >
+      <span class="divider">:</span>
+      <input
+          type="text"
+          ref="seconds"
+          :value="seconds"
+          @click="select"
+          placeholder="00"
+          @keydown.prevent="checkValue(59)"
+      >
     </div>
   </div>
 </template>
@@ -135,17 +131,7 @@ export default {
   align-items: center;
 }
 
-.minute,
-.seconds {
-  display: flex;
-  flex-direction: row;
-  gap: 4px;
-  align-items: center;
-}
-
-.minute::before,
-.seconds::before {
-  content: ':';
+.divider {
   color: white;
 }
 
