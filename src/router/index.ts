@@ -21,6 +21,11 @@ const router = createRouter({
           path: "/spoiler",
           component: () => import("../views/inputs/SpoilerView.vue"),
         },
+        {
+          name: "time-input",
+          path: "/time-input",
+          component: () => import("../views/inputs/TimeInputView.vue"),
+        },
       ],
     },
   ],
