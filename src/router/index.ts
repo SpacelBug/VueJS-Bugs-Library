@@ -8,22 +8,22 @@ const router = createRouter({
       children: [
         {
           name: "switch",
-          path: "/switch",
+          path: "switch",
           component: () => import("../views/inputs/SwitchView.vue"),
         },
         {
           name: "drop-down",
-          path: "/drop-down",
+          path: "drop-down",
           component: () => import("../views/inputs/DropDownView.vue"),
         },
         {
           name: "spoiler",
-          path: "/spoiler",
+          path: "spoiler",
           component: () => import("../views/inputs/SpoilerView.vue"),
         },
         {
           name: "time-input",
-          path: "/time-input",
+          path: "time-input",
           component: () => import("../views/inputs/TimeInputView.vue"),
         },
       ],

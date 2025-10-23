@@ -1,7 +1,7 @@
 <template>
   <div class="components">
     <router-link
-        to="spoiler"
+        :to="{name: 'spoiler'}"
         class="side-link"
     >
       Spoiler

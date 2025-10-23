@@ -1,19 +1,19 @@
 <template>
   <div class="components">
     <router-link
-        to="switch"
+        :to="{name: 'switch'}"
         class="side-link"
     >
       Switch
     </router-link>
     <router-link
-        to="drop-down"
+        :to="{name: 'drop-down'}"
         class="side-link"
     >
       DropDown
     </router-link>
     <router-link
-        to="time-input"
+        :to="{name: 'time-input'}"
         class="side-link"
     >
       TimeInput
