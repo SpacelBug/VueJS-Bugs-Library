@@ -1,6 +1,6 @@
 # VueJS-Bugs-Library
 
-This template should help get you started developing with Vue 3 in Vite.
+In this library u could find some examples of VueJS components. I create it for my own needs and tests, and if u want, u also could use it.
 
 ## Recommended IDE Setup
 
@@ -26,8 +26,15 @@ npm install
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+## Component 
 
-```sh
-npm run build
-```
+### Inputs
+
+- Switch
+- DropDown
+
+### Content
+
+- Spoiler
+
+## Requirements
