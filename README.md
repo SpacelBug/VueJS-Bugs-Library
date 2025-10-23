@@ -32,6 +32,7 @@ npm run dev
 
 - Switch
 - DropDown
+- Time
 
 ### Content
 
