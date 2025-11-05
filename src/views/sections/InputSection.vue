@@ -18,6 +18,12 @@
     >
       TimeInput
     </router-link>
+    <router-link
+        :to="{ name: 'range' }"
+        class="side-link"
+    >
+      Range
+    </router-link>
   </div>
 </template>
 

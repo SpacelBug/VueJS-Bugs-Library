@@ -26,6 +26,11 @@ const router = createRouter({
           path: "time-input",
           component: () => import("../views/inputs/TimeInputView.vue"),
         },
+        {
+          name: "range",
+          path: "range",
+          component: () => import("../views/inputs/RangeView.vue"),
+        },
       ],
     },
   ],
