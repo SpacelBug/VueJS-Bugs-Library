@@ -4,6 +4,7 @@
         type="file"
         hidden
         ref="fileInput"
+        :accept="accept"
         @change="openFile"
     >
     <div class="file-input">
@@ -21,6 +22,14 @@ export default {
     modelValue: {
       type: File,
       default: null
+    },
+    /**
+     * Accepted file types
+     */
+    accept: {
+      type: String,
+      default: ''
+    },
     }
   },
   methods: {

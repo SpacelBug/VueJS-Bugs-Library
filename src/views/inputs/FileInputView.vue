@@ -6,7 +6,7 @@
       <div class="description">
         <p></p>
         <p><b>Props:</b></p>
-        <p>modelValue: </p>
+        <p><b>accept:</b> files extensions accepted by the input</p>
       </div>
     </div>
   </div>
