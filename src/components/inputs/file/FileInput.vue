@@ -7,10 +7,26 @@
         :accept="accept"
         @change="openFile"
     >
-    <div class="file-input">
-      <button @click="$refs.fileInput.click()"> + </button>
-      <span v-if="modelValue"> {{ modelValue.name }} </span>
-      <span v-else>No file chosen</span>
+    <div :class="['file-input', { 'short-file-input': view === 'short', 'full-file-input': view === 'full' }]">
+      <button
+          :class="['plus-icon', { 'full': view === 'full' }]"
+          @click="$refs.fileInput.click()"
+      > + </button>
+      <div
+          v-if="view !== 'short'"
+          class="file-description"
+      >
+        <div
+            v-if="modelValue"
+            class="fileName"
+            :title="modelValue.name"
+        > {{ modelValue.name }} </div>
+        <div
+            v-else
+            class="placeholder"
+        >No file chosen</div>
+        <small>{{ accept }}</small>
+      </div>
     </div>
   </div>
 </template>
@@ -30,6 +46,13 @@ export default {
       type: String,
       default: ''
     },
+    /**
+     * View type of the file input component
+     */
+    view: {
+      type: String,
+      default: 'default',
+      validator: (value) => ['default', 'full', 'short'].includes(value)
     }
   },
   methods: {
@@ -45,17 +68,43 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  box-sizing: border-box;
   background-color: var(--panels-color);
   border-radius: 5px;
-  height: 30px;
+  height: fit-content;
   padding: 8px 16px;
+  white-space: nowrap;
 }
 
 .file-input {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 100%);
   align-items: center;
+  box-sizing: border-box;
   gap: 8px;
+  width: 100%;
+}
+
+.full-file-input {
+  grid-template-columns: 50px auto;
+}
+
+.short-file-input {
+  grid-template-columns: 30px;
+}
+
+.file-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 100%;
+}
+
+.fileName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 button {
@@ -65,5 +114,10 @@ button {
   border-radius: 5px;
   color: var(--text-color);
   background-color: var(--background-color);
+}
+
+.full {
+  height: 50px;
+  width: 50px;
 }
 </style>
