@@ -18,6 +18,12 @@
     >
       TimeInput
     </router-link>
+    <router-link
+        to="file-input"
+        class="side-link"
+    >
+      FileInput
+    </router-link>
   </div>
 </template>
 

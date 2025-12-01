@@ -26,6 +26,11 @@ const router = createRouter({
           path: "time-input",
           component: () => import("../views/inputs/TimeInputView.vue"),
         },
+        {
+          name: "file-input",
+          path: "/file-input",
+          component: () => import("../views/inputs/FileInputView.vue"),
+        },
       ],
     },
   ],
