@@ -19,6 +19,12 @@
       TimeInput
     </router-link>
     <router-link
+        :to="{ name: 'range' }"
+        class="side-link"
+    >
+      Range
+    </router-link>
+    <router-link
         to="file-input"
         class="side-link"
     >
