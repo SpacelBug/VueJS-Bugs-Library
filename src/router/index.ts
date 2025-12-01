@@ -38,6 +38,16 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/special",
+      children: [
+        {
+          name: "tool-tip",
+          path: "tool-tip",
+          component: () => import("../views/special/ToolTipView.vue")
+        }
+      ]
+    }
   ],
 })
 
