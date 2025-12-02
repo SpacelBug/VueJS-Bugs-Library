@@ -48,7 +48,7 @@ export default {
 .tool-tipped-box {
   position: relative;
   height: fit-content;
-  width: fit-content;
+  width: 100%;
 }
 
 .tool-tip {
