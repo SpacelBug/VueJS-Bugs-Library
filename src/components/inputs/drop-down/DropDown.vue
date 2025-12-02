@@ -88,7 +88,7 @@ export default {
   },
   data() {
     return {
-      isShowOptions: true,
+      isShowOptions: false,
     }
   }
 };
@@ -120,14 +120,16 @@ export default {
 }
 
 .options {
-  box-sizing: border-box;
   position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
   overflow: hidden;
   background-color: var(--panels-color);
   border-radius: 5px;
   padding: 4px 16px;
   gap: 4px;
   width: 100%;
+  min-width: fit-content;
   height: fit-content;
   top: v-bind((top + buttonOptionsGap) + 'px');
   white-space: nowrap;
