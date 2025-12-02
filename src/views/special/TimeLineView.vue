@@ -7,6 +7,10 @@
           v-model="timelineCurrentValue"
           v-model:cacheWindow="cacheWindow"
       />
+
+      <TimeLine
+          :starttime="starttime"
+          :endtime="endtime"
       />
 
       {{ timelineCurrentValue }}
@@ -19,6 +23,11 @@
       </span>
       <div class="props">
         <p><b>Props:</b></p>
+        <p><u>sampleRate</u>: Number</p>
+        <p><u>starttime</u>: Date</p>
+        <p><u>endtime</u>: Date</p>
+        <p><u>framerate</u>: Number</p>
+        <p><u>cachedSteps</u>: Number</p>
       </div>
     </div>
   </div>
