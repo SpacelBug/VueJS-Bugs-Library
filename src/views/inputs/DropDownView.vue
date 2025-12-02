@@ -1,10 +1,24 @@
 <template>
   <div class="component-view">
-    <drop-down
-        v-model="testValue"
-        :options="testOptions"
-        :width="200"
-    />
+    <div class="component-variants">
+      <drop-down
+          v-model="testValue"
+          :options="testOptions"
+          :width="200"
+      />
+
+      <drop-down
+          v-model="testValue"
+          :options="testOptions"
+      />
+
+      <drop-down
+          v-model="testValue"
+          :options="testOptions"
+          :width="'100%'"
+      />
+    </div>
+
     <div class="description">
       <h3>Drop-Down component</h3>
       <div class="description">
@@ -48,6 +62,13 @@ export default {
   justify-content: space-between;
   gap: 16px;
   width: 100%;
+}
+
+.component-variants {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 16px;
 }
 
 .description {
