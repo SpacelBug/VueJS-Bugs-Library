@@ -120,8 +120,9 @@ export default {
 }
 
 .options {
-  box-sizing: border-box;
   position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
   overflow: hidden;
   background-color: var(--panels-color);
   border-radius: 5px;
