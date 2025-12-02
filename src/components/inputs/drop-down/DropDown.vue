@@ -88,7 +88,7 @@ export default {
   },
   data() {
     return {
-      isShowOptions: true,
+      isShowOptions: false,
     }
   }
 };
