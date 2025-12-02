@@ -30,7 +30,7 @@
           <SpecialSection v-if="selectedSection === 'SpecialSection'" />
         </div>
       </div>
-      <div class="component-view">
+      <div class="section-view">
         <router-view></router-view>
       </div>
     </div>
@@ -107,8 +107,10 @@ header {
   padding: 0 0 0 16px;
 }
 
-.component-view {
+.section-view {
+  box-sizing: border-box;
   padding: 64px;
+  width: 100%;
 }
 
 footer {
