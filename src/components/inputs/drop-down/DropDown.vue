@@ -128,6 +128,7 @@ export default {
   padding: 4px 16px;
   gap: 4px;
   width: 100%;
+  min-width: fit-content;
   height: fit-content;
   top: v-bind((top + buttonOptionsGap) + 'px');
   white-space: nowrap;
