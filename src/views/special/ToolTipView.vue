@@ -9,7 +9,7 @@
       </div>
       <div class="component-variant">
         <div class="caption"> Set tool-tip content by slot</div>
-        <tool-tip :description="'Some tip text'">
+        <tool-tip :description="'Some tip text'" style="width: 300px;">
           Text with tool-tip
           <template v-slot:text>
             <p><b>Some slotted text</b></p>
@@ -49,6 +49,7 @@ export default {
 .component-view {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   gap: 16px;
 }
 
@@ -56,11 +57,13 @@ export default {
   display: flex;
   flex-direction: row;
   gap: 16px;
+  width: 100%;
 }
 
 .component-variant {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: fit-content;
 }
 </style>
