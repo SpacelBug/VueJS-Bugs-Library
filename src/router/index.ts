@@ -44,10 +44,15 @@ const router = createRouter({
         {
           name: "tool-tip",
           path: "tool-tip",
-          component: () => import("../views/special/ToolTipView.vue")
-        }
-      ]
-    }
+          component: () => import("../views/special/ToolTipView.vue"),
+        },
+        {
+          name: "time-line",
+          path: "time-line",
+          component: () => import("../views/special/TimeLineView.vue"),
+        },
+      ],
+    },
   ],
 })
 
