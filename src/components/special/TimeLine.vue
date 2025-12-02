@@ -89,12 +89,6 @@ export default {
     document.body.removeEventListener('mousemove', this.onTimeLineMouseMove)
   },
   computed: {
-    /**
-     * 
-     */
-    cachedWindow() {
-
-    },
     stepsCount() {
       let start = new Date(this.starttime)
       let end = new Date(this.endtime)
@@ -123,6 +117,7 @@ export default {
     currentStep(newValue, oldValue) {
       this.setCaretPosByStep(newValue)
       this.$emit('update:modelValue', this.getCurrentDatetime())
+      this.$emit('update:cacheWindow', this.getCachedWindow())
     }
   },
   methods: {
@@ -173,6 +168,17 @@ export default {
       }
 
       return steps
+    },
+    getCachedWindow() {
+      let window = []
+
+      for (let step = this.currentStep; step < this.currentStep + this.cachedSteps; step++) {
+        let datetime = new Date(this.starttime)
+        datetime.setMilliseconds(datetime.getMilliseconds() + step * this.sampleRate)
+        window.push(datetime)
+      }
+
+      return window
     },
     startPlay() {
       this.isPlaying = true

@@ -5,6 +5,8 @@
           :starttime="starttime"
           :endtime="endtime"
           v-model="timelineCurrentValue"
+          v-model:cacheWindow="cacheWindow"
+      />
       />
 
       {{ timelineCurrentValue }}
@@ -34,6 +36,7 @@ export default {
       endtime: new Date('2025-12-2'),
 
       timelineCurrentValue: new Date('2025-12-1 10:00:00'),
+      cacheWindow: null,
     }
   }
 }
