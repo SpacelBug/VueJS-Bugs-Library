@@ -7,6 +7,14 @@
       Tool-Tip
     </router-link>
   </div>
+  <div class="components">
+    <router-link
+        :to="{ name: 'time-line' }"
+        class="side-link"
+    >
+      Time-Line
+    </router-link>
+  </div>
 </template>
 
 <script>
