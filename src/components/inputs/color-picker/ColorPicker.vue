@@ -21,32 +21,46 @@
             :height="circleSize"
             ref="rainbow"
         />
-        <div class="caret" v-if="paletteCaretPos.length > 0"/>
+        <div
+            class="caret"
+            v-if="paletteCaretPos.length > 0"
+        />
       </div>
       <div class="additional-params">
         <div class="param">
-          Light
+          Brightness
           <div class="param-gradient">
             <canvas
-                v-show="color"
-                class="light-gradient"
-                :width="circleSize"
+                class="brightness-gradient"
+                :width="200"
                 height="30"
-                ref="light"
-                @mousemove="lightMove"
+                ref="brightness"
+                @mousemove="brightnessMove"
             />
-            <div class="light-caret" />
+            <div class="brightness-caret" />
+          </div>
+        </div>
+        <div class="param">
+          Saturation
+          <div class="param-gradient">
+            <canvas
+                class="saturation-gradient"
+                :width="200"
+                height="30"
+                ref="saturation"
+                @mousemove="saturationMove"
+            />
+            <div class="saturation-caret" />
           </div>
         </div>
         <div class="param">
           Transparency
           <div class="param-gradient">
             <canvas
-                v-show="color"
-                class="transparent-gradient"
-                :width="circleSize"
+                class="transparency-gradient"
+                :width="200"
                 height="30"
-                ref="transparent"
+                ref="transparency"
                 @mousemove="transparencyMove"
             />
             <div class="transparency-caret" />
@@ -66,29 +80,42 @@ export default {
   },
   data() {
     return {
-      color: null,
+      color: 'rgba(255, 255, 255, 1)',
 
       isShowPicker: false,
       isMouseDown: false,
 
       paletteCaretPos: [],
-      lightCaretPos: 0,
+      brightnessCaretPos: 0,
       transparencyCaretPos: 0,
     }
   },
   mounted() {
     this.drawRainbowGradient()
+    this.drawBrightnessGradient()
+    this.drawSaturationGradient()
+    this.drawTransparencyGradient()
   },
   watch: {
     color() {
-      this.drawLightGradient()
-      this.drawTransparentGradient()
+      this.drawBrightnessGradient()
+      this.drawSaturationGradient()
+      this.drawTransparencyGradient()
     }
   },
   computed: {
     resultColor() {
       return this.color
-    }
+    },
+    brightnessValue() {
+      return this.brightnessCaretPos / 200
+    },
+    saturationValue() { 
+      return this.lightCaretPos / 200
+    },
+    transparencyValue() { 
+      return this.transparencyCaretPos / 200
+    },
   },
   methods: {
     drawRainbowGradient() {
@@ -114,29 +141,50 @@ export default {
         ctx.fill();
       }
     },
-    drawLightGradient() {
-      const canvas = this.$refs.light
-      const ctx = canvas.getContext('2d');
-      const gradient = ctx.createLinearGradient(0, canvas.height, canvas.width, canvas.height);
+    drawBrightnessGradient() {
+      const canvas = this.$refs.brightness
+      const ctx = canvas.getContext('2d')
 
-      gradient.addColorStop(0, this.color);
-      gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+      let grad = ctx.createLinearGradient(0, 0, 200, 30) 
+      
+      grad.addColorStop(0, 'white')
+      grad.addColorStop(0.5, this.color)
+      grad.addColorStop(1, 'black')
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = grad
+      ctx.fillRect(0, 0, 200, 30) 
     },
-    drawTransparentGradient() {
-      const canvas = this.$refs.transparent
-      const ctx = canvas.getContext('2d');
-      const gradient = ctx.createLinearGradient(0, canvas.height, canvas.width, canvas.height);
+    drawSaturationGradient() {
+      const canvas = this.$refs.saturation
+      const ctx = canvas.getContext('2d')
 
-      gradient.addColorStop(0, this.color);
-      gradient.addColorStop(1, this.color.replace('rgb', 'rgba').replace(')', ', 0)'))
+      let grad = ctx.createLinearGradient(0, 0, 200, 30)
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      grad.addColorStop(0, this.color)
+      grad.addColorStop(1, 'white')
+
+      ctx.fillStyle = grad
+      ctx.fillRect(0, 0, 200, 30)
+    },
+    drawTransparencyGradient() {
+      const canvas = this.$refs.transparency
+      const ctx = canvas.getContext('2d')
+
+      ctx.clearRect(0, 0, 200, 30)
+
+      let grad = ctx.createLinearGradient(0, 0, 200, 30)
+
+      let splittedColor = this.color.split(',')
+      splittedColor[splittedColor.length - 1] = ' 0)'
+
+      console.log(splittedColor.join(','))
+
+      grad.addColorStop(0, this.color)
+      grad.addColorStop(1, 'transparent')
+
+      ctx.globalCompositeOperation = 'multiply'
+      ctx.fillStyle = grad
+      ctx.fillRect(0, 0, 200, 30)
     },
     paletteMove() {
       if (!this.isMouseDown) return;
@@ -146,16 +194,17 @@ export default {
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
       const pixel = ctx.getImageData(x, y, 1, 1).data;
-      const color = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
 
       this.paletteCaretPos = [x, y]
-      this.color = color
+      this.color = `rgba(${pixel[0]}, ${pixel[1]}, ${pixel[2]}, 1)`
     },
     lightMove() {
       if (!this.isMouseDown) return
       const rect = this.$refs.light.getBoundingClientRect()
       const x = event.clientX - rect.left
       this.lightCaretPos = x
+    },
+    saturation() {
     },
     transparencyMove() {
       if (!this.isMouseDown) return
@@ -253,12 +302,7 @@ export default {
   gap: 4px;
 }
 
-.light-gradient {
-  border: solid 1px black;
-  cursor: pointer;
-}
-
-.transparent-gradient {
+.transparency-gradient, .brightness-gradient, .saturation-gradient {
   border: solid 1px black;
   border-radius: 5px;
   cursor: pointer;
