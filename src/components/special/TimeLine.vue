@@ -1,7 +1,9 @@
 <template>
   <div class="time-line-box">
     <span class="start-label">
-      {{ starttime.toLocaleString() }}
+      <slot>
+        {{ starttime.toLocaleString() }}
+      </slot>
     </span>
 
     <div

@@ -11,7 +11,11 @@
       <TimeLine
           :starttime="starttime"
           :endtime="endtime"
-      />
+          :cachedSteps="0"
+          v-model="timelineCurrentValueSecond"
+      >
+        {{ timelineCurrentValueSecond.toLocaleTimeString() }}
+      </TimeLine>
 
       {{ timelineCurrentValue }}
     </div>
@@ -20,6 +24,9 @@
       <h3>Time-Line component</h3>
       <span>
         Timeline component for using in players
+      </span>
+      <span>
+        Left side label could be changed by slot
       </span>
       <div class="props">
         <p><b>Props:</b></p>
@@ -45,6 +52,7 @@ export default {
       endtime: new Date('2025-12-2'),
 
       timelineCurrentValue: new Date('2025-12-1 10:00:00'),
+      timelineCurrentValueSecond: new Date('2025-12-1 10:00:00'),
       cacheWindow: null,
     }
   }
