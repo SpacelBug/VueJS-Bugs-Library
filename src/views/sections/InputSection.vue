@@ -30,6 +30,12 @@
     >
       FileInput
     </router-link>
+    <router-link
+        to="check-box"
+        class="side-link"
+    >
+      CheckBox
+    </router-link>
   </div>
 </template>
 
