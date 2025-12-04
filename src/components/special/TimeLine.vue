@@ -82,7 +82,7 @@ export default {
     if (!this.modelValue) {
       this.$emit('update:modelValue', )
     } else {
-      this.setCaretPosByStep(this.getStepsByDatetime(this.modelValue))
+      this.currentStep = this.getStepsByDatetime(this.modelValue)
     }
   },
   unmounted() {
