@@ -1,6 +1,12 @@
 <template>
   <div class="components">
     <router-link
+        :to="{ name: 'number-input' }"
+        class="side-link"
+    >
+      Number Input
+    </router-link>
+    <router-link
         :to="{name: 'switch'}"
         class="side-link"
     >
