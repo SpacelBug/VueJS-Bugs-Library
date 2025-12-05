@@ -4,7 +4,7 @@
         :to="{ name: 'number-input' }"
         class="side-link"
     >
-      Number Input
+      NumberInput
     </router-link>
     <router-link
         :to="{name: 'switch'}"
