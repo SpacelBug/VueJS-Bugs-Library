@@ -36,6 +36,11 @@ const router = createRouter({
           path: "file-input",
           component: () => import("../views/inputs/FileInputView.vue"),
         },
+        {
+          name: "number-input",
+          path: "number-input",
+          component: () => import("../views/inputs/NumberInputView.vue"),
+        },
       ],
     },
     {
@@ -44,10 +49,10 @@ const router = createRouter({
         {
           name: "tool-tip",
           path: "tool-tip",
-          component: () => import("../views/special/ToolTipView.vue")
-        }
-      ]
-    }
+          component: () => import("../views/special/ToolTipView.vue"),
+        },
+      ],
+    },
   ],
 })
 
