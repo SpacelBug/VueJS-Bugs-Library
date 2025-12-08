@@ -37,6 +37,11 @@ const router = createRouter({
           component: () => import("../views/inputs/FileInputView.vue"),
         },
         {
+          name: "check-box",
+          path: "check-box",
+          component: () => import("../views/inputs/CheckBoxView.vue"),
+        },
+        {
           name: "number-input",
           path: "number-input",
           component: () => import("../views/inputs/NumberInputView.vue"),
