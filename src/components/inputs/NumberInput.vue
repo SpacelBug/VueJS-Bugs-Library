@@ -25,7 +25,11 @@ export default {
     onKeyDown() {
       const reg = /[0-9,.]/
       const excludedKeyCodes = ['Backspace', 'Enter', 'Delete', 'ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown']
-      if (!reg.test(event.key) && !excludedKeyCodes.includes(event.key)) {
+      if (
+        !reg.test(event.key) && 
+        !excludedKeyCodes.includes(event.key) ||
+        (event.key === '.' && event.target.value.includes('.'))
+      ) {
         event.preventDefault()
       }
     },
