@@ -7,6 +7,12 @@
       NumberInput
     </router-link>
     <router-link
+        :to="{ name: 'area-input' }"
+        class="side-link"
+    >
+      AreaInput
+    </router-link>
+    <router-link
         :to="{name: 'time-input'}"
         class="side-link"
     >
