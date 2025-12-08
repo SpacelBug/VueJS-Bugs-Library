@@ -1,15 +1,17 @@
 <template>
   <textarea
-      name=""
       :placeholder="placeholder"
+      :value="modelValue"
       @focusin="isUnwrapped = true"
       @focusout="isUnwrapped = false"
+      @change="onChange"
   />
 </template>
 
 <script>
 export default {
   name: "AreaInput",
+  emits: ['update:modelValue'],
   props: {
     placeholder: { type: String, default: "Text area" },
     modelValue: { type: String, required: true },
@@ -17,12 +19,17 @@ export default {
   },
   data() {
     return {
-      isUnwrapped: false, 
+      isUnwrapped: false,
     }
   },
   computed: {
     height() {
-      return this.isUnwrapped ? this.unwrappedHeight +'px' : '22px'
+      return this.isUnwrapped ? this.unwrappedHeight + 'px' : '22px'
+    }
+  },
+  methods: {
+    onChange() {
+      this.$emit('update:modelValue', event.target.value)
     }
   }
 }
