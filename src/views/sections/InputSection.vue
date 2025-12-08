@@ -7,34 +7,34 @@
       NumberInput
     </router-link>
     <router-link
-        :to="{name: 'switch'}"
-        class="side-link"
-    >
-      Switch
-    </router-link>
-    <router-link
-        :to="{name: 'drop-down'}"
-        class="side-link"
-    >
-      DropDown
-    </router-link>
-    <router-link
         :to="{name: 'time-input'}"
         class="side-link"
     >
       TimeInput
     </router-link>
     <router-link
-        :to="{ name: 'range' }"
-        class="side-link"
-    >
-      Range
-    </router-link>
-    <router-link
         to="file-input"
         class="side-link"
     >
       FileInput
+    </router-link>
+    <router-link
+        :to="{ name: 'switch' }"
+        class="side-link"
+    >
+      Switch
+    </router-link>
+    <router-link
+        :to="{ name: 'drop-down' }"
+        class="side-link"
+    >
+      DropDown
+    </router-link>
+    <router-link
+        :to="{ name: 'range' }"
+        class="side-link"
+    >
+      Range
     </router-link>
     <router-link
         to="check-box"
