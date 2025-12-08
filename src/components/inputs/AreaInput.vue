@@ -24,7 +24,7 @@ export default {
   },
   computed: {
     height() {
-      return this.isUnwrapped ? this.unwrappedHeight + 'px' : '22px'
+      return this.isUnwrapped ? this.unwrappedHeight + 'px' : '30px'
     }
   },
   methods: {
@@ -37,15 +37,16 @@ export default {
 
 <style scoped>
 textarea {
-  width: 100%;
+  box-sizing: border-box;
   resize: none;
   outline: none;
   border: none;
-  border-radius: 5px;
   background-color: var(--panels-color);
   color: var(--font-color);
-  padding: 8px;
   height: v-bind(height);
+  width: 100%;
+  padding: 6px;
+  border-radius: 5px;
   transition: all ease 0.3s;
 }
 </style>
