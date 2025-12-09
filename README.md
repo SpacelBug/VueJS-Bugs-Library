@@ -26,16 +26,24 @@ npm install
 npm run dev
 ```
 
-## Component 
+## Components
 
 ### Inputs
 
+- NumberInput
+- TimeInput
+- FileInput
 - Switch
 - DropDown
-- Time
+- Range
+- Checkbox
 
 ### Content
 
 - Spoiler
+
+### Special
+
+- Tool-Tip
 
 ## Requirements
