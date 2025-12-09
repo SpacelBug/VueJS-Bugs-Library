@@ -6,6 +6,12 @@
     >
       Spoiler
     </router-link>
+    <router-link
+        :to="{ name: 'expandable-image' }"
+        class="side-link"
+    >
+      ExpandableImage
+    </router-link>
   </div>
 </template>
 
