@@ -58,6 +58,16 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/content",
+      children: [
+        {
+          name: "expandable-image",
+          path: "expandable-image",
+          component: () => import("../views/content/ExpandableImageView.vue"),
+        },
+      ],
+    },
   ],
 })
 
