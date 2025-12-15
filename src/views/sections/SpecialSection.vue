@@ -6,6 +6,12 @@
     >
       Tool-Tip
     </router-link>
+    <router-link
+        :to="{ name: 'context-menu' }"
+        class="side-link"
+    >
+      Context-Menu
+    </router-link>
   </div>
 </template>
 

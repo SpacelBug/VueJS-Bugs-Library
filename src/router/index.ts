@@ -56,6 +56,11 @@ const router = createRouter({
           path: "tool-tip",
           component: () => import("../views/special/ToolTipView.vue"),
         },
+        {
+          name: "context-menu",
+          path: "context-menu",
+          component: () => import("../views/special/ContextMenuView.vue"),
+        },
       ],
     },
   ],
