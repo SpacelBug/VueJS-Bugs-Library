@@ -58,6 +58,16 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/content",
+      children: [
+        {
+          path: "modal-window",
+          name: "modal-window",
+          component: () => import("@/views/content/ModalWindowView.vue"),
+        }
+      ]
+    }
   ],
 })
 

@@ -6,6 +6,12 @@
     >
       Spoiler
     </router-link>
+    <router-link
+        :to="{ name: 'modal-window' }"
+        class="side-link"
+    >
+      ModalWindow
+    </router-link>
   </div>
 </template>
 
