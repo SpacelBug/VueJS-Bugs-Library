@@ -33,6 +33,7 @@ npm run dev
 - NumberInput
 - TimeInput
 - FileInput
+- Area Input
 - Switch
 - DropDown
 - Range
@@ -41,9 +42,12 @@ npm run dev
 ### Content
 
 - Spoiler
+- Expandable Image
+- Modal Window
 
 ### Special
 
 - Tool-Tip
+- Context Menu
 
 ## Requirements
