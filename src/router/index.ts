@@ -17,11 +17,6 @@ const router = createRouter({
           component: () => import("../views/inputs/DropDownView.vue"),
         },
         {
-          name: "spoiler",
-          path: "spoiler",
-          component: () => import("../views/inputs/SpoilerView.vue"),
-        },
-        {
           name: "time-input",
           path: "time-input",
           component: () => import("../views/inputs/TimeInputView.vue"),
@@ -76,18 +71,18 @@ const router = createRouter({
           path: "expandable-image",
           component: () => import("../views/content/ExpandableImageView.vue"),
         },
-      ],
-    },
-    {
-      path: "/content",
-      children: [
+        {
+          name: "spoiler",
+          path: "spoiler",
+          component: () => import("../views/content/SpoilerView.vue"),
+        },
         {
           path: "modal-window",
           name: "modal-window",
           component: () => import("@/views/content/ModalWindowView.vue"),
-        }
-      ]
-    }
+        },
+      ],
+    },
   ],
 })
 
