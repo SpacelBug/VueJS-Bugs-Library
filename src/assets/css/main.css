@@ -7,3 +7,16 @@ body {
 h1, h2, h3, h4, h5, h6 {
     margin: 0;
 }
+
+button {
+    cursor: pointer;
+    background-color: var(--panels-color);
+    color: var(--font-color);
+    border: solid 1px var(--border-color);
+    border-radius: 5px;
+    padding: 8px 16px;
+}
+
+button:hover {
+    opacity: 0.8;
+}
