@@ -7,6 +7,12 @@
       Spoiler
     </router-link>
     <router-link
+        :to="{ name: 'expandable-image' }"
+        class="side-link"
+    >
+      ExpandableImage
+    </router-link>
+    <router-link
         :to="{ name: 'modal-window' }"
         class="side-link"
     >

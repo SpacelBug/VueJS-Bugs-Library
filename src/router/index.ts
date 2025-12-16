@@ -72,6 +72,16 @@ const router = createRouter({
       path: "/content",
       children: [
         {
+          name: "expandable-image",
+          path: "expandable-image",
+          component: () => import("../views/content/ExpandableImageView.vue"),
+        },
+      ],
+    },
+    {
+      path: "/content",
+      children: [
+        {
           path: "modal-window",
           name: "modal-window",
           component: () => import("@/views/content/ModalWindowView.vue"),
