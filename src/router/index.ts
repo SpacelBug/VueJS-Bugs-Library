@@ -46,6 +46,11 @@ const router = createRouter({
           path: "number-input",
           component: () => import("../views/inputs/NumberInputView.vue"),
         },
+        {
+          name: "area-input",
+          path: "area-input",
+          component: () => import("../views/inputs/AreaInputView.vue"),
+        },
       ],
     },
     {
