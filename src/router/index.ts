@@ -83,6 +83,11 @@ const router = createRouter({
         },
       ],
     },
+    {
+      name: "fun",
+      path: "/fun",
+      component: () => import("../views/fun/FunView.vue"),
+    }
   ],
 })
 
