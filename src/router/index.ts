@@ -46,6 +46,11 @@ const router = createRouter({
           path: "area-input",
           component: () => import("../views/inputs/AreaInputView.vue"),
         },
+        {
+          name: "mask-input",
+          path: "mask-input",
+          component: () => import("../views/inputs/InputMaskView.vue"),
+        },
       ],
     },
     {
@@ -87,7 +92,7 @@ const router = createRouter({
       name: "fun",
       path: "/fun",
       component: () => import("../views/fun/FunView.vue"),
-    }
+    },
   ],
 })
 

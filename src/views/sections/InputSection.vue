@@ -1,6 +1,12 @@
 <template>
   <div class="components">
     <router-link
+        :to="{ name: 'mask-input' }"
+        class="side-link"
+    >
+      MaskInput
+    </router-link>
+    <router-link
         :to="{ name: 'number-input' }"
         class="side-link"
     >
