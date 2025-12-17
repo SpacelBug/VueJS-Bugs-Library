@@ -24,7 +24,9 @@ export default {
   },
   props: {
     /**
-     * Array of Objects
+     * Array of Objects.
+     * - Each object represents a node in the tree.
+     * - Each node could have checked property and nested nodes.
      * ```js
      * [
      *  {name: 'node name'}, 
