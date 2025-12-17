@@ -9,25 +9,25 @@
         <div class="section">
           <div
               class="section-caption"
-              @click="selectedSection = 'InputSection'"
+              @click="selectedSection = 'inputs'"
           >
             Inputs
           </div>
-          <InputSection v-if="selectedSection === 'InputSection'" />
+          <InputSection v-if="selectedSection === 'inputs'" />
           <div
               class="section-caption"
-              @click="selectedSection = 'ContentSection'"
+              @click="selectedSection = 'content'"
           >
             Content
           </div>
-          <ContentSection v-if="selectedSection === 'ContentSection'" />
+          <ContentSection v-if="selectedSection === 'content'" />
           <div
               class="section-caption"
-              @click="selectedSection = 'SpecialSection'"
+              @click="selectedSection = 'special'"
           >
             Special
           </div>
-          <SpecialSection v-if="selectedSection === 'SpecialSection'" />
+          <SpecialSection v-if="selectedSection === 'special'" />
         </div>
       </div>
       <div class="section-view">
@@ -55,7 +55,19 @@ export default {
   },
   data() {
     return {
-      selectedSection: 'InputSection'
+      selectedSection: null,
+    }
+  },
+  computed: {
+    currentRootRoute() {
+      return this.$route.path.split('/').filter((value) => {return value !== ""})[0]
+    }
+  },
+  watch: {
+    currentRootRoute() {
+      if (!this.selectedSection) {
+        this.selectedSection = this.currentRootRoute
+      }
     }
   }
 }
