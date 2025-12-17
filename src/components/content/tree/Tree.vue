@@ -5,6 +5,7 @@
         class="node"
         :node="node"
         :checkable="checkable"
+        @change="$emit('change', (node) => $emit('change', node))"
     />
   </div>
 </template>
@@ -18,7 +19,7 @@ import TreeNode from './TreeNode.vue';
  */
 export default {
   name: "Tree",
-  emits: ['nodeClick'],
+  emits: ['nodeClick', "change"],
   components: {
     TreeNode,
   },
@@ -49,6 +50,28 @@ export default {
   data() {
     return {
       checkedNodes: [],
+    }
+  },
+  methods: {
+    /**
+     * Return last checked nodes in tree
+     */
+    getLastCheckedNodes(nodes=null) {
+      if (nodes === null) {
+        nodes = this.nodes
+      }
+      
+      let checked = []
+      
+      for (let node of nodes) {
+        if (node.hasOwnProperty('nodes')) {
+          checked = this.getLastCheckedNodes(node.nodes)
+        } else if (node.checked) {
+          checked.push(node)
+        }
+      }
+      
+      return checked
     }
   }
 }

@@ -3,12 +3,17 @@
     <div class="icon-box">
       <div
           v-if="node.nodes"
-          :class="['icon', {'opened': isShowNested}]"
+          :class="['icon', { 'opened': isShowNested }]"
           @click="isShowNested = !isShowNested"
       />
     </div>
 
-    <input v-if="checkable" type="checkbox">
+    <input
+        v-if="checkable"
+        type="checkbox"
+        v-model="node.checked"
+        @change="$emit('change', node)"
+    />
 
     <div class="node-name">
       {{ node.name }}
@@ -22,6 +27,7 @@
           v-for="node in node.nodes"
           :node="node"
           :checkable="checkable"
+          @change="$emit('change', $event)"
       />
     </div>
   </div>
@@ -33,6 +39,7 @@
  */
 export default {
   name: "TreeNode",
+  emits: ["update:modelValue", "change"],
   props: {
     node: { required: true },
     checkable: { type: Boolean },
@@ -41,7 +48,7 @@ export default {
     return {
       isShowNested: false,
     }
-  }
+  },
 }
 </script>
 
