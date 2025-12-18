@@ -47,7 +47,7 @@ export default {
         } else if (value instanceof Date) {
           return true
         } else if (value instanceof Object) {
-          for (let key in this.modelValue) {
+          for (let key in value) {
             if (!['hours', 'minutes', 'seconds'].includes(key)) {
               console.error('wrong object format of model value in TimeInput component')
             }
