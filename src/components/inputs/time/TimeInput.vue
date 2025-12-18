@@ -113,7 +113,7 @@ export default {
           }
         }
 
-        return Number(event.target.value) + event.key
+        return resultValue
       } else if (['Backspace', 'Delete'].includes(event.key)) {
         return null
       }
