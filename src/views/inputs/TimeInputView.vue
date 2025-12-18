@@ -41,7 +41,7 @@ export default {
         return {
             testValueDate: new Date("2025-12-12 14:00:00"),
             testValueString: "14:00:00",
-            testValueObject: { hours: 14, minutes: 0, seconds: 0 },
+            testValueObject: { hours: 14, minutes: 0, seconds: 59 },
         }
     }
 };
