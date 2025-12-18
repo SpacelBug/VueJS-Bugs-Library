@@ -28,6 +28,54 @@
           @keydown.prevent="seconds = checkValue(59); updateModelValue()"
       >
     </div>
+    <div
+        v-if="isShowInteractive"
+        class="interactive-time-input"
+    >
+      <div
+          class="hours"
+          tabindex="0"
+          @mouseenter="event => event.target.focus()"
+          @mouseleave="event => event.target.blur()"
+          @mousewheel="onTimeCellWheel('hours')"
+      >
+        <div
+            v-for="number in listOfHours"
+            class="interactive-time-cell"
+            @click="this.hours = number"
+        >
+          {{ number.toString().padStart("0", 2) }}
+        </div>
+      </div>
+      <div
+          class="minutes"
+          tabindex="0"
+          @mouseenter="event => event.target.focus()"
+          @mouseleave="event => event.target.blur()"
+          @mousewheel="onTimeCellWheel('minutes')"
+      >
+        <div
+            v-for="number in listOfMinutes"
+            class="interactive-time-cell"
+        >
+          {{ number.toString().padStart(2, "0") }}
+        </div>
+      </div>
+      <div
+          class="seconds"
+          tabindex="0"
+          @mouseenter="event => event.target.focus()"
+          @mouseleave="event => event.target.blur()"
+          @mousewheel="onTimeCellWheel('seconds')"
+      >
+        <div
+            v-for="number in listOdSeconds"
+            class="interactive-time-cell"
+        >
+          {{ number.toString().padStart("0", 2) }}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -65,6 +113,8 @@ export default {
       hours: null,
       minutes: null,
       seconds: null,
+
+      isShowInteractive: false,
     }
   },
   mounted() {
@@ -81,6 +131,47 @@ export default {
       this.minutes = this.modelValue.minutes
       this.seconds = this.modelValue.seconds
     }
+  },
+  computed: {
+    listOfHours() {
+      return [...Array(5).keys()].map((value) => {
+        let max = 23
+        let computedValue = (this.hours - 2) + value
+        if (computedValue < 0) {
+          return max + 1 + computedValue
+        } else if (computedValue > max) {
+          return 0 + computedValue - (max + 1)
+        } else {
+          return computedValue
+        }
+      })
+    },
+    listOfMinutes() {
+      return [...Array(5).keys()].map((value) => {
+        let max = 59
+        let computedValue = (this.minutes - 2) + value
+        if (computedValue < 0) {
+          return max + 1 + computedValue
+        } else if (computedValue > max) {
+          return 0 + computedValue - (max + 1)
+        } else {
+          return computedValue
+        }
+      })
+    },
+    listOdSeconds() {
+      return [...Array(5).keys()].map((value) => {
+        let max = 59
+        let computedValue = (this.seconds - 2) + value
+        if (computedValue < 0) {
+          return max + 1 + computedValue
+        } else if (computedValue > max) {
+          return 0 + computedValue - (max + 1)
+        } else {
+          return computedValue
+        }
+      })
+    },
   },
   methods: {
     checkValue(max, nextElement = null) {
@@ -126,7 +217,29 @@ export default {
         date.setHours(this.hours, this.minutes, this.seconds)
         this.$emit('update:modelValue', date)
       } else if (this.modelValue instanceof Object) {
-        this.$emit('update:modelValue', {hours: this.hours, minutes: this.minutes, seconds: this.seconds})
+        this.$emit('update:modelValue', { hours: this.hours, minutes: this.minutes, seconds: this.seconds })
+      }
+    },
+    onTimeCellWheel(targetName) {
+      event.preventDefault()
+      if (targetName === "hours") {
+        if (event.deltaY > 0) {
+          this.hours = this.listOfHours[3]
+        } else {
+          this.hours = this.listOfHours[1]
+        }
+      } else if (targetName === "minutes") {
+        if (event.deltaY > 0) {
+          this.minutes = this.listOfMinutes[3]
+        } else {
+          this.minutes = this.listOfMinutes[1]
+        }
+      } else {
+        if (event.deltaY > 0) {
+          this.seconds = this.listOdSeconds[3]
+        } else {
+          this.seconds = this.listOdSeconds[1]
+        }
       }
     }
   }
@@ -134,6 +247,7 @@ export default {
 </script>
 <style scoped>
 .component-box {
+  position: relative;
   background-color: var(--panels-color);
   padding: 8px 16px;
   border-radius: 5px;
@@ -160,5 +274,41 @@ input {
   height: fit-content;
   color: white;
   user-select: all;
+}
+
+.interactive-time-input {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  background-color: var(--panels-color);
+  border-radius: 5px;
+  width: fit-content;
+  height: fit-content;
+  padding: 16px;
+}
+
+.hours,
+.minutes,
+.seconds {
+  display: flex;
+  flex-direction: column;
+  outline: none;
+}
+
+.interactive-time-cell {
+  user-select: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 30px;
+  opacity: 0.5;
+}
+
+.interactive-time-cell:nth-child(3) {
+  opacity: 1;
 }
 </style>
