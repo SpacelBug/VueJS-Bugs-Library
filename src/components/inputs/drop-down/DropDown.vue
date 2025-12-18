@@ -24,7 +24,7 @@
       >
         {{ placeholder }}
       </div>
-      <div class="arrow-head" />
+      <div :class="['arrow-head', {'rotated': isShowOptions}]" />
     </div>
     <transition name="fade">
       <div
@@ -100,11 +100,13 @@ export default {
   display: flex;
   flex-direction: column;
   width: v-bind(computedWidth);
+  min-width: 100px;
 }
 
 .selected {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   gap: 8px;
   cursor: pointer;
   padding: 8px 16px;
@@ -115,7 +117,16 @@ export default {
   box-sizing: border-box;
 }
 
+.selected-option {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .placeholder {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   opacity: 0.5;
 }
 
@@ -141,6 +152,18 @@ export default {
 
 .option:hover {
   color: var(--accent-color);
+}
+
+.arrow-head {
+  mask-image: url("@/assets/icons/SmallArrowHead.svg");
+  mask-size: contain;
+  background-color: var(--font-color);
+  height: 100%;
+  aspect-ratio: 1/1;
+}
+
+.rotated {
+  rotate: 180deg;
 }
 
 /*Animation*/
