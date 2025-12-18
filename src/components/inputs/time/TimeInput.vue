@@ -39,8 +39,8 @@ export default {
     modelValue: {
       default: new Date(),
       validator: (value) => {
-        if (value instanceof String) {
-          if (!RegExp("^[12]\d\:[0-5]\d\:[0-5]\d").test(value)) {
+        if ((typeof value === "string") || (value instanceof String)) {
+          if (!/^[1-2]\d\:[0-5]\d\:[0-5]\d/.test(value)) {
             console.error('wrong string format of model value in TimeInput component')
             return false
           }
@@ -67,7 +67,7 @@ export default {
     }
   },
   mounted() {
-    if (this.modelValue instanceof String) {
+    if ((typeof this.modelValue === "string") || (this.modelValue instanceof String)) {
       this.hours = this.modelValue.split(':')[0]
       this.minutes = this.modelValue.split(':')[1]
       this.seconds = this.modelValue.split(':')[2]
