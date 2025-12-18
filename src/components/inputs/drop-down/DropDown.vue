@@ -4,6 +4,7 @@
       @focusin="isShowOptions = true"
       @focusout="isShowOptions = false"
       @mousedown.right.prevent
+      :title="modelValue"
       ref="main"
       tabindex="-1"
   >
