@@ -4,28 +4,28 @@
       <input
           type="text"
           ref="hours"
-          :value="hours"
+          :value="hours !== null ? hours.toString().padStart(2, '0') : null"
           @click="select"
           placeholder="00"
-          @keydown.prevent="checkValue(23, $refs.minutes)"
+          @keydown.prevent="hours = checkValue(23, $refs.minutes); updateModelValue()"
       >
       <span class="divider">:</span>
       <input
           type="text"
           ref="minutes"
-          :value="minutes"
+          :value="minutes !== null ? minutes.toString().padStart(2, '0') : null"
           @click="select"
           placeholder="00"
-          @keydown.prevent="checkValue(59, $refs.seconds)"
+          @keydown.prevent="minutes = checkValue(59, $refs.seconds); updateModelValue()"
       >
       <span class="divider">:</span>
       <input
           type="text"
           ref="seconds"
-          :value="seconds"
+          :value="seconds !== null ? seconds.toString().padStart(2, '0') : null"
           @click="select"
           placeholder="00"
-          @keydown.prevent="checkValue(59)"
+          @keydown.prevent="seconds = checkValue(59); updateModelValue()"
       >
     </div>
   </div>
@@ -35,6 +35,7 @@
 
 export default {
   name: 'TimeInput',
+  emits: ['update:modelValue'],
   props: {
     modelValue: {
       default: new Date(),
@@ -95,24 +96,39 @@ export default {
         }
 
         if (resultValue > Math.trunc(max / 10)) {
-          nextElement ? nextElement.focus() : event.target.blur()
+          if (nextElement) {
+            nextElement.focus()
+            nextElement.select()
+          } else {
+            event.target.blur()
+          }
         }
 
         if (event.target.value.length == 2) {
-          nextElement ? nextElement.focus() : event.target.blur()
+          if (nextElement) {
+            nextElement.focus()
+            nextElement.select()
+          } else {
+            event.target.blur()
+          }
         }
 
-        event.target.value = resultValue.toString().padStart(2, '0')
+        return Number(event.target.value) + event.key
       } else if (['Backspace', 'Delete'].includes(event.key)) {
-        event.target.value = null
+        return null
       }
     },
-    select() {
-      event.target.select()
-    },
-    changeValue(value) {
-      event.target.value = value
-    },
+    updateModelValue() {
+      if ((typeof this.modelValue === "string") || (this.modelValue instanceof String)) {
+        this.$emit('update:modelValue', `${this.hours}:${this.minutes}:${this.seconds}`)
+      } else if (this.modelValue instanceof Date) {
+        let date = new Date(this.modelValue)
+        date.setHours(this.hours, this.minutes, this.seconds)
+        this.$emit('update:modelValue', date)
+      } else if (this.modelValue instanceof Object) {
+        this.$emit('update:modelValue', {hours: this.hours, minutes: this.minutes, seconds: this.seconds})
+      }
+    }
   }
 };
 </script>
