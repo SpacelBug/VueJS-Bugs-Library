@@ -51,7 +51,8 @@ export default {
         'Dog',
         'Cat',
         'Frog',
-        'Whale'
+        'Whale',
+        'Test very long value'
       ],
     }
   }
