@@ -30,6 +30,7 @@
           ref="nestedNodes"
           :node="nestedNode"
           :parentNode="node"
+          :depth="depth + 1"
           :checkable="checkable"
       />
     </div>
@@ -46,6 +47,10 @@ export default {
     node: { required: true },
     parentNode: { type: Object },
     checkable: { type: Boolean },
+    /**
+     * nested position
+     */
+    depth: { type: Number, default: 0 },
   },
   data() {
     return {
