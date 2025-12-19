@@ -10,6 +10,7 @@
         <Tree
             :nodes="nodesWithCheckbox"
             :checkable="true"
+            @change="(nodes) => { lastCheckedNodes = nodes }"
             ref="checkboxTree"
             @change="lastCheckedNodes = $refs.checkboxTree.getLastCheckedNodes()"
         />
@@ -39,7 +40,7 @@ export default {
   },
   data() {
     return {
-      lastCheckedNodes: [1],
+      lastCheckedNodes: [],
       nodes: [
         { name: 'node name 1' },
         { name: 'node name 2' },
