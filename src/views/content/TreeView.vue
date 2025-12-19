@@ -12,7 +12,6 @@
             :checkable="true"
             @change="(nodes) => { lastCheckedNodes = nodes }"
             ref="checkboxTree"
-            @change="lastCheckedNodes = $refs.checkboxTree.getLastCheckedNodes()"
         />
         last checked nodes: {{ lastCheckedNodes }}
       </div>
@@ -25,6 +24,9 @@
         <p><b>Props:</b></p>
         <p><u>nodes:</u> Array of objects</p>
         <p><u>checkable:</u> Boolean</p>
+        <p><b>Emits:</b></p>
+        <p><u>change:</u> Array <br> <small>Return list of last checked nodes</small></p>
+        
       </div>
     </div>
   </div>
