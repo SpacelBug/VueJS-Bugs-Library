@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { toRaw } from 'vue';
 import TreeNode from './TreeNode.vue';
 
 /**
@@ -18,7 +19,7 @@ import TreeNode from './TreeNode.vue';
  */
 export default {
   name: "Tree",
-  emits: ['nodeClick', "change"],
+  emits: ["change"],
   components: {
     TreeNode,
   },
@@ -51,28 +52,34 @@ export default {
       checkedNodes: [],
     }
   },
+  watch: {
+    nodes: {
+      handler: function () {
+        this.$emit('change', this.getLastCheckedNodes(structuredClone(toRaw(this.nodes))))
+      }, deep: true
+    }
+  },
   methods: {
     /**
      * Return last checked nodes in tree
      */
-    getLastCheckedNodes(nodes=null) {
-      if (nodes === null) {
-        nodes = this.nodes
-      }
-      
+    getLastCheckedNodes(nodes) {
       let checked = []
-      
-      for (let node of nodes) {
-        if (node.hasOwnProperty('nodes')) {
-          checked = this.getLastCheckedNodes(node.nodes)
-        } else if (node.checked) {
-          checked.push(node)
+
+      while (nodes.length) {
+        for (let index in nodes) {
+          if (nodes[index].hasOwnProperty('nodes')) {
+            nodes = nodes.concat(nodes[index].nodes)
+          } else if (nodes[index].checked) {
+            checked.push(nodes[index])
+          }
+          nodes.splice(index, 1)
         }
       }
-      
+
       return checked
     }
-  }
+  },
 }
 </script>
 
