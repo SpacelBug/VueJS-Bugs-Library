@@ -8,7 +8,7 @@
       <div class="component-variant">
         <h3>With checkboxes</h3>
         <Tree
-            :nodes="nodes"
+            :nodes="nodesWithCheckbox"
             :checkable="true"
             ref="checkboxTree"
             @change="lastCheckedNodes = $refs.checkboxTree.getLastCheckedNodes()"
@@ -54,7 +54,22 @@ export default {
             { name: 'nested node 2' },
           ]
         },
-      ]
+      ],
+      nodesWithCheckbox: [
+        { name: 'node name 1' },
+        { name: 'node name 2' },
+        {
+          name: 'node name 3', nodes: [
+            {
+              name: 'nested node 1', nodes: [
+                { name: 'nested nested 1' },
+                { name: "nested nested 2" },
+              ]
+            },
+            { name: 'nested node 2' },
+          ]
+        },
+      ],
     }
   },
 }
