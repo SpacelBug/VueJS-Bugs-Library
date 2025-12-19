@@ -5,7 +5,6 @@
         class="node"
         :node="node"
         :checkable="checkable"
-        @change="$emit('change', (node) => $emit('change', node))"
     />
   </div>
 </template>

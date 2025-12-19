@@ -12,7 +12,9 @@
         v-if="checkable"
         type="checkbox"
         v-model="node.checked"
-        @change="$emit('change', node)"
+        :indeterminate="node.checked === 'indeterminate'"
+        :title="node.checked"
+        ref="node"
     />
 
     <div class="node-name">
@@ -20,14 +22,15 @@
     </div>
 
     <div
-        v-if="isShowNested && node.nodes"
+        v-show="isShowNested && node.nodes"
         class="nested-nodes"
     >
       <TreeNode
-          v-for="node in node.nodes"
-          :node="node"
+          v-for="nestedNode in node.nodes"
+          ref="nestedNodes"
+          :node="nestedNode"
+          :parentNode="node"
           :checkable="checkable"
-          @change="$emit('change', $event)"
       />
     </div>
   </div>
@@ -39,14 +42,73 @@
  */
 export default {
   name: "TreeNode",
-  emits: ["update:modelValue", "change"],
   props: {
     node: { required: true },
+    parentNode: { type: Object },
     checkable: { type: Boolean },
   },
   data() {
     return {
       isShowNested: false,
+      parentWatcherLock: false,
+    }
+  },
+  mounted() {
+    if (this.checkable) {
+      if (!this.node.hasOwnProperty('checked')) {
+        this.node.checked = false
+      }
+    }
+  },
+  computed: {
+    nodeStatus() {
+      return this.node.checked
+    },
+    nodeParentStatus() {
+      if (this.parentNode) {
+        return this.parentNode.checked
+      }
+    },
+    sameLevelNodesStatus() {
+      let statuses = new Set()
+
+      if (this.parentNode && this.parentNode.nodes) {
+        for (let node of this.parentNode.nodes) {
+          statuses.add(node.checked)
+        }
+
+        if (statuses.size > 1) {
+          return 'indeterminate'
+        }
+      }
+
+      if (statuses.has(true)) {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
+  watch: {
+    async nodeStatus() {
+      console.debug('node was changed: ', this.node)
+      console.debug('same level statuses: ', this.sameLevelNodesStatus)
+
+      await (this.parentWatcherLock = true)
+
+      if (this.parentNode) {
+        console.debug('set parent status')
+        this.parentNode.checked = this.sameLevelNodesStatus
+      }
+
+      await (this.parentWatcherLock = false)
+    },
+    nodeParentStatus() {
+      console.debug('node parent was changed: ', this.node)
+
+      if ((this.parentNode.checked !== 'indeterminate') && !this.parentWatcherLock) {
+        this.node.checked = this.parentNode.checked
+      }
     }
   },
 }
