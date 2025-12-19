@@ -16,26 +16,34 @@
         <div class="month">
 
         </div>
-        <div
-            class="date"
-            tabindex="0"
-            @keydown.prevent="onDatePanelKeyPress"
+        <transition
+            name="dates"
+            mode="out-in"
         >
           <div
-              class="date-header-cell"
-              v-for="dayName in dayNames"
+              class="date"
+              tabindex="0"
+              @keydown.prevent="onDatePanelKeyPress"
+              :key="modelValue.getMonth()"
           >
-            {{ dayName }}
+            <div
+                class="date-header-cell"
+                v-for="dayName in dayNames"
+            >
+              {{ dayName }}
+            </div>
+
+            <div
+                v-for="date in datesList"
+                :class="['date-cell', { 'active-date-cell': modelValue.getTime() === date.getTime(), 'other-month': modelValue.getMonth() !== date.getMonth() }]"
+                :title="date"
+                @click="this.$emit('update:modelValue', date)"
+            >
+              {{ date.getDate().toString().padStart(2, '0') }}
+            </div>
+
           </div>
-          <div
-              v-for="date in datesList"
-              :class="['date-cell', { 'active-date-cell': modelValue.getTime() === date.getTime(), 'other-month': modelValue.getMonth() !== date.getMonth() }]"
-              :title="date"
-              @click="this.$emit('update:modelValue', date)"
-          >
-            {{ date.getDate().toString().padStart(2, '0') }}
-          </div>
-        </div>
+        </transition>
         <div class="footer">
           <span @click="this.$emit('update:modelValue', new Date())">Today</span>
         </div>
@@ -165,5 +173,29 @@ export default {
 .footer {
   display: flex;
   justify-content: end;
+}
+
+/***Vue Transitions***/
+.dates-enter-from {
+  transform: translateY(-30px);
+  opacity: 0;
+}
+
+.dates-leave-to {
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.dates-enter-active {
+  transition: all 0.3s ease;
+}
+
+.dates-leave-active {
+  transition: all 0.3s ease;
+}
+
+.dates-enter-to,
+.dates-leave-from {
+  opacity: 1;
 }
 </style>
