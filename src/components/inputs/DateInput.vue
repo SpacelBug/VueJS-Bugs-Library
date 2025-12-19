@@ -6,6 +6,7 @@
 
     <div class="interactive-panel">
       <div class="header">
+        <span>{{ modelValue.getFullYear() }} {{ monthNames[modelValue.getMonth()] }}</span>
         <div class="arrows">
           <div class="up" @click="changeMonth(-1)"/>
           <div class="down" @click="changeMonth(1)"/>
