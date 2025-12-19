@@ -60,20 +60,32 @@ export default {
   },
   mounted() {
     if (this.checkable) {
+      /**
+       * Add keys for checkable nodes
+       */
       if (!this.node.hasOwnProperty('checked')) {
         this.node.checked = false
       }
     }
   },
   computed: {
+    /**
+     * Need for watcher of node changes
+     */
     nodeStatus() {
       return this.node.checked
     },
+    /**
+     * Need for watcher of parent node changes
+     */
     nodeParentStatus() {
       if (this.parentNode) {
         return this.parentNode.checked
       }
     },
+    /**
+     * Compute sum of statuses
+     */
     sameLevelNodesStatus() {
       let statuses = new Set()
 
@@ -95,22 +107,24 @@ export default {
     }
   },
   watch: {
+    /**
+     * Watch on node status
+     */
     async nodeStatus() {
-      console.debug('node was changed: ', this.node)
-      console.debug('same level statuses: ', this.sameLevelNodesStatus)
-
+      // Lock parent node watcher (fix recursive)
       await (this.parentWatcherLock = true)
-
+      // Set parent node status 
       if (this.parentNode) {
-        console.debug('set parent status')
         this.parentNode.checked = this.sameLevelNodesStatus
       }
-
+      // Unlock parent node watcher 
       await (this.parentWatcherLock = false)
     },
+    /**
+     * Watch on parent node status
+     */
     nodeParentStatus() {
-      console.debug('node parent was changed: ', this.node)
-
+      // Change node status after changing parent status, if it wasn`t blocked
       if ((this.parentNode.checked !== 'indeterminate') && !this.parentWatcherLock) {
         this.node.checked = this.parentNode.checked
       }
