@@ -6,8 +6,10 @@
 
     <div class="interactive-panel">
       <div class="header">
-        <span>{{ modelValue.getFullYear() }}</span>
-        <span></span>
+        <div class="arrows">
+          <div class="up" @click="changeMonth(-1)"/>
+          <div class="down" @click="changeMonth(1)"/>
+        </div>
       </div>
       <div class="cells">
         <div class="year">
@@ -91,14 +93,19 @@ export default {
       let currentDate = new Date(this.modelValue)
       if (event.code === 'ArrowLeft') {
         currentDate.setDate(currentDate.getDate() - 1)
-      } else if (event.code === 'ArrowUp') { 
+      } else if (event.code === 'ArrowUp') {
         currentDate.setDate(currentDate.getDate() - 7)
-      } else if (event.code === 'ArrowRight') { 
+      } else if (event.code === 'ArrowRight') {
         currentDate.setDate(currentDate.getDate() + 1)
       } else if (event.code === 'ArrowDown') {
         currentDate.setDate(currentDate.getDate() + 7)
-      } 
+      }
 
+      this.$emit('update:modelValue', currentDate)
+    },
+    changeMonth(value) {
+      let currentDate = new Date(this.modelValue)
+      currentDate.setMonth(currentDate.getMonth() + value)
       this.$emit('update:modelValue', currentDate)
     }
   }
@@ -134,13 +141,35 @@ export default {
   border-radius: 5px;
   padding: 16px 8px;
   gap: 8px;
-
 }
 
 .header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.arrows {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.up, .down {
+  cursor: pointer;
+  mask-image: url("@/assets/icons/SmallArrowHead.svg");
+  mask-size: contain;
+  background-color: var(--font-color);
+  width: 15px;
+  height: 15px;
+}
+
+.up {
+  rotate: 180deg;
+}
+
+.cells {
+  position: relative;
 }
 
 .date {
