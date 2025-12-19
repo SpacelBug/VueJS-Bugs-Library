@@ -22,6 +22,11 @@ const router = createRouter({
           component: () => import("../views/inputs/TimeInputView.vue"),
         },
         {
+          name: "date-input",
+          path: "date-input",
+          component: () => import("../views/inputs/DateInputView.vue"),
+        },
+        {
           name: "range",
           path: "range",
           component: () => import("../views/inputs/RangeView.vue"),
@@ -87,7 +92,7 @@ const router = createRouter({
       name: "fun",
       path: "/fun",
       component: () => import("../views/fun/FunView.vue"),
-    }
+    },
   ],
 })
 

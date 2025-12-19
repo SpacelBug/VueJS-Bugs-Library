@@ -19,6 +19,12 @@
       TimeInput
     </router-link>
     <router-link
+        :to="{ name: 'date-input' }"
+        class="side-link"
+    >
+      DateInput
+    </router-link>
+    <router-link
         to="file-input"
         class="side-link"
     >
