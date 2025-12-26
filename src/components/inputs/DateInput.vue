@@ -6,50 +6,89 @@
 
     <div class="interactive-panel">
       <div class="header">
-        <span>{{ modelValue.getFullYear() }} {{ monthNames[modelValue.getMonth()] }}</span>
+        <span
+            @click="changeActiveMode"
+            class="caption"
+        >{{ modelValue.getFullYear() }} {{ monthNames[modelValue.getMonth()] }}</span>
         <div class="arrows">
-          <div class="up" @click="changeMonth(-1)"/>
-          <div class="down" @click="changeMonth(1)"/>
+          <div
+              class="up"
+              @click="changeMonth(-1)"
+          />
+          <div
+              class="down"
+              @click="changeMonth(1)"
+          />
         </div>
       </div>
       <div class="cells">
-        <div class="year">
-
-        </div>
-        <div class="month">
-
-        </div>
-        <transition
-            name="dates"
-            mode="out-in"
-        >
+        <transition-group name="distancing">
           <div
-              class="date"
+              v-if="activeMode === 'dates'"
+              class="date-panel"
               tabindex="0"
               @keydown.prevent="onDatePanelKeyPress"
-              :key="modelValue.getMonth()"
+          >
+            <transition
+                name="dates"
+                mode="out-in"
+            >
+              <div
+                  class="dates-wrapper"
+                  :key="modelValue.getMonth()"
+              >
+                <div
+                    class="date-header-cell"
+                    v-for="dayName in dayNames"
+                >
+                  {{ dayName }}
+                </div>
+
+                <div
+                    v-for="date in datesList"
+                    :class="['date-cell', { 'active-date-cell': modelValue.getTime() === date.getTime(), 'other-month': modelValue.getMonth() !== date.getMonth() }]"
+                    :title="date"
+                    @click="this.$emit('update:modelValue', date)"
+                >
+                  {{ date.getDate().toString().padStart(2, '0') }}
+                </div>
+              </div>
+            </transition>
+          </div>
+
+          <div
+              v-else-if="activeMode === 'month'"
+              class="month"
           >
             <div
-                class="date-header-cell"
-                v-for="dayName in dayNames"
+                v-for="(month, index) in monthNames"
+                @click="onMonthClick(index)"
+                :class="['month-cell', { 'active-month-cell': index === modelValue.getMonth() }]"
             >
-              {{ dayName }}
+              {{ month }}
             </div>
-
-            <div
-                v-for="date in datesList"
-                :class="['date-cell', { 'active-date-cell': modelValue.getTime() === date.getTime(), 'other-month': modelValue.getMonth() !== date.getMonth() }]"
-                :title="date"
-                @click="this.$emit('update:modelValue', date)"
-            >
-              {{ date.getDate().toString().padStart(2, '0') }}
-            </div>
-
           </div>
-        </transition>
-        <div class="footer">
-          <span @click="this.$emit('update:modelValue', new Date())">Today</span>
-        </div>
+
+          <div
+              v-if="activeMode === 'years'"
+              class="year"
+              :key="activeMode"
+          >
+            <div
+                v-for="year in yearsList"
+                @click="onYearClick(year)"
+                :class="['year-cell', {'active-year-cell': year === modelValue.getFullYear()}]"
+            >
+              {{ year }}
+            </div>
+          </div>
+        </transition-group>
+      </div>
+      <div class="footer">
+        <span
+            @click="this.$emit('update:modelValue', new Date())"
+            class="today"
+        >Today</span>
       </div>
     </div>
   </div>
@@ -66,8 +105,16 @@ export default {
     return {
       changeableValue: null,
 
+      /**
+       * Set mode of interactive panel
+       * Could be 'years', 'month', 'dates'
+       */
+      activeMode: 'dates',
+
       dayNames: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
       monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+
+      datesAnimPow: 1,
     }
   },
   computed: {
@@ -84,6 +131,19 @@ export default {
       while (list.length < 7 * 6) {
         list.push(new Date(startDate))
         startDate.setDate(startDate.getDate() + 1)
+      }
+
+      return list
+    },
+    yearsList() {
+      let date = new Date(this.modelValue)
+      date.setFullYear(date.getFullYear() - 8)
+
+      let list = []
+
+      while (list.length < 16) {
+        list.push(date.getFullYear())
+        date.setFullYear(date.getFullYear() + 1)
       }
 
       return list
@@ -105,9 +165,38 @@ export default {
       this.$emit('update:modelValue', currentDate)
     },
     changeMonth(value) {
+      if (value > 0) {
+        this.datesAnimPow = -1
+      } else {
+        this.datesAnimPow = 1
+      }
+
       let currentDate = new Date(this.modelValue)
       currentDate.setMonth(currentDate.getMonth() + value)
       this.$emit('update:modelValue', currentDate)
+    },
+    changeActiveMode() {
+      if (this.activeMode === 'dates') {
+        this.activeMode = 'month'
+      } else if (this.activeMode === 'month') {
+        this.activeMode = 'years'
+      } else {
+        this.activeMode = 'dates'
+      }
+    },
+    onMonthClick(monthIndex) {
+      let currentDate = new Date(this.modelValue)
+      currentDate.setMonth(monthIndex)
+      this.$emit('update:modelValue', currentDate)
+
+      this.activeMode = 'dates'
+    },
+    onYearClick(year) {
+      let currentDate = new Date(this.modelValue)
+      currentDate.setFullYear(year)
+      this.$emit('update:modelValue', currentDate)
+
+      this.activeMode = 'dates'
     }
   }
 }
@@ -133,6 +222,7 @@ export default {
 }
 
 .interactive-panel {
+  user-select: none;
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -142,6 +232,8 @@ export default {
   border-radius: 5px;
   padding: 16px 8px;
   gap: 8px;
+  width: 300px;
+  height: 300px;
 }
 
 .header {
@@ -150,13 +242,18 @@ export default {
   justify-content: space-between;
 }
 
+.caption {
+  cursor: pointer;
+}
+
 .arrows {
   display: flex;
   flex-direction: row;
   gap: 8px;
 }
 
-.up, .down {
+.up,
+.down {
   cursor: pointer;
   mask-image: url("@/assets/icons/SmallArrowHead.svg");
   mask-size: contain;
@@ -171,16 +268,26 @@ export default {
 
 .cells {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
-.date {
+.date-panel {
+  width: 100%;
+  height: 100%;
+}
+
+.dates-wrapper {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-gap: 8px;
+  width: 100%;
+  height: 100%;
 }
 
 .date-cell {
-  user-select: none;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -201,19 +308,73 @@ export default {
   opacity: 0.3;
 }
 
+/*Month panel*/
+
+.month {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  height: 100%;
+}
+
+.month-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.month-cell:hover {
+  background-color: var(--background-color);
+}
+
+.active-month-cell {
+  background-color: var(--background-color);
+}
+
+/*Year panel*/
+
+.year {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  height: 100%;
+}
+
+.year-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.active-year-cell {
+  background-color: var(--background-color);
+}
+
+.year-cell:hover {
+  background-color: var(--background-color);
+}
+
 .footer {
   display: flex;
   justify-content: end;
 }
 
+.today {
+  cursor: pointer;
+}
+
 /***Vue Transitions***/
 .dates-enter-from {
-  transform: translateY(-30px);
+  transform: translateY(v-bind(datesAnimPow * 30 + 'px'));
   opacity: 0;
 }
 
 .dates-leave-to {
-  transform: translateY(30px);
+  transform: translateY(v-bind(datesAnimPow * -30 + 'px'));
   opacity: 0;
 }
 
@@ -228,5 +389,31 @@ export default {
 .dates-enter-to,
 .dates-leave-from {
   opacity: 1;
+}
+
+.distancing-enter-from {
+  opacity: 0;
+  width: 400px;
+  height: 400px;
+}
+
+.distancing-enter-active,
+.distancing-leave-active {
+  position: absolute;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.distancing-enter-to,
+.distancing-leave-from {
+  opacity: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.distancing-leave-to {
+  opacity: 0;
+  width: 200px;
+  height: 200px;
 }
 </style>
