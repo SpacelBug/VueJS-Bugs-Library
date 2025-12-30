@@ -1,10 +1,19 @@
 <template>
   <div class="main-box">
-    <div class="date-input">
+    <div
+        class="date-input"
+        @click="async () => { await (isShowInteractivePanel = !isShowInteractivePanel); $refs.interactivePanel.focus()}"
+    >
       {{ modelValue.toLocaleDateString() }}
     </div>
 
-    <div class="interactive-panel">
+    <div
+        v-if="isShowInteractivePanel"
+        class="interactive-panel"
+        tabindex="0"
+        ref="interactivePanel"
+        @focusout="isShowInteractivePanel = false"
+    >
       <div class="header">
         <span
             @click="changeActiveMode"
@@ -77,7 +86,7 @@
             <div
                 v-for="year in yearsList"
                 @click="onYearClick(year)"
-                :class="['year-cell', {'active-year-cell': year === modelValue.getFullYear()}]"
+                :class="['year-cell', { 'active-year-cell': year === modelValue.getFullYear() }]"
             >
               {{ year }}
             </div>
@@ -103,8 +112,7 @@ export default {
   },
   data() {
     return {
-      changeableValue: null,
-
+      isShowInteractivePanel: false,
       /**
        * Set mode of interactive panel
        * Could be 'years', 'month', 'dates'
