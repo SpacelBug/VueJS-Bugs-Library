@@ -196,7 +196,7 @@ export default {
       currentDate.setFullYear(year)
       this.$emit('update:modelValue', currentDate)
 
-      this.activeMode = 'dates'
+      this.activeMode = 'month'
     }
   }
 }
