@@ -87,6 +87,11 @@ const router = createRouter({
           component: () => import("@/views/content/ModalWindowView.vue"),
         },
         {
+          path: "tree",
+          name: "tree",
+          component: () => import("@/views/content/TreeView.vue"),
+        },
+        {
           path: "moveable-modal",
           name: "moveable-modal",
           component: () => import("@/views/content/MoveableModalView.vue"),

@@ -19,6 +19,12 @@
       ModalWindow
     </router-link>
     <router-link
+        :to="{ name: 'tree' }"
+        class="side-link"
+    >
+      Tree
+    </router-link>
+    <router-link
         :to="{ name: 'moveable-modal' }"
         class="side-link"
     >
