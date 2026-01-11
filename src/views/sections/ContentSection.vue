@@ -18,6 +18,12 @@
     >
       ModalWindow
     </router-link>
+    <router-link
+        :to="{ name: 'moveable-modal' }"
+        class="side-link"
+    >
+      MoveableModal
+    </router-link>
   </div>
 </template>
 
