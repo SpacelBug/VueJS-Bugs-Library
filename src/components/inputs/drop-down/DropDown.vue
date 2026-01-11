@@ -4,6 +4,7 @@
       @focusin="isShowOptions = true"
       @focusout="isShowOptions = false"
       @mousedown.right.prevent
+      :title="modelValue"
       ref="main"
       tabindex="-1"
   >
@@ -24,7 +25,7 @@
       >
         {{ placeholder }}
       </div>
-      <div class="arrow-head" />
+      <div :class="['arrow-head', { 'rotated': isShowOptions }]" />
     </div>
     <transition name="fade">
       <div
@@ -73,7 +74,7 @@ export default {
     noOptionsText: { type: String, default: 'have no options' },
     // Size
     width: { type: [Number], default: null },
-    buttonOptionsGap: {type: Number, default: 8}
+    buttonOptionsGap: { type: Number, default: 8 }
   },
   computed: {
     /**
@@ -105,17 +106,29 @@ export default {
 .selected {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   gap: 8px;
   cursor: pointer;
   padding: 8px 16px;
   background-color: var(--panels-color);
   border-radius: 5px;
   width: 100%;
+  min-width: 100%;
   height: fit-content;
   box-sizing: border-box;
 }
 
+.selected-option {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .placeholder {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   opacity: 0.5;
 }
 
@@ -136,24 +149,51 @@ export default {
 }
 
 .option {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   cursor: pointer;
+  gap: 16px;
+  width: 100%;
 }
 
 .option:hover {
   color: var(--accent-color);
 }
 
+.reserved-option-place {
+  width: 10px;
+  height: 10px;
+  background-color: aliceblue;
+}
+
+.arrow-head {
+  mask-image: url("@/assets/icons/SmallArrowHead.svg");
+  mask-size: contain;
+  background-color: var(--font-color);
+  height: 20px;
+  width: 20px;
+}
+
+.rotated {
+  rotate: 180deg;
+}
+
 /*Animation*/
 
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: all 0.5s ease;
 }
 
-.fade-enter-to, .fade-leave-from {
+.fade-enter-to,
+.fade-leave-from {
   opacity: 1;
 }
 </style>
