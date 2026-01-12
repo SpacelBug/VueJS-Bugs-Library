@@ -1,7 +1,7 @@
 <template>
   <div class="components">
     <router-link
-        :to="{name: 'spoiler'}"
+        :to="{ name: 'spoiler' }"
         class="side-link"
     >
       Spoiler
@@ -29,6 +29,12 @@
         class="side-link"
     >
       MoveableModal
+    </router-link>
+    <router-link
+        :to="{ name: 'contents' }"
+        class="side-link"
+    >
+      Contents
     </router-link>
   </div>
 </template>
