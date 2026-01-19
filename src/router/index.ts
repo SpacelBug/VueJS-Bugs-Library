@@ -37,6 +37,11 @@ const router = createRouter({
           component: () => import("../views/inputs/FileInputView.vue"),
         },
         {
+          name: "auto-complete",
+          path: "auto-complete",
+          component: () => import("../views/inputs/AutoCompleteView.vue"),
+        },
+        {
           name: "check-box",
           path: "check-box",
           component: () => import("../views/inputs/CheckBoxView.vue"),
