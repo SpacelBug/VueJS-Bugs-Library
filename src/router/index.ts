@@ -32,6 +32,11 @@ const router = createRouter({
           component: () => import("../views/inputs/SliderView.vue"),
         },
         {
+          name: "range",
+          path: "range",
+          component: () => import("../views/inputs/RangeView.vue"),
+        },
+        {
           name: "file-input",
           path: "file-input",
           component: () => import("../views/inputs/FileInputView.vue"),
