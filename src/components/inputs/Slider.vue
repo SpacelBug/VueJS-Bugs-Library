@@ -1,5 +1,5 @@
 <template>
-  <div class="range-box">
+  <div class="slider-box">
     <div class="track-box">
       <div
           class="caret"
@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  name: 'Range',
+  name: 'Slider',
   emits: ['update:modelValue'],
   props: {
     modelValue: { type: Number, default: 5 },
@@ -80,7 +80,7 @@ export default {
 </script>
 
 <style scoped>
-.range-box {
+.slider-box {
   display: flex;
   flex-direction: column;
   align-items: center;

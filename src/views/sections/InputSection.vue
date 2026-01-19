@@ -49,10 +49,10 @@
       DropDown
     </router-link>
     <router-link
-        :to="{ name: 'range' }"
+        :to="{ name: 'slider' }"
         class="side-link"
     >
-      Range
+      Slider
     </router-link>
     <router-link
         to="check-box"

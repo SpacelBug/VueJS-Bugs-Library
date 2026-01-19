@@ -22,9 +22,10 @@
 </template>
 
 <script>
-import Range from '@/components/inputs/Range.vue';
+import Range from '@/components/inputs/Slider.vue';
 
 export default {
+  name: 'SliderView',
   components: {
     Range,
   },
