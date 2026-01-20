@@ -36,6 +36,12 @@
     >
       Contents
     </router-link>
+    <router-link
+        :to="{ name: 'table' }"
+        class="side-link"
+    >
+      Table
+    </router-link>
   </div>
 </template>
 

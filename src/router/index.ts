@@ -106,6 +106,11 @@ const router = createRouter({
           name: "contents",
           component: () => import("@/views/content/ContentsView.vue"),
         },
+        {
+          path: "table",
+          name: "table",
+          component: () => import("@/views/content/TableView.vue")
+        }
       ],
     },
     {
