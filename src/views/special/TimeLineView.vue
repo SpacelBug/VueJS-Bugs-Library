@@ -37,10 +37,10 @@
       </span>
       <div class="props">
         <p><b>Props:</b></p>
-        <p><u>sampleRate</u>: Number</p>
-        <p><u>starttime</u>: Date</p>
-        <p><u>endtime</u>: Date</p>
-        <p><u>framerate</u>: Number</p>
+        <p><u>sampleRate</u>: Number (in milliseconds). Default: 1000 * 60 (minute)</p>
+        <p><u>starttime</u>: Date (required)</p>
+        <p><u>endtime</u>: Date (required)</p>
+        <p><u>framerate</u>: Number. Default: 24</p>
         <p><u>cachedSteps</u>: Number</p>
       </div>
     </div>
