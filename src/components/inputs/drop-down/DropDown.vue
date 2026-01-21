@@ -25,7 +25,7 @@
       >
         {{ placeholder }}
       </div>
-      <div :class="['arrow-head', { 'rotated': isShowOptions }]" />
+      <div :class="['arrow-head', { 'rotated': isShowOptions }]"/>
     </div>
     <transition name="fade">
       <div
@@ -35,7 +35,7 @@
         <div
             v-for="(option, index) in options"
             :key="index"
-            class="option"
+            :class="['option', {'highlight': keyboardSelectedOptionIndex === index}]"
             @click="$emit('update:modelValue', option); $refs.main.blur()"
         >
           {{ option }}
@@ -90,6 +90,35 @@ export default {
   data() {
     return {
       isShowOptions: false,
+      keyboardSelectedOptionIndex: -1,
+    }
+  },
+  watch: {
+    isShowOptions(value) {
+      if (value) {
+        document.addEventListener('keydown', this.onKeyPress)
+      } else {
+        document.removeEventListener('keydown', this.onKeyPress)
+      }
+    }
+  },
+  methods: {
+    onKeyPress() {
+      if (['ArrowUp', 'ArrowDown', 'Enter'].includes(event.code)) {
+        event.preventDefault()
+
+        if ((event.code === 'ArrowDown') && (this.keyboardSelectedOptionIndex !== (this.options.length - 1)))  {
+          this.keyboardSelectedOptionIndex++
+        }
+        if ((event.code === 'ArrowUp') && (this.keyboardSelectedOptionIndex !== 0)) {
+          this.keyboardSelectedOptionIndex--
+        }
+
+        if (event.code === 'Enter') {
+          this.$emit('update:modelValue', this.options[this.keyboardSelectedOptionIndex])
+          this.$refs.main.blur()
+        }
+      }
     }
   }
 };
@@ -156,6 +185,11 @@ export default {
   cursor: pointer;
   gap: 16px;
   width: 100%;
+}
+
+.highlight {
+  color: var(--accent-color);
+  opacity: 0.7;
 }
 
 .option:hover {
