@@ -71,6 +71,11 @@ const router = createRouter({
           path: "context-menu",
           component: () => import("../views/special/ContextMenuView.vue"),
         },
+        {
+          name: "style-variables",
+          path: "style-variables",
+          component: () => import("../views/special/StyleVariablesView.vue"),
+        },
       ],
     },
     {
