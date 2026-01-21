@@ -39,8 +39,14 @@ export default {
       caretPos: 0,
     }
   },
+  computed: {
+    pixelsInStep() {
+      let steps = (this.max - this.min) / this.step
+      return this.$refs.track.getBoundingClientRect().width / steps
+    }
+  },  
   mounted() {
-    this.caretPos = this.modelValue * (this.$refs.track.getBoundingClientRect().width / (this.max - this.min))
+    this.caretPos = (this.modelValue - this.min) * this.pixelsInStep  / this.step
   },
   watch: {
     isMouseDown(newValue, oldValue) {
@@ -65,13 +71,13 @@ export default {
       this.isMouseDown = false
     },
     valueByPixel() {
-      let value = this.caretPos / (this.$refs.track.getBoundingClientRect().width / (this.max - this.min))
+      let value = (this.caretPos / this.pixelsInStep) * this.step
 
       if (value % this.step > 0) {
-        value = Math.round(value)
+        value = (Math.round(value / this.step) * this.step)
       }
 
-      this.caretPos = value * (this.$refs.track.getBoundingClientRect().width / (this.max - this.min))
+      this.caretPos = value * this.pixelsInStep / this.step
 
       return value + this.min
     },
