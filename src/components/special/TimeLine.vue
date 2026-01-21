@@ -46,7 +46,7 @@ export default {
     /**
      * Frames per sample rate
      */
-    framerate: { type: Number, default: 27 },
+    framerate: { type: Number, default: 24 },
     /**
      * Count of steps in cached window
      */
