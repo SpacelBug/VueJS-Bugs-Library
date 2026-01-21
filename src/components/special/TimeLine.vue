@@ -7,17 +7,17 @@
     </span>
 
     <div
-        class="time-line"
+        :class="['time-line', { 'disabled-transition': isMouseDown }]"
         ref="timeline"
         @click="onTimeLineClick"
         @mousedown="isMouseDown = true"
     >
-      <div class="walked-path" />
+      <div :class="['walked-path', { 'disabled-transition': isMouseDown }]" />
       <div
-          class="caret"
+          :class="['caret', {'disabled-transition': isMouseDown}]"
           draggable="false"
       />
-      <div class="loaded-path" />
+      <div :class="['loaded-path', { 'disabled-transition': isMouseDown }]" />
     </div>
   </div>
 </template>
@@ -248,5 +248,9 @@ export default {
   width: v-bind(loadedPathWidth + 'px');
   opacity: 0.1;
   transition: all 0.2s ease;
+}
+
+.disabled-transition {
+  transition: none;
 }
 </style>
