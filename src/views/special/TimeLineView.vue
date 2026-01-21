@@ -21,8 +21,10 @@
 
       <h3>Cache for first timeline</h3>
 
-      <span><b>length:</b> {{ cacheWindow.length }}</span>
-      <span><b>firstItem:</b> {{ cacheWindow[0] }}</span>
+      <template v-if="cacheWindow">
+        <span><b>length:</b> {{ cacheWindow.length }}</span>
+        <span><b>firstItem:</b> {{ cacheWindow[0] }}</span>
+      </template>
     </div>
 
     <div class="description">
