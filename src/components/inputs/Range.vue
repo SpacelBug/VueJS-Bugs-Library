@@ -50,9 +50,15 @@ export default {
       secondCaretPos: 0,
     }
   },
+  computed: {
+    pixelsInStep() {
+      let steps = (this.max - this.min) / this.step
+      return this.$refs.track.getBoundingClientRect().width / steps
+    }
+  },
   mounted() {
-    this.firstCaretPos = this.modelValue[0] * (this.$refs.track.getBoundingClientRect().width / (this.max - this.min))
-    this.secondCaretPos = this.modelValue[1] * (this.$refs.track.getBoundingClientRect().width / (this.max - this.min))
+    this.firstCaretPos = (this.modelValue[0] - this.min) * this.pixelsInStep / this.step
+    this.secondCaretPos = (this.modelValue[1] - this.min) * this.pixelsInStep / this.step
   },
   watch: {
     isMouseDown(newValue, oldValue) {
@@ -82,10 +88,10 @@ export default {
       this.draggingCaretIndex = null
     },
     valueByPixel(pos) {
-      let value = pos / (this.$refs.track.getBoundingClientRect().width / (this.max - this.min))
+      let value = (pos / this.pixelsInStep) * this.step
 
       if (value % this.step > 0) {
-        value = Math.round(value)
+        value = (Math.round(value / this.step) * this.step)
       }
 
       return value + this.min
