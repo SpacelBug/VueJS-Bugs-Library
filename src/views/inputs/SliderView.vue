@@ -1,11 +1,17 @@
 <template>
   <div class="component-view">
     <div class="component-variants">
-      <Slider v-model="testValue" />
+      <Slider v-model="testValues[0]" />
       <Slider
-          v-model="secondTestValue"
+          v-model="testValues[1]"
           :min="10"
-          :max="100"
+          :max="90"
+      />
+      <Slider
+          v-model="testValues[2]"
+          :min="0"
+          :max="1"
+          :step="0.1"
       />
     </div>
     <div class="description">
@@ -31,8 +37,7 @@ export default {
   },
   data() {
     return {
-      testValue: 5,
-      secondTestValue: 20
+      testValues: [0, 20, 0.4]
     }
   }
 }
