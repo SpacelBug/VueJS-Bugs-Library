@@ -1,33 +1,21 @@
 <template>
   <div class="component-view">
-    <Range v-model="testValue" />
-    <Range
-        v-model="secondTestValue"
-        :min="10"
-        :max="100"
-    />
+      <Slider v-model="testValue" />
+      <Slider
     <div class="description">
-      <h3>Range component</h3>
-      <div class="description">
-        <p>Custom range input</p>
-        <p><b>Props:</b></p>
-        <p>modelValue: <u>Number</u></p>
-        <p>min: <u>Number</u></p>
-        <p>max: <u>Number</u></p>
-        <p>step: <u>Number</u></p>
-        <p>showValue: <u>Boolean</u></p>
-      </div>
+      <h3>Slider component</h3>
+      <p>Custom slider input</p>
     </div>
   </div>
 </template>
 
 <script>
-import Range from '@/components/inputs/Slider.vue';
+import Slider from '@/components/inputs/Slider.vue';
 
 export default {
   name: 'SliderView',
   components: {
-    Range,
+    Slider,
   },
   data() {
     return {
