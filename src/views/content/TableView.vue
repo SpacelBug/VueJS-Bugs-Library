@@ -4,6 +4,23 @@
       <Table
           :header="simpleHeader"
           :data="tableData"
+          :pagination="10"
+          @headerClick="(header) => testFunction('header: ' + header)"
+          @rowClick="(row) => testFunction('row: ' + row)"
+          @cellClick="(cell) => testFunction('cell: ' + cell)"
+      />
+      <Table
+          :header="simpleHeader"
+          :data="tableData"
+          :infinityScroll="true"
+          @headerClick="(header) => testFunction('header: ' + header)"
+          @rowClick="(row) => testFunction('row: ' + row)"
+          @cellClick="(cell) => testFunction('cell: ' + cell)"
+      />
+      <Table
+          :header="simpleHeader"
+          :data="tableData"
+          :limitedRows="10"
           @headerClick="(header) => testFunction('header: ' + header)"
           @rowClick="(row) => testFunction('row: ' + row)"
           @cellClick="(cell) => testFunction('cell: ' + cell)"
@@ -51,18 +68,8 @@ export default {
         'Value',
         'From'
       ],
-      tableData: [
-        [new Date(), 5, 'some person'],
-        [new Date(), 3, 'some person'],
-        [new Date(), 4, 'some person'],
-        [new Date(), 2, 'some person'],
-      ],
-      tableDataNamed: [
-        { Date: new Date(), Value: 5, From: 'some person' },
-        { Date: new Date(), Value: 5, From: 'some person' },
-        { Date: new Date(), Value: 5, From: 'some person' },
-        { Date: new Date(), Value: 5, From: 'some person' },
-      ]
+      tableData: [...Array(54).keys().map(index => [new Date().toLocaleDateString(), index, 'some person'])],
+      tableDataNamed: [...Array(50).fill({ Date: new Date().toLocaleDateString(), Value: 5, From: 'some person' })],
     }
   },
   methods: {
@@ -83,7 +90,7 @@ export default {
 
 .component-variants {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
   gap: 32px;
 }
