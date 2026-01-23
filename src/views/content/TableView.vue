@@ -68,7 +68,7 @@ export default {
         'Value',
         'From'
       ],
-      tableData: [...Array(54).keys().map(index => [new Date().toLocaleDateString(), index, 'some person'])],
+      tableData: [...Array(154).keys().map(index => [new Date().toLocaleDateString(), index, 'some person'])],
       tableDataNamed: [...Array(50).fill({ Date: new Date().toLocaleDateString(), Value: 5, From: 'some person' })],
     }
   },

@@ -38,8 +38,9 @@
               class="pages"
           >
             <button
-                v-for="value in pagesCount"
-                @click="page = value - 1"
+                v-for="value in paginationStructure"
+                :class="{'active-page': this.page === value}"
+                @click="page = value"
             >
               {{ value }}
             </button>
@@ -51,6 +52,7 @@
 </template>
 
 <script>
+import { getConstantValue } from 'typescript';
 import TableRow from './TableRow.vue';
 
 export default {
@@ -116,7 +118,31 @@ export default {
       return Math.ceil(this.data.length / this.pagination)
     },
     paginationStructure() {
+      let pages
 
+      if ((this.page >= 3) && (this.page <= (this.pagesCount - 2))) {
+        pages = [
+          1,
+          '...',
+          this.page - 1,
+          this.page,
+          this.page + 1,
+          '...',
+          this.pagesCount,
+        ]
+      } else if ((this.page < 3) || (this.page > (this.pagesCount - 2))) {
+        pages = [
+          1,
+          2,
+          3,
+          '...',
+          this.pagesCount - 2,
+          this.pagesCount - 1,
+          this.pagesCount,
+        ]
+      }
+
+      return pages
     }
   },
   methods: {
@@ -125,9 +151,9 @@ export default {
         return index < this.showedRows
       } else if (this.pagination) {
         if (!this.page) {
-          this.page = 0
+          this.page = 1
         }
-        return (index >= (this.page * this.pagination)) && (index <= (this.page * this.pagination) + this.pagination)
+        return (index < (this.page * 10)) && (index >= ((this.page * 10) - this.pagination))
       } else if (this.infinityScroll) {
         return index < this.showedRows
       } else {
@@ -166,5 +192,9 @@ tfoot>tr>td {
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.active-page {
+  color: var(--accent-color);
 }
 </style>
