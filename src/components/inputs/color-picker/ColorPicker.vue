@@ -81,6 +81,7 @@ export default {
   data() {
     return {
       color: 'rgba(255, 255, 255, 1)',
+      rgbColorPixels: [0, 0, 0],
 
       isShowPicker: false,
       isMouseDown: false,
@@ -97,15 +98,18 @@ export default {
     this.drawTransparencyGradient()
   },
   watch: {
-    color() {
+    pureColor() {
       this.drawBrightnessGradient()
       this.drawSaturationGradient()
       this.drawTransparencyGradient()
     }
   },
   computed: {
+    pureColor() {
+      return `rgb(${this.rgbColorPixels[0]}, ${this.rgbColorPixels[1]}, ${this.rgbColorPixels[2]})`
+    },
     resultColor() {
-      return this.color
+      return `rgba(${this.rgbColorPixels[0]}, ${this.rgbColorPixels[1]}, ${this.rgbColorPixels[2]}, ${this.transparencyValue})`
     },
     brightnessValue() {
       return this.brightnessCaretPos / 200
@@ -114,7 +118,7 @@ export default {
       return this.lightCaretPos / 200
     },
     transparencyValue() { 
-      return this.transparencyCaretPos / 200
+      return (200 - this.transparencyCaretPos) / 200
     },
   },
   methods: {
@@ -148,7 +152,7 @@ export default {
       let grad = ctx.createLinearGradient(0, 0, 200, 30) 
       
       grad.addColorStop(0, 'white')
-      grad.addColorStop(0.5, this.color)
+      grad.addColorStop(0.5, this.pureColor)
       grad.addColorStop(1, 'black')
 
       ctx.fillStyle = grad
@@ -160,7 +164,7 @@ export default {
 
       let grad = ctx.createLinearGradient(0, 0, 200, 30)
 
-      grad.addColorStop(0, this.color)
+      grad.addColorStop(0, this.pureColor)
       grad.addColorStop(1, 'white')
 
       ctx.fillStyle = grad
@@ -179,7 +183,7 @@ export default {
 
       console.log(splittedColor.join(','))
 
-      grad.addColorStop(0, this.color)
+      grad.addColorStop(0, this.pureColor)
       grad.addColorStop(1, 'transparent')
 
       ctx.globalCompositeOperation = 'multiply'
@@ -196,7 +200,7 @@ export default {
       const pixel = ctx.getImageData(x, y, 1, 1).data;
 
       this.paletteCaretPos = [x, y]
-      this.color = `rgba(${pixel[0]}, ${pixel[1]}, ${pixel[2]}, 1)`
+      this.rgbColorPixels = pixel
     },
     lightMove() {
       if (!this.isMouseDown) return
@@ -208,7 +212,7 @@ export default {
     },
     transparencyMove() {
       if (!this.isMouseDown) return
-      const rect = this.$refs.transparent.getBoundingClientRect()
+      const rect = this.$refs.transparency.getBoundingClientRect()
       const x = event.clientX - rect.left
       this.transparencyCaretPos = x
     },
@@ -231,7 +235,7 @@ export default {
 }
 
 .color {
-  background-color: v-bind(color);
+  background-color: v-bind(resultColor);
   height: 100%;
   width: 100%;
   border-radius: 5px;
