@@ -6,7 +6,12 @@
           ref="canvas"
           :width="width"
           :height="height"
-          @click="hexagonClick"
+          @mousedown="async () => {
+            await (isMouseDown = true)
+            pickColor()
+          }"
+          @mouseup="isMouseDown = false"
+          @mousemove="pickColor"
       />
 
       <div
@@ -43,6 +48,8 @@
         :width="width / 2"
         height="10px"
     />
+
+    <div class="color"/>
   </div>
 </template>
 
@@ -62,7 +69,11 @@ export default {
       lightness: 50,
       transparency: 1,
 
+      isMouseDown: false,
+
       hexagonCaretPos: [],
+
+      colorPixels: [],
     }
   },
   mounted() {
@@ -77,6 +88,11 @@ export default {
     },
     transparency() {
       this.drawHexagon()
+    }
+  },
+  computed: {
+    rgbaColor() {
+      return `rgba(${this.colorPixels[0]}, ${this.colorPixels[1]}, ${this.colorPixels[2]}, ${this.transparency})`
     }
   },
   methods: {
@@ -100,7 +116,7 @@ export default {
           canvasCenter[1] + radius * Math.sin((this.gradientDirections[index] * Math.PI) / 180)
         )
 
-        gradient.addColorStop(0, 'white')
+        gradient.addColorStop(0, `hsla(0, 100%, 100%, ${this.transparency})`)
         gradient.addColorStop(1, `hsla(${(256 / this.gradientDirections.length) * (index + 1)}, ${this.saturation}%, ${this.lightness}%, ${this.transparency})`)
 
         ctx.fillStyle = gradient
@@ -121,31 +137,43 @@ export default {
         ctx.fill()
       }
     },
-    hexagonClick() {
-      const rect = this.$refs.canvas.getBoundingClientRect()
-      const ctx = this.$refs.canvas.getContext('2d')
+    pickColor() {
+      if (this.isMouseDown) {
+        const rect = this.$refs.canvas.getBoundingClientRect()
+        const ctx = this.$refs.canvas.getContext('2d')
 
-      let pixels = ctx.getImageData(event.clientX - rect.left, event.clientY - rect.top, 1, 1)
+        let pixels = ctx.getImageData(event.clientX - rect.left, event.clientY - rect.top, 1, 1)
 
-      if (pixels.data[3]) {
-        this.hexagonCaretPos = [
-          event.clientX - rect.left,
-          event.clientY - rect.top ,
-        ]
+        if (pixels.data[3]) {
+          this.hexagonCaretPos = [
+            event.clientX - rect.left,
+            event.clientY - rect.top,
+          ]
+        }
+
+        this.colorPixels = pixels.data
       }
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .canvas-wrapper {
   position: relative;
   width: v-bind(width + 'px');
   height: v-bind(height + 'px');
 }
 
+.color {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  background-color: v-bind(rgbaColor);
+}
+
 .hexagon-caret {
+pointer-events: none;
   height: 6px;
   width: 6px;
   background-color: white;
