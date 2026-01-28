@@ -9,9 +9,11 @@
     >
     <div :class="['file-input', { 'short-file-input': view === 'short', 'full-file-input': view === 'full' }]">
       <button
-          :class="['plus-icon', { 'full': view === 'full' }]"
+          :class="{'full': view === 'full' }"
           @click="$refs.fileInput.click()"
-      > + </button>
+      >
+        <div class="plus-icon"></div>
+      </button>
       <div
           v-if="view !== 'short'"
           class="file-description"
@@ -108,16 +110,28 @@ export default {
 }
 
 button {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-self: center;
   width: 30px;
   height: 30px;
   border: none;
   border-radius: 5px;
-  color: var(--text-color);
+  color: var(--font-color);
   background-color: var(--background-color);
 }
 
 .full {
   height: 50px;
   width: 50px;
+}
+
+.plus-icon {
+  mask-image: url("./plus-icon.svg");
+  mask-size: contain;
+  background-color: var(--font-color);
+  height: 100%;
+  aspect-ratio: 1/1;
 }
 </style>
