@@ -5,13 +5,15 @@
       @keydown="onKeyDown"
       @change="onChange"
       @input="onInput"
+      @focusin="$emit('focusin')"
+      @focusout="$emit('focusout')"
   >
 </template>
 
 <script>
 export default {
   name: "NumberInput",
-  emits: ["update:modelValue", "change"],
+  emits: ["update:modelValue", "change", "focusin", "focusout"],
   props: {
     modelValue: { type: Number, required: true },
     fitContent: { type: Boolean, default: false },
