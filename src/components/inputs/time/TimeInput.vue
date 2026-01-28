@@ -261,10 +261,6 @@ export default {
   align-items: center;
 }
 
-.divider {
-  color: white;
-}
-
 input {
   background: transparent;
   border: none;
@@ -272,7 +268,7 @@ input {
   padding: 0;
   width: 2ch;
   height: fit-content;
-  color: white;
+  color: var(--font-color);
   user-select: all;
 }
 
