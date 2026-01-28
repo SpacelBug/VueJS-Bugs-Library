@@ -1,5 +1,9 @@
 <template>
-  <div class="canvas-wrapper">
+  <div class="color" />
+
+  <div class="picker-panel">
+    <div class="selected-color" />
+
     <div class="hexagon-box">
       <canvas
           class="hexagon"
@@ -20,48 +24,51 @@
       />
     </div>
 
-    <div
-        type="range"
-        min="0"
-        max="100"
-        class="saturation"
-        :width="width / 2"
-        height="10px"
-    >
-      <div class="caption">
-        saturation
-      </div>
-      <div class="caret"></div>
-    </div>
-    <div
-        type="range"
-        min="0"
-        max="100"
-        class="lightness"
-        :width="width / 2"
-        height="10px"
-    >
-      <div class="caption">
-        lightness
-      </div>
-      <div class="caret"></div>
-    </div>
-    <div
-        type="range"
-        step="0.01"
-        min="0"
-        max="1"
-        class="transparency"
-        :width="width / 2"
-        height="10px"
-    >
-      <div class="caption">
-        transparency
-      </div>
-      <div class="caret"></div>
-    </div>
 
-    <div class="color" />
+    <div class="additional-params">
+      <div class="caption">
+        Saturation
+      </div>
+      <div
+          class="saturation"
+          :width="width / 2"
+          height="10px"
+          @click="additionalParamClick('saturation')"
+      >
+        <div
+            class="param-caret"
+            :style="`left: ${saturationCaretPos}px`"
+        ></div>
+      </div>
+      <div class="caption">
+        Lightness
+      </div>
+      <div
+          class="lightness"
+          :width="width / 2"
+          height="10px"
+          @click="additionalParamClick('lightness')"
+      >
+        <div
+            class="param-caret"
+            :style="`left: ${lightnessCaretPos}px`"
+        ></div>
+      </div>
+      <div class="caption">
+        Transparency
+      </div>
+      <div
+          class="transparency"
+          :width="width / 2"
+          height="10px"
+          @click="additionalParamClick('transparency')"
+      >
+        <div
+            class="param-caret"
+            :style="`left: ${transparencyCaretPos}px`"
+        ></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -84,6 +91,9 @@ export default {
       isMouseDown: false,
 
       hexagonCaretPos: [],
+      saturationCaretPos: 0,
+      lightnessCaretPos: 0,
+      transparencyCaretPos: 0,
 
       colorPixels: [],
     }
@@ -98,12 +108,25 @@ export default {
   watch: {
     saturation() {
       this.drawHexagon()
+      let ctx = this.$refs.canvas.getContext('2d')
+      this.colorPixels = ctx.getImageData(this.hexagonCaretPos[0], this.hexagonCaretPos[1], 1, 1).data
+    },
+    saturationCaretPos() {
+      this.saturation = (100 * this.saturationCaretPos / event.target.getBoundingClientRect().width)
     },
     lightness() {
       this.drawHexagon()
+      let ctx = this.$refs.canvas.getContext('2d')
+      this.colorPixels = ctx.getImageData(this.hexagonCaretPos[0], this.hexagonCaretPos[1], 1, 1).data
+    },
+    lightnessCaretPos() {
+      this.lightness = (100 * this.lightnessCaretPos / event.target.getBoundingClientRect().width)
     },
     transparency() {
       this.drawHexagon()
+    },
+    transparencyCaretPos() {
+      this.transparency = (100 * this.transparencyCaretPos / event.target.getBoundingClientRect().width) / 100
     }
   },
   computed: {
@@ -132,8 +155,8 @@ export default {
           canvasCenter[1] + radius * Math.sin((this.gradientDirections[index] * Math.PI) / 180)
         )
 
-        gradient.addColorStop(0, `hsla(0, 100%, 100%, ${this.transparency})`)
-        gradient.addColorStop(1, `hsla(${(256 / this.gradientDirections.length) * (index + 1)}, ${this.saturation}%, ${this.lightness}%, ${this.transparency})`)
+        gradient.addColorStop(0, `hsla(0, 100%, 100%)`)
+        gradient.addColorStop(1, `hsla(${(256 / this.gradientDirections.length) * (index + 1)}, ${this.saturation}%, ${this.lightness}%)`)
 
         ctx.fillStyle = gradient
 
@@ -169,13 +192,42 @@ export default {
 
         this.colorPixels = pixels.data
       }
+    },
+    additionalParamClick(paramName) {
+      if (paramName === 'saturation') {
+        this.saturationCaretPos = event.clientX - event.target.getBoundingClientRect().left
+      } else if (paramName === 'lightness') {
+        this.lightnessCaretPos = event.clientX - event.target.getBoundingClientRect().left
+      } else if (paramName === 'transparency') {
+        this.transparencyCaretPos = event.clientX - event.target.getBoundingClientRect().left
+      }
     }
   }
 }
 </script>
 
 <style scoped>
-.canvas-wrapper {
+.picker-panel {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  background-color: var(--panels-color);
+  padding: 32px 16px;
+  border-radius: 5px;
+}
+
+.selected-color {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: v-bind(rgbaColor);
+  top: 0;
+  left: 0;
+  border-radius: 0 0 100%;
+  box-shadow: inset -2px -2px 4px 2px black;
+}
+
+.hexagon-box {
   display: flex;
   position: relative;
   width: v-bind(width + 'px');
@@ -183,7 +235,6 @@ export default {
 }
 
 .color {
-  position: absolute;
   height: 50px;
   width: 50px;
   background-color: v-bind(rgbaColor);
@@ -215,50 +266,40 @@ export default {
   left: 0;
 }
 
+.additional-params {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .transparency,
 .saturation,
 .lightness {
+  position: relative;
   display: flex;
-  justify-content: center;
-  position: absolute;
   border: solid 1px white;
   width: v-bind(width / 2 + 'px');
   height: 15px;
-  
-}
 
-.transparency .caption,
-.lightness .caption {
-  position: absolute;
-  font-size: 12px;
-  bottom: -100%;
 }
-
-.saturation .caption {
-  position: absolute;
-  font-size: 12px;
-  top: -100%;
-}
-
 
 .transparency {
-  transform: rotate(-30deg);
-  bottom: 0px;
-  right: 0;
-  background: linear-gradient(to right, v-bind(rgbaColor), transparent);
+  background: linear-gradient(to right, transparent, v-bind(rgbaColor));
 }
 
 .saturation {
-  transform: rotate(30deg);
-  top: 0px;
-  right: 0;
-  background: linear-gradient(to right, v-bind(rgbaColor), black);
+  background: linear-gradient(to right, black, v-bind(rgbaColor));
 }
 
 .lightness {
-  transform: rotate(-90deg);
-  align-self: center;
-  right: v-bind(- width / 4 + 'px');
   background: linear-gradient(to right, black, v-bind(rgbaColor), white);
+}
+
+.param-caret {
+  position: absolute;
+  height: 100%;
+  width: 2px;
+  background-color: white;
+  border: solid 1px black;
 }
 </style>
