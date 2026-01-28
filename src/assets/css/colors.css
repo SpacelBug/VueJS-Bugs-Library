@@ -9,3 +9,16 @@
     --font-color: white;
     --second-font-color: grey;
 }
+
+/* Тёмная тема */
+[data-theme="light"] {
+    --background-color: #ffffff;
+    --panels-color: #dde1ec;
+    --border-color: #b3b3b3;
+
+    --accent-color: #a184bb;
+    --second-accent-color: #111111;
+
+    --font-color: rgb(0, 0, 0);
+    --second-font-color: rgb(46, 46, 46);
+}
