@@ -1,11 +1,19 @@
 <template>
   <div class="component-view">
     <div class="component-various">
-      <NumberInput v-model="value" />
+      <NumberInput
+          v-model="value"
+          @focusin="focused = true"
+          @focusout="focused = false"
+      />
       <NumberInput
           v-model="value"
           :fitContent="true"
+          @focusin="focused = true"
+          @focusout="focused = false"
       />
+
+      {{ focused }}
     </div>
 
     <div class="description">
@@ -14,6 +22,7 @@
         <p></p>
         <p><b>Props:</b></p>
         <p><b>modelValue:</b> v-model prop</p>
+        <p><b>fitContent:</b> </p>
       </div>
     </div>
   </div>
@@ -30,6 +39,7 @@ export default {
   data() {
     return {
       value: 0,
+      focused: false,
     }
   }
 }
@@ -44,7 +54,7 @@ export default {
   width: 100%;
 }
 
-.component-various{
+.component-various {
   display: flex;
   flex-direction: row;
   gap: 16px;
