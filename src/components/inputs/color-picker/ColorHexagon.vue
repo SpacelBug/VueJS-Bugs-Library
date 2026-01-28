@@ -20,36 +20,48 @@
       />
     </div>
 
-    <input
+    <div
         type="range"
         min="0"
         max="100"
-        v-model="saturation"
         class="saturation"
         :width="width / 2"
         height="10px"
-    />
-    <input
+    >
+      <div class="caption">
+        saturation
+      </div>
+      <div class="caret"></div>
+    </div>
+    <div
         type="range"
         min="0"
         max="100"
-        v-model="lightness"
         class="lightness"
         :width="width / 2"
         height="10px"
-    />
-    <input
+    >
+      <div class="caption">
+        lightness
+      </div>
+      <div class="caret"></div>
+    </div>
+    <div
         type="range"
         step="0.01"
         min="0"
         max="1"
-        v-model="transparency"
         class="transparency"
         :width="width / 2"
         height="10px"
-    />
+    >
+      <div class="caption">
+        transparency
+      </div>
+      <div class="caret"></div>
+    </div>
 
-    <div class="color"/>
+    <div class="color" />
   </div>
 </template>
 
@@ -78,6 +90,10 @@ export default {
   },
   mounted() {
     this.drawHexagon()
+    this.hexagonCaretPos = [this.width / 2, this.height / 2]
+
+    let ctx = this.$refs.canvas.getContext('2d')
+    this.colorPixels = ctx.getImageData(this.hexagonCaretPos[0], this.hexagonCaretPos[1], 1, 1).data
   },
   watch: {
     saturation() {
@@ -160,6 +176,7 @@ export default {
 
 <style scoped>
 .canvas-wrapper {
+  display: flex;
   position: relative;
   width: v-bind(width + 'px');
   height: v-bind(height + 'px');
@@ -173,7 +190,7 @@ export default {
 }
 
 .hexagon-caret {
-pointer-events: none;
+  pointer-events: none;
   height: 6px;
   width: 6px;
   background-color: white;
@@ -201,26 +218,47 @@ pointer-events: none;
 .transparency,
 .saturation,
 .lightness {
+  display: flex;
+  justify-content: center;
   position: absolute;
   border: solid 1px white;
+  width: v-bind(width / 2 + 'px');
+  height: 15px;
+  
+}
+
+.transparency .caption,
+.lightness .caption {
+  position: absolute;
+  font-size: 12px;
+  bottom: -100%;
+}
+
+.saturation .caption {
+  position: absolute;
+  font-size: 12px;
+  top: -100%;
 }
 
 
 .transparency {
   transform: rotate(-30deg);
-  bottom: 20px;
+  bottom: 0px;
   right: 0;
+  background: linear-gradient(to right, v-bind(rgbaColor), transparent);
 }
 
 .saturation {
   transform: rotate(30deg);
-  top: 20px;
+  top: 0px;
   right: 0;
+  background: linear-gradient(to right, v-bind(rgbaColor), black);
 }
 
 .lightness {
   transform: rotate(-90deg);
-  top: 145px;
-  right: -70px;
+  align-self: center;
+  right: v-bind(- width / 4 + 'px');
+  background: linear-gradient(to right, black, v-bind(rgbaColor), white);
 }
 </style>
