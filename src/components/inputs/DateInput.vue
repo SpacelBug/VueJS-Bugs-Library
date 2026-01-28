@@ -57,7 +57,7 @@
                     v-for="date in datesList"
                     :class="['date-cell', { 'active-date-cell': modelValue.getTime() === date.getTime(), 'other-month': modelValue.getMonth() !== date.getMonth() }]"
                     :title="date"
-                    @click="this.$emit('update:modelValue', date)"
+                    @mousedown="this.$emit('update:modelValue', date)"
                 >
                   {{ date.getDate().toString().padStart(2, '0') }}
                 </div>
