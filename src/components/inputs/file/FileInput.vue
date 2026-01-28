@@ -110,6 +110,7 @@ export default {
 }
 
 button {
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-self: center;
@@ -117,7 +118,7 @@ button {
   height: 30px;
   border: none;
   border-radius: 5px;
-  color: var(--text-color);
+  color: var(--font-color);
   background-color: var(--background-color);
 }
 
