@@ -12,6 +12,7 @@
         class="selected"
         ref="selected"
         @click.right.prevent="$emit('update:modelValue', null)"
+        @mousedown.left.prevent="isShowOptions ? $refs.main.blur() : $refs.main.focus()"
     >
       <div
           v-if="modelValue"
