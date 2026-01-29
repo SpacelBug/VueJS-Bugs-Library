@@ -4,9 +4,8 @@
       :value="modelValue"
       @keydown="onKeyDown"
       @change="onChange"
-      @input="onInput"
-      @focusin="$emit('focusin')"
-      @focusout="$emit('focusout')"
+      @focusin="(event) => { $emit('focusin'); $emit('update:modelValue', Number(event.target.value)) }"
+      @focusout="(event) => { $emit('focusout'); $emit('update:modelValue', Number(event.target.value)) }"
   >
 </template>
 
@@ -27,18 +26,23 @@ export default {
   },
   methods: {
     onKeyDown() {
-      const reg = /[0-9,.]/
       const excludedKeyCodes = ['Backspace', 'Enter', 'Delete', 'ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown']
-      if (
-        !reg.test(event.key) && 
-        !excludedKeyCodes.includes(event.key) ||
-        (event.key === '.' && event.target.value.includes('.'))
-      ) {
+
+      if (!excludedKeyCodes.includes(event.key)) {
         event.preventDefault()
+
+        let firstPart = event.target.value.slice(0, event.target.selectionStart)
+        let secondPart = event.target.value.slice(event.target.selectionStart)
+
+        let result = firstPart + event.key + secondPart
+
+        if (/^-?(?:\d+(?:\.\d*)?|\.\d+)$/.test(result)) {
+          event.target.value = result
+          this.onInput()
+        }
+      } else if (event.key === 'Enter') {
+        this.$emit('update:modelValue', Number(event.target.value))
       }
-    },
-    onChange() {
-      this.$emit('update:modelValue', Number(event.target.value))
     },
     onInput() {
       this.$emit('change', event)
