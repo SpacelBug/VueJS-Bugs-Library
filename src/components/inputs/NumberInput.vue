@@ -17,6 +17,8 @@ export default {
   props: {
     modelValue: { type: Number, required: true },
     fitContent: { type: Boolean, default: false },
+    min: { type: Number, default: null },
+    max: { type: Number, default: null },
   },
   computed: {
     fieldSizing() {
@@ -40,6 +42,14 @@ export default {
     },
     onInput() {
       this.$emit('change', event)
+
+      if ((this.max !== null) && (this.min !== null)) {
+        if (event.target.value > this.max) {
+          event.target.value = this.max
+        } else if (event.target.value < this.min) {
+          event.target.value = this.min
+        }
+      }
     }
   }
 }
