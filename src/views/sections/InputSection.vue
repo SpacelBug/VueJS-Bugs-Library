@@ -78,7 +78,7 @@ export default {
 }
 
 .side-link {
-  color: white;
+  color: var(--font-color);
   text-decoration: none;
 }
 

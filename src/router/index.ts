@@ -114,6 +114,16 @@ const router = createRouter({
       ],
     },
     {
+      path: "/features",
+      children: [
+        {
+          name: "themes",
+          path: "/themes",
+          component: () => import("@/views/features/ThemesView.vue")
+        }
+      ]
+    },
+    {
       name: "fun",
       path: "/fun",
       component: () => import("../views/fun/FunView.vue"),
