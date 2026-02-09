@@ -46,7 +46,7 @@ export default {
         if (currentValueLength < this.mask.length) {
           console.log(currentValueLength)
           if ((this.mask[currentValueLength] !== this.maskChar) && (currentValueLength >= 0)) {
-            this.maskedValue += this.mask[currentValueLength]
+            this.maskedValue += this.mask[currentValueLength] + event.key
           } else {
             this.maskedValue += event.key
           }
