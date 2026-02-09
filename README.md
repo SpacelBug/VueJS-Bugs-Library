@@ -26,9 +26,13 @@ npm install
 npm run dev
 ```
 
-## Components
+## Requirements
 
-### Inputs
+## Description
+
+### components
+
+#### Inputs
 
 - Mask Input
 - Number Input
@@ -38,10 +42,11 @@ npm run dev
 - File Input
 - Switch
 - Drop-Down
+- Slider
 - Range
 - Checkbox
 
-### Content
+#### Content
 
 - Spoiler
 - Expandable Image
@@ -50,9 +55,12 @@ npm run dev
 - Tree
 - Contents
 
-### Special
+#### Special
 
 - Tool-Tip
 - Context Menu
+- Style Variables
 
-## Requirements
+### Other
+
+**Theme Changer**
