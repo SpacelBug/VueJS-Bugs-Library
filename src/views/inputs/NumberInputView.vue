@@ -2,18 +2,29 @@
   <div class="component-view">
     <div class="component-various">
       <NumberInput
-          v-model="value"
-          @focusin="focused = true"
-          @focusout="focused = false"
+          v-model="values[0]"
+          @focusin="focused[0] = true"
+          @focusout="focused[0] = false"
       />
       <NumberInput
-          v-model="value"
+          v-model="values[1]"
           :fitContent="true"
-          @focusin="focused = true"
-          @focusout="focused = false"
+          @focusin="focused[1] = true"
+          @focusout="focused[1] = false"
       />
+      <NumberInput
+          v-model="values[2]"
+          :fitContent="true"
+          @focusin="focused[2] = true"
+          @focusout="focused[2] = false"
+          :min="0"
+          :max="100"
+      />
+    </div>
 
-      {{ focused }}
+    <div class="components-data-box">
+      value: {{ values }}
+      focused: {{ focused }}
     </div>
 
     <div class="description">
@@ -38,8 +49,8 @@ export default {
   },
   data() {
     return {
-      value: 0,
-      focused: false,
+      values: [0, 0, 0],
+      focused: [false, false, false],
     }
   }
 }
