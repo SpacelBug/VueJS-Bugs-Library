@@ -4,7 +4,7 @@
       :value="modelValue"
       @keydown="onKeyDown"
       @change="onChange"
-      @focusin="(event) => { $emit('focusin'); $emit('update:modelValue', Number(event.target.value)) }"
+      @focusin="(event) => { $emit('focusin') }"
       @focusout="(event) => { $emit('focusout'); $emit('update:modelValue', Number(event.target.value)) }"
   >
 </template>
