@@ -12,6 +12,9 @@
         class="interactive-panel"
         tabindex="0"
         ref="interactivePanel"
+        @keydown.prevent="onInteractivePanelKeyPress"
+        @keydown.enter="(event) => {event.target.blur()}"
+        @keydown.escape="(event) => { event.target.blur() }"
         @focusout="isShowInteractivePanel = false"
     >
       <div class="header">
@@ -35,8 +38,6 @@
           <div
               v-if="activeMode === 'dates'"
               class="date-panel"
-              tabindex="0"
-              @keydown.prevent="onDatePanelKeyPress"
           >
             <transition
                 name="dates"
@@ -167,19 +168,22 @@ export default {
     }
   },
   methods: {
-    onDatePanelKeyPress() {
+    onInteractivePanelKeyPress() {
       let currentDate = new Date(this.modelValue)
-      if (event.code === 'ArrowLeft') {
-        currentDate.setDate(currentDate.getDate() - 1)
-      } else if (event.code === 'ArrowUp') {
-        currentDate.setDate(currentDate.getDate() - 7)
-      } else if (event.code === 'ArrowRight') {
-        currentDate.setDate(currentDate.getDate() + 1)
-      } else if (event.code === 'ArrowDown') {
-        currentDate.setDate(currentDate.getDate() + 7)
-      }
 
-      this.$emit('update:modelValue', currentDate)
+      if (this.activeMode === 'dates') {
+        if (event.code === 'ArrowLeft') {
+          currentDate.setDate(currentDate.getDate() - 1)
+        } else if (event.code === 'ArrowUp') {
+          currentDate.setDate(currentDate.getDate() - 7)
+        } else if (event.code === 'ArrowRight') {
+          currentDate.setDate(currentDate.getDate() + 1)
+        } else if (event.code === 'ArrowDown') {
+          currentDate.setDate(currentDate.getDate() + 7)
+        }
+
+        this.$emit('update:modelValue', currentDate)
+      }
     },
     changeMonth(value) {
       if (value > 0) {
@@ -208,7 +212,7 @@ export default {
         this.activeMode = 'month'
       } else if (this.activeMode === 'month') {
         this.activeMode = 'years'
-      } else if (this.accuracy === 'date') {
+      } else if (this.accuracy === 'dates') {
         this.activeMode = 'dates'
       }
     },
@@ -217,14 +221,14 @@ export default {
       currentDate.setMonth(monthIndex)
       this.$emit('update:modelValue', currentDate)
 
-      this.activeMode = this.accuracy === 'date' ? 'dates' : 'month'
+      this.activeMode = this.accuracy === 'dates' ? 'dates' : 'month'
     },
     onYearClick(year) {
       let currentDate = new Date(this.modelValue)
       currentDate.setFullYear(year)
       this.$emit('update:modelValue', currentDate)
 
-      this.activeMode = ['month', 'date'].includes(this.accuracy) ? 'month' : 'years'
+      this.activeMode = ['month', 'dates'].includes(this.accuracy) ? 'month' : 'years'
     },
     createNewYearsList() {
       let date = new Date(this.modelValue)
