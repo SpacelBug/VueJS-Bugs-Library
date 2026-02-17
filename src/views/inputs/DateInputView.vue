@@ -2,6 +2,8 @@
   <div class="component-view">
     <div class="component-variants">
       <DateInput v-model="value" />
+      <DateInput v-model="value" :accuracy="'month'" />
+      <DateInput v-model="value" :accuracy="'years'" />
     </div>
 
     <div class="description">
@@ -35,11 +37,9 @@ export default {
   width: 100%;
 }
 
-.component-various {
-  box-sizing: border-box;
+.component-variants {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 16px;
-  width: 100%;
 }
 </style>
