@@ -267,6 +267,7 @@ export default {
   gap: 8px;
   width: 300px;
   height: 300px;
+  outline: none;
 }
 
 .header {
