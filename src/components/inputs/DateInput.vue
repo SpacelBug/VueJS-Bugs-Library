@@ -4,7 +4,7 @@
         class="date-input"
         @click="async () => { await (isShowInteractivePanel = !isShowInteractivePanel); $refs.interactivePanel.focus() }"
     >
-      {{ modelValue.toLocaleDateString() }}
+      {{ caption }}
     </div>
 
     <div
@@ -156,6 +156,15 @@ export default {
       }
 
       return list
+    },
+    caption() {
+      if (this.accuracy === 'dates') {
+        return this.modelValue.toLocaleDateString()
+      } else if (this.accuracy === 'month') {
+        return `${this.monthNames[this.modelValue.getMonth()]} ${this.modelValue.getFullYear()}`
+      } else  if (this.accuracy === 'years') {
+        return this.modelValue.getFullYear()
+      }
     }
   },
   methods: {
