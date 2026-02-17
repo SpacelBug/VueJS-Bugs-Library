@@ -81,7 +81,7 @@
           <div
               v-if="activeMode === 'years'"
               class="year"
-              :key="activeMode"
+              :key="activeMode + yearsList"
           >
             <div
                 v-for="year in yearsList"
@@ -124,6 +124,8 @@ export default {
       monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 
       datesAnimPow: 1,
+
+      yearsList: [],
     }
   },
   computed: {
@@ -144,26 +146,23 @@ export default {
 
       return list
     },
-    yearsList() {
-      let date = new Date(this.modelValue)
-      date.setFullYear(date.getFullYear() - 8)
-
-      let list = []
-
-      while (list.length < 16) {
-        list.push(date.getFullYear())
-        date.setFullYear(date.getFullYear() + 1)
-      }
-
-      return list
-    },
     caption() {
       if (this.accuracy === 'dates') {
         return this.modelValue.toLocaleDateString()
       } else if (this.accuracy === 'month') {
         return `${this.monthNames[this.modelValue.getMonth()]} ${this.modelValue.getFullYear()}`
-      } else  if (this.accuracy === 'years') {
+      } else if (this.accuracy === 'years') {
         return this.modelValue.getFullYear()
+      }
+    }
+  },
+  mounted() {
+    this.createNewYearsList()
+  },
+  watch: {
+    modelValue(value) {
+      if ((value.getFullYear() === this.yearsList[0]) || (value.getFullYear() === this.yearsList[this.yearsList.length - 1])) {
+        this.createNewYearsList()
       }
     }
   },
@@ -226,6 +225,19 @@ export default {
       this.$emit('update:modelValue', currentDate)
 
       this.activeMode = ['month', 'date'].includes(this.accuracy) ? 'month' : 'years'
+    },
+    createNewYearsList() {
+      let date = new Date(this.modelValue)
+      date.setFullYear(date.getFullYear() - 8)
+
+      let list = []
+
+      while (list.length < 16) {
+        list.push(date.getFullYear())
+        date.setFullYear(date.getFullYear() + 1)
+      }
+
+      this.yearsList = list
     }
   }
 }
