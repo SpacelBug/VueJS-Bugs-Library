@@ -22,11 +22,11 @@
         <div class="arrows">
           <div
               class="up"
-              @click="changeMonth(-1)"
+              @click="this.activeMode === 'dates' ? changeMonth(-1) : changeYear(-1)"
           />
           <div
               class="down"
-              @click="changeMonth(1)"
+              @click="this.activeMode === 'dates' ? changeMonth(1) : changeYear(1)"
           />
         </div>
       </div>
@@ -191,6 +191,17 @@ export default {
 
       let currentDate = new Date(this.modelValue)
       currentDate.setMonth(currentDate.getMonth() + value)
+      this.$emit('update:modelValue', currentDate)
+    },
+    changeYear(value) {
+      if (value > 0) {
+        this.datesAnimPow = -1
+      } else {
+        this.datesAnimPow = 1
+      }
+
+      let currentDate = new Date(this.modelValue)
+      currentDate.setFullYear(currentDate.getFullYear() + value)
       this.$emit('update:modelValue', currentDate)
     },
     changeActiveMode() {
