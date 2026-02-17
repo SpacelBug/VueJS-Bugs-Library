@@ -8,6 +8,12 @@
 
     <div class="description">
       <h3>Date Input component</h3>
+      <div class="description">
+        <p></p>
+        <p><b>Props:</b></p>
+        <p><b>modelValue:</b> v-model prop</p>
+        <p><b>accuracy:</b></p>
+      </div>
     </div>
   </div>
 </template>
