@@ -108,7 +108,8 @@ export default {
   name: "DateInput",
   emits: ['update:modelValue'],
   props: {
-    modelValue: { type: Date, default: new Date(), required: true }
+    modelValue: { type: Date, default: new Date(), required: true },
+    accuracy: { type: String, default: 'dates', validator: (value) => ['dates', 'month', 'years'].includes(value) }
   },
   data() {
     return {
