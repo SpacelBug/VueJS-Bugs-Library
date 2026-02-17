@@ -238,16 +238,20 @@ export default {
   flex-direction: column;
   position: relative;
   gap: 16px;
+  width: fit-content;
 }
 
 .date-input {
+  box-sizing: border-box;
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: var(--panels-color);
   border-radius: 5px;
   height: 40px;
-  width: 100px;
+  width: 100%;
+  padding: 0 8px;
 }
 
 .interactive-panel {

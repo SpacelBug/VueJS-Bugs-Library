@@ -2,7 +2,7 @@
   <div class="component-view">
     <div class="component-variants">
       <DateInput v-model="value" />
-      <DateInput v-model="value" :accuracy="'month'" />
+      <DateInput v-model="value" :accuracy="'month'" style="width: 200px;"/>
       <DateInput v-model="value" :accuracy="'years'" />
     </div>
 
