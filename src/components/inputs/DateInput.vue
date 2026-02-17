@@ -2,7 +2,7 @@
   <div class="main-box">
     <div
         class="date-input"
-        @click="async () => { await (isShowInteractivePanel = !isShowInteractivePanel); $refs.interactivePanel.focus()}"
+        @click="async () => { await (isShowInteractivePanel = !isShowInteractivePanel); $refs.interactivePanel.focus() }"
     >
       {{ modelValue.toLocaleDateString() }}
     </div>
@@ -118,7 +118,7 @@ export default {
        * Set mode of interactive panel
        * Could be 'years', 'month', 'dates'
        */
-      activeMode: 'dates',
+      activeMode: this.accuracy,
 
       dayNames: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
       monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -189,7 +189,7 @@ export default {
         this.activeMode = 'month'
       } else if (this.activeMode === 'month') {
         this.activeMode = 'years'
-      } else {
+      } else if (this.accuracy === 'date') {
         this.activeMode = 'dates'
       }
     },
@@ -198,14 +198,14 @@ export default {
       currentDate.setMonth(monthIndex)
       this.$emit('update:modelValue', currentDate)
 
-      this.activeMode = 'dates'
+      this.activeMode = this.accuracy === 'date' ? 'dates' : 'month'
     },
     onYearClick(year) {
       let currentDate = new Date(this.modelValue)
       currentDate.setFullYear(year)
       this.$emit('update:modelValue', currentDate)
 
-      this.activeMode = 'month'
+      this.activeMode = ['month', 'date'].includes(this.accuracy) ? 'month' : 'years'
     }
   }
 }
