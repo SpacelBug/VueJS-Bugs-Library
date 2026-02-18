@@ -19,11 +19,12 @@ import TreeNode from './TreeNode.vue';
  */
 export default {
   name: "Tree",
-  emits: ["change"],
+  emits: ["update:modelValue"],
   components: {
     TreeNode,
   },
   props: {
+    modelValue: {type: Array, default: []},
     /**
      * Array of Objects.
      * - Each object represents a node in the tree.
@@ -55,7 +56,7 @@ export default {
   watch: {
     nodes: {
       handler: function () {
-        this.$emit('change', this.getLastCheckedNodes(structuredClone(toRaw(this.nodes))))
+        this.$emit('update:modelValue', this.getLastCheckedNodes(structuredClone(toRaw(this.nodes))))
       }, deep: true
     }
   },

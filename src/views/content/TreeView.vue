@@ -10,7 +10,7 @@
         <Tree
             :nodes="nodesWithCheckbox"
             :checkable="true"
-            @change="(nodes) => { lastCheckedNodes = nodes }"
+            v-model="lastCheckedNodes"
             ref="checkboxTree"
         />
         last checked nodes: {{ lastCheckedNodes }}
