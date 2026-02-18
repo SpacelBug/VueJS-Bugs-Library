@@ -2,7 +2,7 @@
   <div class="node">
     <div class="icon-box">
       <div
-          v-if="node.nodes"
+          v-if="node[nodesListKeyName]"
           :class="['icon', { 'opened': isShowNested }]"
           @click="isShowNested = !isShowNested"
       />
@@ -22,16 +22,18 @@
     </div>
 
     <div
-        v-show="isShowNested && node.nodes"
+        v-show="isShowNested && node[nodesListKeyName]"
         class="nested-nodes"
     >
       <TreeNode
-          v-for="nestedNode in node.nodes"
+          v-for="nestedNode in node[nodesListKeyName]"
           ref="nestedNodes"
           :node="nestedNode"
           :parentNode="node"
+          :collapsed="collapsed"
           :depth="depth + 1"
           :checkable="checkable"
+          :nodesKeyNames="nodesKeyNames"
       />
     </div>
   </div>
@@ -52,6 +54,8 @@ export default {
      */
     depth: { type: Number, default: 0 },
     collapsed: {type: Boolean},
+    
+    nodesKeyNames: { type: Array, default: null },
   },
   data() {
     return {
@@ -70,6 +74,13 @@ export default {
     }
   },
   computed: {
+    nodesListKeyName() {
+      if (this.nodesKeyNames) {
+        return[this.nodesKeyNames[this.depth]]
+      } else {
+        return ['nodes']
+      }
+    },
     /**
      * Need for watcher of node changes
      */
@@ -90,8 +101,10 @@ export default {
     sameLevelNodesStatus() {
       let statuses = new Set()
 
-      if (this.parentNode && this.parentNode.nodes) {
-        for (let node of this.parentNode.nodes) {
+      let parentNodesListKeyName = this.nodesKeyNames ? this.nodesKeyNames[this.depth - 1] : 'nodes'
+
+      if (this.parentNode && this.parentNode[parentNodesListKeyName]) {
+        for (let node of this.parentNode[parentNodesListKeyName]) {
           statuses.add(node.checked)
         }
 

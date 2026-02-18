@@ -6,6 +6,7 @@
         :node="node"
         :checkable="checkable"
         :collapsed="collapsed"
+        :nodesKeyNames="nodesKeyNames"
     />
   </div>
 </template>
@@ -52,6 +53,10 @@ export default {
      * If true, all nested nodes will be collapsed
      */
     collapsed: {type: Boolean, default: false},
+    /**
+     * Experimental prop fro custom lists
+     */
+    nodesKeyNames: {type: Array, default: null},
   },
   data() {
     return {
@@ -70,16 +75,29 @@ export default {
      * Return last checked nodes in tree
      */
     getLastCheckedNodes(nodes) {
-      let checked = []
+      const checked = []
+      const queue = [...nodes]
 
-      while (nodes.length) {
-        for (let index in nodes) {
-          if (nodes[index].hasOwnProperty('nodes')) {
-            nodes = nodes.concat(nodes[index].nodes)
-          } else if (nodes[index].checked) {
-            checked.push(nodes[index])
+      while (queue.length > 0) {
+        const node = queue.shift()
+
+        let nodesListKeyName
+
+        if (this.nodesKeyNames) {
+          for (let key of this.nodesKeyNames) {
+            if (Object.keys(node).find((element) => element == key )) {
+              nodesListKeyName = key
+              break
+            }
           }
-          nodes.splice(index, 1)
+        } else {
+          nodesListKeyName = 'nodes'
+        }
+
+        if (node[nodesListKeyName] && node[nodesListKeyName].length > 0) {
+          queue.push(...node[nodesListKeyName])
+        } else if (node.checked) {
+          checked.push(node)
         }
       }
 
