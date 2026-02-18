@@ -56,7 +56,7 @@ export default {
 .arrow-head-icon {
   mask-image: url("ArrowHead.svg");
   mask-size: contain;
-  background-color: white;
+  background-color: var(--font-color);
   width: 20px;
   height: 20px;
   transition: all 0.5s ease
