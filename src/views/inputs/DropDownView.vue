@@ -24,10 +24,13 @@
       <div class="description">
         <p>Custom drop down with specific params and different types</p>
         <p><b>Props:</b></p>
-        <p>modelValue: </p>
-        <p>options: </p>
-        <p>type: </p>
-        <p>width: </p>
+        <p><u>modelValue:</u> String</p>
+        <p><u>options:</u> Array</p>
+        <p><u>type:</u> String</p>
+        <p><u>placeholder:</u> String</p>
+        <p><u>noOptionsText:</u> String</p>
+        <p><u>width:</u> Number</p>
+        <p><u>buttonOptionsGap: </u>Number</p>
       </div>
     </div>
   </div>
@@ -48,7 +51,8 @@ export default {
         'Dog',
         'Cat',
         'Frog',
-        'Whale'
+        'Whale',
+        'Test very long value'
       ],
     }
   }

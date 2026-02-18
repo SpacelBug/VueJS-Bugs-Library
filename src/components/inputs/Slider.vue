@@ -1,19 +1,11 @@
 <template>
-  <div class="range-box">
+  <div class="slider-box">
     <div class="track-box">
-      <div class="carets">
-        <div
-            class="first-caret"
-            @mousedown="isMouseDown = true, activeCaret = 'first'"
-            draggable="false"
-        />
-        <div class="track-highlight"/>
-        <div
-            class="second-caret"
-            @mousedown="isMouseDown = true, activeCaret = 'second'"
-            draggable="false"
-        />
-      </div>
+      <div
+          class="caret"
+          @mousedown="isMouseDown = true"
+          draggable="false"
+      />
       <div
           class="track"
           ref="track"
@@ -23,17 +15,17 @@
         v-if="showValue"
         class="value"
     >
-      {{ modelValue[0] }} : {{ modelValue[1] }}
+      {{ modelValue }}
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Range',
+  name: 'Slider',
   emits: ['update:modelValue'],
   props: {
-    modelValue: { type: [Number], default: [0, 10] },
+    modelValue: { type: Number, default: 5 },
 
     min: { type: Number, default: 0 },
     max: { type: Number, default: 10 },
@@ -44,10 +36,7 @@ export default {
   data() {
     return {
       isMouseDown: false,
-      activeCaret: null,
-
-      firstCaretPos: 0,
-      secondCaretPos: 0,
+      caretPos: 0,
     }
   },
   computed: {
@@ -55,10 +44,9 @@ export default {
       let steps = (this.max - this.min) / this.step
       return this.$refs.track.getBoundingClientRect().width / steps
     }
-  },
+  },  
   mounted() {
-    this.firstCaretPos = (this.modelValue[0] - this.min) * this.pixelsInStep / this.step
-    this.secondCaretPos = (this.modelValue[1] - this.min) * this.pixelsInStep / this.step
+    this.caretPos = (this.modelValue - this.min) * this.pixelsInStep  / this.step
   },
   watch: {
     isMouseDown(newValue, oldValue) {
@@ -75,24 +63,21 @@ export default {
     moveCaret(event) {
       const pos = event.clientX - this.$refs.track.getBoundingClientRect().x
       if ((pos > 0) && (pos < this.$refs.track.getBoundingClientRect().width)) {
-        if ((this.activeCaret ==='first') && (pos < this.secondCaretPos)) {
-          this.firstCaretPos = pos
-        } else if ((this.activeCaret === 'second') && (pos > this.firstCaretPos)) {
-          this.secondCaretPos = pos
-        }
+        this.caretPos = pos
+        this.$emit('update:modelValue', this.valueByPixel())
       }
-      this.$emit('update:modelValue', [this.valueByPixel(this.firstCaretPos), this.valueByPixel(this.secondCaretPos)])
     },
     mouseUp() {
       this.isMouseDown = false
-      this.draggingCaretIndex = null
     },
-    valueByPixel(pos) {
-      let value = (pos / this.pixelsInStep) * this.step
+    valueByPixel() {
+      let value = (this.caretPos / this.pixelsInStep) * this.step
 
       if (value % this.step > 0) {
         value = (Math.round(value / this.step) * this.step)
       }
+
+      this.caretPos = value * this.pixelsInStep / this.step
 
       return value + this.min
     },
@@ -101,7 +86,7 @@ export default {
 </script>
 
 <style scoped>
-.range-box {
+.slider-box {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -124,7 +109,7 @@ export default {
   background-color: var(--panels-color);
 }
 
-.first-caret, .second-caret {
+.caret {
   cursor: pointer;
   position: absolute;
   height: 20px;
@@ -132,30 +117,10 @@ export default {
   border-radius: 100%;
   background-color: var(--accent-color);
   top: -10px;
-  transition: all 0.2s ease;
+  left: v-bind(-10 + caretPos + 'px');
 }
 
 .caret:hover {
   opacity: 0.7;
 }
-
-.first-caret {
-  left: v-bind(-10 + firstCaretPos + 'px');
-}
-
-.second-caret {
-  left: v-bind(-10 + secondCaretPos + 'px');
-}
-
-.track-highlight {
-  pointer-events: none;
-  position: absolute;
-  height: 2px;
-  width: v-bind(secondCaretPos - firstCaretPos + 'px');
-  border-radius: 100%;
-  background-color: var(--accent-color);
-  left: v-bind(-10 + firstCaretPos + 'px');
-  transition: all 0.2s ease;
-}
-
 </style>

@@ -1,6 +1,12 @@
 <template>
   <div class="components">
     <router-link
+        :to="{ name: 'mask-input' }"
+        class="side-link"
+    >
+      MaskInput
+    </router-link>
+    <router-link
         :to="{ name: 'number-input' }"
         class="side-link"
     >
@@ -19,6 +25,12 @@
       TimeInput
     </router-link>
     <router-link
+        :to="{ name: 'date-input' }"
+        class="side-link"
+    >
+      DateInput
+    </router-link>
+    <router-link
         to="file-input"
         class="side-link"
     >
@@ -35,6 +47,12 @@
         class="side-link"
     >
       DropDown
+    </router-link>
+    <router-link
+        :to="{ name: 'slider' }"
+        class="side-link"
+    >
+      Slider
     </router-link>
     <router-link
         :to="{ name: 'range' }"
@@ -66,7 +84,7 @@ export default {
 }
 
 .side-link {
-  color: white;
+  color: var(--font-color);
   text-decoration: none;
 }
 

@@ -12,6 +12,12 @@
     >
       Context-Menu
     </router-link>
+    <router-link
+        :to="{ name: 'style-variables' }"
+        class="side-link"
+    >
+      Style Variables
+    </router-link>
   </div>
 </template>
 
@@ -30,7 +36,7 @@ export default {
 }
 
 .side-link {
-  color: white;
+  color: var(--font-color);
   text-decoration: none;
 }
 

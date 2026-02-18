@@ -22,6 +22,16 @@ const router = createRouter({
           component: () => import("../views/inputs/TimeInputView.vue"),
         },
         {
+          name: "date-input",
+          path: "date-input",
+          component: () => import("../views/inputs/DateInputView.vue"),
+        },
+        {
+          name: "slider",
+          path: "slider",
+          component: () => import("../views/inputs/SliderView.vue"),
+        },
+        {
           name: "range",
           path: "range",
           component: () => import("../views/inputs/RangeView.vue"),
@@ -46,6 +56,11 @@ const router = createRouter({
           path: "area-input",
           component: () => import("../views/inputs/AreaInputView.vue"),
         },
+        {
+          name: "mask-input",
+          path: "mask-input",
+          component: () => import("../views/inputs/InputMaskView.vue"),
+        },
       ],
     },
     {
@@ -60,6 +75,11 @@ const router = createRouter({
           name: "context-menu",
           path: "context-menu",
           component: () => import("../views/special/ContextMenuView.vue"),
+        },
+        {
+          name: "style-variables",
+          path: "style-variables",
+          component: () => import("../views/special/StyleVariablesView.vue"),
         },
       ],
     },
@@ -81,13 +101,38 @@ const router = createRouter({
           name: "modal-window",
           component: () => import("@/views/content/ModalWindowView.vue"),
         },
+        {
+          path: "tree",
+          name: "tree",
+          component: () => import("@/views/content/TreeView.vue"),
+        },
+        {
+          path: "moveable-modal",
+          name: "moveable-modal",
+          component: () => import("@/views/content/MoveableModalView.vue"),
+        },
+        {
+          path: "contents",
+          name: "contents",
+          component: () => import("@/views/content/ContentsView.vue"),
+        },
       ],
+    },
+    {
+      path: "/features",
+      children: [
+        {
+          name: "themes",
+          path: "/themes",
+          component: () => import("@/views/features/ThemesView.vue")
+        }
+      ]
     },
     {
       name: "fun",
       path: "/fun",
       component: () => import("../views/fun/FunView.vue"),
-    }
+    },
   ],
 })
 

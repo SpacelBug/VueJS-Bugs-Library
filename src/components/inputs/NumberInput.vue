@@ -4,17 +4,20 @@
       :value="modelValue"
       @keydown="onKeyDown"
       @change="onChange"
-      @input="onInput"
+      @focusin="(event) => { $emit('focusin') }"
+      @focusout="(event) => { $emit('focusout'); $emit('update:modelValue', Number(event.target.value)) }"
   >
 </template>
 
 <script>
 export default {
   name: "NumberInput",
-  emits: ["update:modelValue", "change"],
+  emits: ["update:modelValue", "change", "focusin", "focusout"],
   props: {
     modelValue: { type: Number, required: true },
     fitContent: { type: Boolean, default: false },
+    min: { type: Number, default: null },
+    max: { type: Number, default: null },
   },
   computed: {
     fieldSizing() {
@@ -22,22 +25,38 @@ export default {
     }
   },
   methods: {
-    onKeyDown() {
-      const reg = /[0-9,.]/
+    async onKeyDown() {
       const excludedKeyCodes = ['Backspace', 'Enter', 'Delete', 'ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown']
-      if (
-        !reg.test(event.key) && 
-        !excludedKeyCodes.includes(event.key) ||
-        (event.key === '.' && event.target.value.includes('.'))
-      ) {
+
+      if (!excludedKeyCodes.includes(event.key)) {
         event.preventDefault()
+
+        const cursorPos = event.target.selectionStart
+
+        let firstPart = event.target.value.slice(0, cursorPos)
+        let secondPart = event.target.value.slice(cursorPos)
+
+        let result = firstPart + event.key + secondPart
+
+        if (/^-?(?:\d+(?:\.\d*)?|\.\d+)$/.test(result)) {
+          event.target.value = result
+          this.onInput()
+          event.target.setSelectionRange(cursorPos + 1, cursorPos + 1)
+        }
+      } else if (event.key === 'Enter') {
+        await this.$emit('update:modelValue', Number(event.target.value))
       }
-    },
-    onChange() {
-      this.$emit('update:modelValue', Number(event.target.value))
     },
     onInput() {
       this.$emit('change', event)
+
+      if ((this.max !== null) && (this.min !== null)) {
+        if (event.target.value > this.max) {
+          event.target.value = this.max
+        } else if (event.target.value < this.min) {
+          event.target.value = this.min
+        }
+      }
     }
   }
 }
