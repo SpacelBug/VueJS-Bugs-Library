@@ -5,6 +5,7 @@
         class="node"
         :node="node"
         :checkable="checkable"
+        :collapsed="collapsed"
     />
   </div>
 </template>
@@ -47,6 +48,10 @@ export default {
      * @values true, false
      */
     checkable: { type: Boolean, default: false },
+    /**
+     * If true, all nested nodes will be collapsed
+     */
+    collapsed: {type: Boolean, default: false},
   },
   data() {
     return {

@@ -51,10 +51,11 @@ export default {
      * nested position
      */
     depth: { type: Number, default: 0 },
+    collapsed: {type: Boolean},
   },
   data() {
     return {
-      isShowNested: false,
+      isShowNested: !this.collapsed,
       parentWatcherLock: false,
     }
   },
