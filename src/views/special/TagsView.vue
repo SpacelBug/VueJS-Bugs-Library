@@ -48,7 +48,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .component-view {
   display: flex;
   flex-direction: row;
