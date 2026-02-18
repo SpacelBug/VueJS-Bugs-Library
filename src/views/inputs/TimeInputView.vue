@@ -9,21 +9,24 @@
         <div class="results">
             <h3>Returned values:</h3>
             <span>
-                <p>{{ testValueDate }}</p>
-                <p>{{ testValueString }}</p>
-                <p>{{ testValueObject }}</p>
+                <p><u>Date</u> - {{ testValueDate }}</p>
+                <p><u>String</u> - {{ testValueString }}</p>
+                <p><u>Object</u> - {{ testValueObject }}</p>
             </span>
         </div>
 
         <div class="description">
             <h3>Time input component</h3>
+            This component could work with different format of time. It could be:
+            <ul>
+                <li><u>String</u> - "23:00:00"</li>
+                <li><u>Object</u> - {hours, minutes, seconds}</li>
+                <li><u>Date</u> - Date()</li>
+            </ul> 
             <div class="description">
                 <p></p>
                 <p><b>Props:</b></p>
-                <p><u>modelValue:</u></p>
-                Object: {hours, minutes, seconds}<br>
-                Date()<br>
-                String: "23:00:00"
+                <p><u>modelValue:</u> for v-model prop</p>
             </div>
         </div>
     </div>
@@ -56,9 +59,8 @@ export default {
 }
 
 .component-variants {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 16px;
 }
 
