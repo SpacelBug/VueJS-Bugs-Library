@@ -104,6 +104,7 @@ header {
   flex-direction: row;
   background-color: var(--background-color);
   min-height: 100vh;
+  height: fit-content;
   box-sizing: border-box;
 }
 
