@@ -17,16 +17,18 @@
     </div>
   </div>
 
-  <div
-      v-if="isExpanded"
-      class="expanded-image-wrapper"
-      @click="isExpanded = false"
-  >
-    <img
-        :src="src"
-        class="expanded-image"
+  <transition name="fade">
+    <div
+        v-if="isExpanded"
+        class="expanded-image-wrapper"
+        @click="isExpanded = false"
     >
-  </div>
+      <img
+          :src="src"
+          class="expanded-image"
+      >
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -84,6 +86,16 @@ img {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
+}
+
+/*Transition*/
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: all 0.3s ease;
 }
 
 </style>
