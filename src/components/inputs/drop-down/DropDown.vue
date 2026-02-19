@@ -4,6 +4,7 @@
       @focusin="isShowOptions = true"
       @focusout="isShowOptions = false"
       @mousedown.right.prevent
+      :title="modelValue"
       ref="main"
       tabindex="-1"
   >
@@ -11,6 +12,7 @@
         class="selected"
         ref="selected"
         @click.right.prevent="$emit('update:modelValue', null)"
+        @mousedown.left.prevent="isShowOptions ? $refs.main.blur() : $refs.main.focus()"
     >
       <div
           v-if="modelValue"
@@ -24,7 +26,7 @@
       >
         {{ placeholder }}
       </div>
-      <div class="arrow-head" />
+      <div :class="['arrow-head', { 'rotated': isShowOptions }]"/>
     </div>
     <transition name="fade">
       <div
@@ -34,7 +36,7 @@
         <div
             v-for="(option, index) in options"
             :key="index"
-            class="option"
+            :class="['option', {'highlight': keyboardSelectedOptionIndex === index}]"
             @click="$emit('update:modelValue', option); $refs.main.blur()"
         >
           {{ option }}
@@ -73,7 +75,7 @@ export default {
     noOptionsText: { type: String, default: 'have no options' },
     // Size
     width: { type: [Number], default: null },
-    buttonOptionsGap: {type: Number, default: 8}
+    buttonOptionsGap: { type: Number, default: 8 }
   },
   computed: {
     /**
@@ -88,7 +90,36 @@ export default {
   },
   data() {
     return {
-      isShowOptions: true,
+      isShowOptions: false,
+      keyboardSelectedOptionIndex: -1,
+    }
+  },
+  watch: {
+    isShowOptions(value) {
+      if (value) {
+        document.addEventListener('keydown', this.onKeyPress)
+      } else {
+        document.removeEventListener('keydown', this.onKeyPress)
+      }
+    }
+  },
+  methods: {
+    onKeyPress() {
+      if (['ArrowUp', 'ArrowDown', 'Enter'].includes(event.code)) {
+        event.preventDefault()
+
+        if ((event.code === 'ArrowDown') && (this.keyboardSelectedOptionIndex !== (this.options.length - 1)))  {
+          this.keyboardSelectedOptionIndex++
+        }
+        if ((event.code === 'ArrowUp') && (this.keyboardSelectedOptionIndex !== 0)) {
+          this.keyboardSelectedOptionIndex--
+        }
+
+        if (event.code === 'Enter') {
+          this.$emit('update:modelValue', this.options[this.keyboardSelectedOptionIndex])
+          this.$refs.main.blur()
+        }
+      }
     }
   }
 };
@@ -105,53 +136,99 @@ export default {
 .selected {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   gap: 8px;
   cursor: pointer;
   padding: 8px 16px;
   background-color: var(--panels-color);
   border-radius: 5px;
   width: 100%;
+  min-width: 100%;
   height: fit-content;
   box-sizing: border-box;
 }
 
+.selected-option {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .placeholder {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   opacity: 0.5;
 }
 
 .options {
-  box-sizing: border-box;
   position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
   overflow: hidden;
   background-color: var(--panels-color);
   border-radius: 5px;
   padding: 4px 16px;
   gap: 4px;
   width: 100%;
+  min-width: fit-content;
   height: fit-content;
   top: v-bind((top + buttonOptionsGap) + 'px');
   white-space: nowrap;
 }
 
 .option {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   cursor: pointer;
+  gap: 16px;
+  width: 100%;
+}
+
+.highlight {
+  color: var(--accent-color);
+  opacity: 0.7;
 }
 
 .option:hover {
   color: var(--accent-color);
 }
 
+.reserved-option-place {
+  width: 10px;
+  height: 10px;
+  background-color: aliceblue;
+}
+
+.arrow-head {
+  mask-image: url("@/assets/icons/SmallArrowHead.svg");
+  mask-size: contain;
+  background-color: var(--font-color);
+  height: 20px;
+  width: 20px;
+}
+
+.rotated {
+  rotate: 180deg;
+}
+
 /*Animation*/
 
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: all 0.5s ease;
 }
 
-.fade-enter-to, .fade-leave-from {
+.fade-enter-to,
+.fade-leave-from {
   opacity: 1;
 }
 </style>

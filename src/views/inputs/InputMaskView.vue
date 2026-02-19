@@ -1,0 +1,62 @@
+<template>
+  <div class="component-view">
+    <div class="components-variants">
+      <InputMask
+          v-model="value"
+          :mask="'999-999-99-99'"
+      />
+      <InputMask
+          v-model="value"
+          :mask="'99-99-99'"
+      />
+      <InputMask
+          v-model="value"
+          :mask="'99:99:99'"
+      />
+    </div>
+
+    <div class="description">
+      <h3>Masked Input Examples</h3>
+      Input component with mask functionality.
+      <p><b>props:</b></p>
+      <p><u>mask:</u></p>
+      <p><u>maskChart:</u></p>
+    </div>
+  </div>
+</template>
+
+<script>
+import InputMask from '@/components/inputs/MaskedInput.vue';
+
+export default {
+  name: "InputMaskView",
+  components: {
+    InputMask,
+  },
+  data() {
+    return {
+      value: '',
+    }
+  },
+}
+</script>
+
+<style>
+.component-view {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.components-variants {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.description {
+  width: 500px;
+}
+</style>

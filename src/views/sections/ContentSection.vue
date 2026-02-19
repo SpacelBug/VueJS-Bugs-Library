@@ -1,10 +1,40 @@
 <template>
   <div class="components">
     <router-link
-        to="spoiler"
+        :to="{ name: 'spoiler' }"
         class="side-link"
     >
       Spoiler
+    </router-link>
+    <router-link
+        :to="{ name: 'expandable-image' }"
+        class="side-link"
+    >
+      ExpandableImage
+    </router-link>
+    <router-link
+        :to="{ name: 'modal-window' }"
+        class="side-link"
+    >
+      ModalWindow
+    </router-link>
+    <router-link
+        :to="{ name: 'tree' }"
+        class="side-link"
+    >
+      Tree
+    </router-link>
+    <router-link
+        :to="{ name: 'moveable-modal' }"
+        class="side-link"
+    >
+      MoveableModal
+    </router-link>
+    <router-link
+        :to="{ name: 'contents' }"
+        class="side-link"
+    >
+      Contents
     </router-link>
   </div>
 </template>
@@ -24,7 +54,7 @@ export default {
 }
 
 .side-link {
-  color: white;
+  color: var(--font-color);
   text-decoration: none;
 }
 

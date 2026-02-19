@@ -1,16 +1,70 @@
 <template>
   <div class="components">
     <router-link
-        to="switch"
+        :to="{ name: 'mask-input' }"
+        class="side-link"
+    >
+      MaskInput
+    </router-link>
+    <router-link
+        :to="{ name: 'number-input' }"
+        class="side-link"
+    >
+      NumberInput
+    </router-link>
+    <router-link
+        :to="{ name: 'area-input' }"
+        class="side-link"
+    >
+      AreaInput
+    </router-link>
+    <router-link
+        :to="{name: 'time-input'}"
+        class="side-link"
+    >
+      TimeInput
+    </router-link>
+    <router-link
+        :to="{ name: 'date-input' }"
+        class="side-link"
+    >
+      DateInput
+    </router-link>
+    <router-link
+        to="file-input"
+        class="side-link"
+    >
+      FileInput
+    </router-link>
+    <router-link
+        :to="{ name: 'switch' }"
         class="side-link"
     >
       Switch
     </router-link>
     <router-link
-        to="drop-down"
+        :to="{ name: 'drop-down' }"
         class="side-link"
     >
       DropDown
+    </router-link>
+    <router-link
+        :to="{ name: 'slider' }"
+        class="side-link"
+    >
+      Slider
+    </router-link>
+    <router-link
+        :to="{ name: 'range' }"
+        class="side-link"
+    >
+      Range
+    </router-link>
+    <router-link
+        to="check-box"
+        class="side-link"
+    >
+      CheckBox
     </router-link>
     <router-link
         :to="{ name: 'color-picker' }"
@@ -36,7 +90,7 @@ export default {
 }
 
 .side-link {
-  color: white;
+  color: var(--font-color);
   text-decoration: none;
 }
 
