@@ -90,7 +90,7 @@ export default {
 </script>
 <style scoped>
 header {
-  height: fit-content;
+  height: 50px;
   width: 100%;
   padding: 16px 32px;
   background-color: var(--panels-color);
@@ -100,12 +100,12 @@ header {
 }
 
 .main-box {
+  box-sizing: border-box;
+  overflow: auto;
   display: flex;
   flex-direction: row;
   background-color: var(--background-color);
-  min-height: 100vh;
-  height: fit-content;
-  box-sizing: border-box;
+  height: calc(100dvh - 50px);
 }
 
 .navigation-panel {
@@ -142,6 +142,7 @@ header {
   box-sizing: border-box;
   padding: 64px;
   width: 100%;
+  height: 100%;
 }
 
 .theme-swapper {
@@ -170,5 +171,6 @@ footer {
   width: 100%;
   box-sizing: border-box;
   background-color: var(--panels-color);
+  border-top: solid var(--border-color) 1px;
 }
 </style>
