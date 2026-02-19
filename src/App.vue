@@ -105,7 +105,7 @@ header {
   display: flex;
   flex-direction: row;
   background-color: var(--background-color);
-  height: calc(100dvh - 50px);
+  min-height: calc(100dvh - 50px);
 }
 
 .navigation-panel {
