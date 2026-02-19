@@ -1,8 +1,8 @@
 <template>
-  <div class="color" />
+  <div class="color" @click="isShowPanel = true"/>
 
-  <div class="picker-panel">
-    <div class="selected-color" />
+  <div class="picker-panel" v-show="isShowPanel">
+    <div class="selected-color" @click="isShowPanel = false"/>
 
     <div class="hexagon-box">
       <canvas
@@ -96,6 +96,8 @@ export default {
       transparencyCaretPos: 0,
 
       colorPixels: [],
+
+      isShowPanel: false,
     }
   },
   mounted() {
@@ -235,8 +237,11 @@ export default {
 }
 
 .color {
-  height: 50px;
-  width: 50px;
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  box-shadow: inset var(--border-color) 0 0 0 2px;
+  border-radius: 5px;
   background-color: v-bind(rgbaColor);
 }
 

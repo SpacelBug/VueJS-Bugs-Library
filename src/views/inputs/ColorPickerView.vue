@@ -1,6 +1,5 @@
 <template>
   <div class="component-view">
-    <color-picker></color-picker>
     <ColorHexagon />
     <div class="description">
       <h3>ColorPicker component</h3>
