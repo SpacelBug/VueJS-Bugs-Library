@@ -34,6 +34,13 @@
         <router-link class="side-link" :to="{name: 'themes'}">
           Themes
         </router-link>
+        <router-link
+            class="side-link"
+            :to="{ name: 'animated-backgrounds' }"
+        >
+          Animated Backgrounds
+        </router-link>
+
 
         <div class="theme-swapper">
           <span @click="changeTheme">Default</span>

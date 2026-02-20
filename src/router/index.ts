@@ -129,9 +129,9 @@ const router = createRouter({
       ]
     },
     {
-      name: "fun",
-      path: "/fun",
-      component: () => import("../views/fun/FunView.vue"),
+      name: "animated-backgrounds",
+      path: "/animated-backgrounds",
+      component: () => import("../views/animated-backgrounds/AnimatedBackgrounds.vue"),
     },
   ],
 })
