@@ -10,6 +10,7 @@ export default {
     width: { type: Number, default: null },
     height: { type: Number, default: null },
     starsCount: { type: Number, default: 200 },
+    startsMaxSize: { type: Number, default: 1 },
     /**
      * if parallaxStrength is 0, stars will not move on mouse move, 
      * if it's 1 they will move by their radius, 
@@ -61,7 +62,7 @@ export default {
         this.stars.push({
           x: Math.random() * this.$refs.canvas.width,
           y: Math.random() * this.$refs.canvas.height,
-          r: Math.random() * 1.2 + 0.2,
+          r: (Math.random() * (this.startsMaxSize - 0) + this.startsMaxSize) + 0.2,
           alpha: Math.random(),
           speed: Math.random() * 0.02,
           color: this.startColors[Math.floor(Math.random() * this.startColors.length)]
