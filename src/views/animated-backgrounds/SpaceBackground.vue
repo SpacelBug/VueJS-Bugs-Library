@@ -86,8 +86,8 @@ export default {
         ctx.beginPath();
         ctx.arc(star.x + offsetX, star.y + offsetY, star.r, 0, Math.PI * 2);
         ctx.fillStyle = star.color.replace('hsl', 'hsla').replace(')', `, ${star.alpha})`)
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = "rgba(180, 190, 255, 0.8)";
+        ctx.shadowBlur = 16
+        ctx.shadowColor = star.color.replace('hsl', 'hsla').replace(')', `, ${star.alpha})`)
         ctx.fill();
       }
 
