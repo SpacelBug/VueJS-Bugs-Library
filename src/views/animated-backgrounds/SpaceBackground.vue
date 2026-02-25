@@ -21,6 +21,7 @@ export default {
       type: Array,
       default: () => [
         "hsl(220, 20%, 50%)",
+        "hsl(50, 50%, 50%)",
         "hsl(270, 20%, 50%)",
         "hsl(150, 20%, 50%)",
       ]
