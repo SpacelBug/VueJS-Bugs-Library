@@ -133,6 +133,11 @@ const router = createRouter({
       path: "/animated-backgrounds",
       component: () => import("../views/animated-backgrounds/AnimatedBackgrounds.vue"),
     },
+    {
+      name: "webgl",
+      path: "/webgl",
+      component: () => import("../views/webgl/WebGLView.vue"),
+    }
   ],
 })
 

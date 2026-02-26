@@ -40,6 +40,12 @@
         >
           Animated Backgrounds
         </router-link>
+        <router-link
+            class="side-link"
+            :to="{ name: 'webgl' }"
+        >
+          WebGL
+        </router-link>
 
 
         <div class="theme-swapper">
