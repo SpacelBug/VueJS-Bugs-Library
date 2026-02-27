@@ -47,7 +47,7 @@
           <span @click="changeTheme('light')">Light</span>
         </div>
       </div>
-      <div class="section-view">
+      <div :class="{'section-view': $route.name !== 'animated-backgrounds', 'section-view-backgrounds': $route.name === 'animated-backgrounds' }">
         <router-view></router-view>
       </div>
     </div>
@@ -138,18 +138,18 @@ header {
   font-size: var(--big-font-size);
 }
 
-.section-options {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 0 0 0 16px;
-}
-
 .section-view {
+  position: relative;
   box-sizing: border-box;
   padding: 64px;
   width: 100%;
   height: 100%;
+}
+
+.section-view-backgrounds {
+  position: relative;
+  min-height: 100vh;
+  min-width: calc(100% - 300px);
 }
 
 .theme-swapper {
