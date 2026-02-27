@@ -1,35 +1,26 @@
 <template>
-  <div class="fun-examples">
-    <div class="main-box">
-      <h3>Stars background</h3>
-      <div class="wrapper">
-        <stars-background :stars-count="100"></stars-background>
-      </div>
-    </div>
-    <div class="main-box">
-      <h3>Stars background</h3>
-      <div class="wrapper">
-        <stars-background
-            :sparkle="true"
-            :speed="0.2"
-            :stars-count="50"
-        ></stars-background>
-      </div>
-    </div>
-    <div class="main-box">
-      <h3>Space background <button @click="$refs.space.$el.requestFullscreen()">FullScreen</button></h3>
-      <div
-          class="wrapper"
-          style="width: 500px; height: 500px;"
-      >
-        <space-background :stars-count="starsCount" ref="space"></space-background>
-      </div>
-      <input
-          type="number"
-          v-model="starsCount"
-      >
-    </div>
+  <div class="backgrounds-selector">
+    <div class="various" @click="selectedBackground = 'stars'">stars</div>
+    <div class="various" @click="selectedBackground = 'starsSparkles'">stars (sparkles)</div>
+    <div class="various" @click="selectedBackground = 'space'">space</div>
   </div>
+  <stars-background
+      v-if="selectedBackground === 'stars'"
+      :speed="0.2"
+      :stars-count="50"
+  />
+  <stars-background
+      v-if="selectedBackground === 'starsSparkles'"
+      :sparkle="true"
+      :speed="0.2"
+      :stars-count="50"
+  />
+  <space-background
+      v-if="selectedBackground === 'space'"
+      style="position: absolute;  z-index: 0; top: 0; left: 0;"
+      :stars-count="starsCount"
+      ref="space"
+  />
 </template>
 
 <script>
@@ -45,6 +36,7 @@ export default {
   data() {
     return {
       starsCount: 500,
+      selectedBackground: null,
     }
   },
 };
@@ -60,25 +52,21 @@ export default {
   padding: 16px;
 }
 
-.main-box {
+.backgrounds-selector {
+  position: absolute;
+  z-index: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 16px;
-  width: fit-content;
-  height: fit-content;
-  position: relative;
-  background-color: var(--panels-color);
-  padding: 16px;
-  border-radius: 5px;
+  margin: 16px 0 0 16px;
 }
 
-.wrapper {
-  box-sizing: border-box;
+.various {
+  cursor: pointer;
 }
 
-/*Space gradient*/
-.wrapper:nth-last-child(2) {
-  border-radius: 10px;
+.various:hover {
+  color: var(--accent-color);
 }
 
 input {
