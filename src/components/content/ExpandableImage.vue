@@ -5,7 +5,7 @@
         :src="src"
         @error="onError"
         @load="onLoad"
-        @click="isExpanded = true"
+        @click="onClick"
     >
     <div
         v-else
@@ -46,12 +46,28 @@ export default {
       isExpanded: false,
     }
   },
+  watch: {
+    isExpanded(newValue) {
+      if (newValue === false) {
+        document.removeEventListener("keydown", this.normalize)
+      }
+    }
+  },
   methods: {
     onLoad() {
       this.isLoaded = true
     },
     onError() {
       this.isLoaded = false
+    },
+    onClick() {
+      this.isExpanded = true
+      document.addEventListener("keydown", this.normalize)
+    },
+    normalize() {
+      if (event.key === "Escape") {
+        this.isExpanded = false
+      }
     }
   }
 }
