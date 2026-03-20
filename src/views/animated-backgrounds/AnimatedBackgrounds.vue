@@ -3,6 +3,7 @@
     <div class="various" @click="selectedBackground = 'stars'">stars</div>
     <div class="various" @click="selectedBackground = 'starsSparkles'">stars (sparkles)</div>
     <div class="various" @click="selectedBackground = 'space'">space</div>
+    <div class="various" @click="selectedBackground = 'spaceSimple'">space</div>
   </div>
   <stars-background
       v-if="selectedBackground === 'stars'"
@@ -21,6 +22,14 @@
       :stars-count="starsCount"
       ref="space"
   />
+  <space-background
+      v-if="selectedBackground === 'spaceSimple'"
+      style="position: absolute;  z-index: 0; top: 0; left: 0; background: none;"
+      :stars-count="starsCount"
+      :start-colors="['hsl(220, 20%, 50%)']"
+      :is-nebulas="false"
+      ref="space"
+  />
 </template>
 
 <script>
@@ -35,7 +44,7 @@ export default {
   },
   data() {
     return {
-      starsCount: 500,
+      starsCount: 200,
       selectedBackground: null,
     }
   },

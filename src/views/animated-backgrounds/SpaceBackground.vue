@@ -36,7 +36,8 @@ export default {
         "hsl(150, 20%, 50%)",
       ]
     },
-    dive: { type: Boolean, default: true }
+    dive: { type: Boolean, default: true },
+    isNebulas: { type: Boolean, default: true }
   },
   data() {
     return {
@@ -90,7 +91,7 @@ export default {
           points: [],
           color: `hsl(${Math.random() * (360 - 0) + 360}, 50%, 50%)`,
           speed: Math.random() * 0.001,
-          alpha: Math.random() * 0.04,
+          alpha: Math.random() * 0.03,
         }
 
         const nebulaSize = (Math.random() * (200 - 0) + 200)
@@ -183,7 +184,7 @@ export default {
         this.$refs.nebulaCanvas.height = this.height ? this.height : parentRect.height
       }
 
-      this.createNebulas()
+      if (this.isNebulas) this.createNebulas()
       this.createStars()
     },
     drawBackground() {
@@ -214,7 +215,7 @@ canvas {
 }
 
 #nebulaCanvas {
-  filter: blur(40px);
+  filter: blur(100px);
   z-index: 0;
 }
 
