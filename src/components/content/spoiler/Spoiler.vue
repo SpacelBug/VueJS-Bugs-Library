@@ -26,7 +26,7 @@
 export default {
   name: 'Spoiler',
   props: {
-    width: {type: Number, default: 300}
+    width: { type: Number, default: 300 }
   },
   data() {
     return {
@@ -40,7 +40,6 @@ export default {
 </script>
 
 <style scoped>
-
 .component-box {
   width: v-bind(width + 'px');
 }
@@ -82,5 +81,4 @@ export default {
 .drop-leave-from {
   max-height: 100%;
 }
-
 </style>
