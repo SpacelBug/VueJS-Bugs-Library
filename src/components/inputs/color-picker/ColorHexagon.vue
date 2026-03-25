@@ -195,7 +195,7 @@ export default {
         this.colorPixels = pixels.data
       }
     },
-    additionalParamClick(paramName) {
+    additionalParamChange(paramName) {
       if (paramName === 'saturation') {
         this.saturationCaretPos = event.clientX - event.target.getBoundingClientRect().left
       } else if (paramName === 'lightness') {
