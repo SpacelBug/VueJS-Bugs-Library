@@ -282,6 +282,7 @@ export default {
 .lightness {
   position: relative;
   display: flex;
+  align-items: center;
   border: solid 1px white;
   width: v-bind(width / 2 + 'px');
   height: 15px;
