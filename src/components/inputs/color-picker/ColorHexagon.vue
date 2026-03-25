@@ -301,6 +301,7 @@ export default {
 }
 
 .param-caret {
+  pointer-events: none;
   position: absolute;
   height: 100%;
   width: 2px;
