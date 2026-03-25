@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import TimeInput from '@/components/inputs/time/TimeInput.vue';
+import TimeInput from '@/components/inputs/TimeInput.vue';
 
 export default {
     name: 'SwitchView',
