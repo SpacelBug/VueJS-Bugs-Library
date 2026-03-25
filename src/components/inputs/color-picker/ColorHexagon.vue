@@ -33,7 +33,10 @@
           class="saturation"
           :width="width / 2"
           height="10px"
-          @click="additionalParamClick('saturation')"
+          @mousedown="additionalParamChange('saturation'); isMouseDown = true"
+          @mouseup="isMouseDown = false"
+          @mouseleave="isMouseDown = false"
+          @mousemove="isMouseDown ? additionalParamChange('saturation') : None"
       >
         <div
             class="param-caret"
@@ -47,7 +50,10 @@
           class="lightness"
           :width="width / 2"
           height="10px"
-          @click="additionalParamClick('lightness')"
+          @mousedown="additionalParamChange('lightness'); isMouseDown = true"
+          @mouseup="isMouseDown = false"
+          @mouseleave="isMouseDown = false"
+          @mousemove="isMouseDown ? additionalParamChange('lightness') : None"
       >
         <div
             class="param-caret"
@@ -61,7 +67,10 @@
           class="transparency"
           :width="width / 2"
           height="10px"
-          @click="additionalParamClick('transparency')"
+          @mousedown="additionalParamChange('transparency'); isMouseDown = true"
+          @mouseup="isMouseDown = false"
+          @mouseleave="isMouseDown = false"
+          @mousemove="isMouseDown ? additionalParamChange('transparency') : None"
       >
         <div
             class="param-caret"
