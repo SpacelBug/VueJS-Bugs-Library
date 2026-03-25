@@ -5,7 +5,7 @@
         @click="isShowContent = !isShowContent"
     >
       <slot name="caption" />
-      <div :class="['arrow-head-icon', {'rotated': isShowContent}]" :key="isShowContent"/>
+      <div :class="['arrow-head-icon', { 'rotated': isShowContent }]" />
     </div>
 
     <transition
