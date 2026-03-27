@@ -190,7 +190,7 @@ export default {
     drawBackground() {
       this.resize()
       this.drawStars()
-      this.drawNebulas()
+      if (this.isNebulas) this.drawNebulas()
     }
   }
 }
