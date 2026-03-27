@@ -29,11 +29,13 @@ export default {
     startColors: {
       type: Array,
       default: () => [
-        "hsl(220, 20%, 50%)",
-        "hsl(50, 50%, 50%)",
-        "hsl(357, 60%, 50%)",
-        "hsl(270, 20%, 50%)",
-        "hsl(150, 20%, 50%)",
+        "hsl(220, 57%, 64%)",
+        "hsl(204, 52%, 88%)",
+        "hsl(0, 0%, 100%)",
+        "hsl(59, 64%, 76%)",
+        "hsl(54, 81%, 59%)",
+        "hsl(14, 68%, 56%)",
+        "hsl(0, 74%, 53%)",
       ]
     },
     dive: { type: Boolean, default: true },
