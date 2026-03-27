@@ -5,7 +5,7 @@
           type="text"
           ref="hours"
           :value="hours !== null ? hours.toString().padStart(2, '0') : null"
-          @click="select"
+          @click="$event.target.select()"
           placeholder="00"
           @keydown.prevent="hours = checkValue(23, $refs.minutes); updateModelValue()"
       >
@@ -14,7 +14,7 @@
           type="text"
           ref="minutes"
           :value="minutes !== null ? minutes.toString().padStart(2, '0') : null"
-          @click="select"
+          @click="$event.target.select()"
           placeholder="00"
           @keydown.prevent="minutes = checkValue(59, $refs.seconds); updateModelValue()"
       >
@@ -23,7 +23,7 @@
           type="text"
           ref="seconds"
           :value="seconds !== null ? seconds.toString().padStart(2, '0') : null"
-          @click="select"
+          @click="$event.target.select()"
           placeholder="00"
           @keydown.prevent="seconds = checkValue(59); updateModelValue()"
       >
@@ -261,10 +261,6 @@ export default {
   align-items: center;
 }
 
-.divider {
-  color: white;
-}
-
 input {
   background: transparent;
   border: none;
@@ -272,7 +268,7 @@ input {
   padding: 0;
   width: 2ch;
   height: fit-content;
-  color: white;
+  color: var(--font-color);
   user-select: all;
 }
 
