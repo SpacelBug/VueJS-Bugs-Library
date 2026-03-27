@@ -60,7 +60,10 @@ npm run dev
 - Tool-Tip
 - Context Menu
 - Style Variables
+- Tags
 
 ### Other
 
 **Theme Changer**
+
+**Animated Backgrounds**
