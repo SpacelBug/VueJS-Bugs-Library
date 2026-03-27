@@ -96,11 +96,11 @@ export default {
         ctx.clearRect(0, 0, canvas.width, canvas.height)
 
         for (let particle of this.particles) {
+          particle.alpha += particle.speedAlpha
           if ((particle.alpha > 1) || (particle.alpha < 0.1)) {
             particle.speedAlpha = -particle.speedAlpha
           }
 
-          particle.alpha = particle.alpha + particle.speedAlpha
 
           if ((particle.x > canvas.width) || (particle.x < 0)) {
             particle.speedX = -particle.speedX
