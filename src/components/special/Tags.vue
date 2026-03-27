@@ -1,9 +1,13 @@
 <template>
   <div class="tags">
-    <transition-group name="fade">
+    <transition-group
+        name="fade"
+        @before-leave="beforeLeave"
+    >
       <template v-for="(tag, index) in tags">
         <div
             v-if="index < max || isShowAll"
+            :key="tag"
             class="tag"
         >
           <div
@@ -78,6 +82,18 @@ export default {
       }, deep: true
     }
   },
+  methods: {
+    beforeLeave(el) {
+      const container = el.parentNode;
+      const containerRect = container.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+
+      el.style.left = (elRect.left - containerRect.left) + 'px';
+      el.style.top = (elRect.top - containerRect.top) + 'px';
+      el.style.width = el.offsetWidth + 'px';
+      el.style.position = 'absolute';
+    }
+  }
 }
 </script>
 
@@ -135,16 +151,15 @@ input {
 
 /*Transition*/
 
-.fade-enter-active, .fade-leave-active, .fade-move {
-  transition: all 0.5s; 
-}
-
-.fade-leave-active {
-  position: absolute;
+.fade-enter-active,
+.fade-leave-active,
+.fade-move {
+  transition: all 0.5s;
 }
 
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+  transform: translateY(20px);
 }
 </style>
