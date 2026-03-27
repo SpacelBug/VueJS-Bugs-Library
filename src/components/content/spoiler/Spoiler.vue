@@ -5,7 +5,7 @@
         @click="isShowContent = !isShowContent"
     >
       <slot name="caption" />
-      <div :class="['arrow-head-icon', {'rotated': isShowContent}]" :key="isShowContent"/>
+      <div :class="['arrow-head-icon', { 'rotated': isShowContent }]" />
     </div>
 
     <transition
@@ -26,7 +26,7 @@
 export default {
   name: 'Spoiler',
   props: {
-    width: {type: Number, default: 300}
+    width: { type: Number, default: 300 }
   },
   data() {
     return {
@@ -40,7 +40,6 @@ export default {
 </script>
 
 <style scoped>
-
 .component-box {
   width: v-bind(width + 'px');
 }
@@ -56,10 +55,9 @@ export default {
 .arrow-head-icon {
   mask-image: url("ArrowHead.svg");
   mask-size: contain;
-  background-color: white;
+  background-color: var(--font-color);
   width: 20px;
   height: 20px;
-  transition: all 0.5s ease
 }
 
 .rotated {
@@ -83,5 +81,4 @@ export default {
 .drop-leave-from {
   max-height: 100%;
 }
-
 </style>
