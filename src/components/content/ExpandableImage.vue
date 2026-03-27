@@ -5,7 +5,7 @@
         :src="src"
         @error="onError"
         @load="onLoad"
-        @click="isExpanded = true"
+        @click="onClick"
     >
     <div
         v-else
@@ -17,16 +17,18 @@
     </div>
   </div>
 
-  <div
-      v-if="isExpanded"
-      class="expanded-image-wrapper"
-      @click="isExpanded = false"
-  >
-    <img
-        :src="src"
-        class="expanded-image"
+  <transition name="fade">
+    <div
+        v-if="isExpanded"
+        class="expanded-image-wrapper"
+        @click="isExpanded = false"
     >
-  </div>
+      <img
+          :src="src"
+          class="expanded-image"
+      >
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -44,12 +46,28 @@ export default {
       isExpanded: false,
     }
   },
+  watch: {
+    isExpanded(newValue) {
+      if (newValue === false) {
+        document.removeEventListener("keydown", this.normalize)
+      }
+    }
+  },
   methods: {
     onLoad() {
       this.isLoaded = true
     },
     onError() {
       this.isLoaded = false
+    },
+    onClick() {
+      this.isExpanded = true
+      document.addEventListener("keydown", this.normalize)
+    },
+    normalize() {
+      if (event.key === "Escape") {
+        this.isExpanded = false
+      }
     }
   }
 }
@@ -84,6 +102,16 @@ img {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
+}
+
+/*Transition*/
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: all 0.3s ease;
 }
 
 </style>
