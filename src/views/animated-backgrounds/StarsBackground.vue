@@ -77,6 +77,8 @@ export default {
         } else {
           ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2)
           ctx.fillStyle = 'white'
+          ctx.shadowBlur = 8
+          ctx.shadowColor = '#ffffff'
           ctx.fill()
         }
       }
