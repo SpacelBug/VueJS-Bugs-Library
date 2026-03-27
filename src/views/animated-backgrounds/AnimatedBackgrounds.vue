@@ -4,6 +4,10 @@
     <div class="various" @click="selectedBackground = 'starsSparkles'">stars (sparkles)</div>
     <div class="various" @click="selectedBackground = 'space'">space</div>
     <div class="various" @click="selectedBackground = 'spaceSimple'">space</div>
+    <div
+        class="various"
+        @click="selectedBackground = 'particleBackground'"
+    >particles</div>
   </div>
   <stars-background
       v-if="selectedBackground === 'stars'"
@@ -30,17 +34,20 @@
       :is-nebulas="false"
       ref="space"
   />
+  <particles-background v-if="selectedBackground === 'particleBackground'"/>
 </template>
 
 <script>
 import StarsBackground from './StarsBackground.vue';
 import SpaceBackground from './SpaceBackground.vue';
+import ParticlesBackground from './ParticlesBackground.vue';
 
 export default {
   name: 'FunView',
   components: {
     StarsBackground,
     SpaceBackground,
+    ParticlesBackground,
   },
   data() {
     return {
