@@ -81,6 +81,11 @@ const router = createRouter({
           path: "style-variables",
           component: () => import("../views/special/StyleVariablesView.vue"),
         },
+        {
+          name: "tags",
+          path: "tags",
+          component: () => import("../views/special/TagsView.vue"),
+        },
       ],
     },
     {
@@ -124,9 +129,9 @@ const router = createRouter({
         {
           name: "themes",
           path: "/themes",
-          component: () => import("@/views/features/ThemesView.vue")
-        }
-      ]
+          component: () => import("@/views/features/ThemesView.vue"),
+        },
+      ],
     },
     {
       name: "animated-backgrounds",

@@ -18,6 +18,12 @@
     >
       Style Variables
     </router-link>
+    <router-link
+        :to="{ name: 'tags' }"
+        class="side-link"
+    >
+      Tags
+    </router-link>
   </div>
 </template>
 
