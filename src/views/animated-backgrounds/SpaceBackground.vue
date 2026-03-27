@@ -19,14 +19,14 @@ export default {
     width: { type: Number, default: null },
     height: { type: Number, default: null },
     starsCount: { type: Number, default: 300 },
-    startsMaxSize: { type: Number, default: 1 },
+    starsMaxSize: { type: Number, default: 50 },
     /**
      * if parallaxStrength is 0, stars will not move on mouse move, 
      * if it's 1 they will move by their radius, 
      * if it's 2 they will move twice more, etc
      */
     parallaxStrength: { type: Number, default: 1 },
-    startColors: {
+    starsColors: {
       type: Array,
       default: () => [
         "hsl(220, 57%, 64%)",
@@ -52,6 +52,8 @@ export default {
 
       mouseX: 0,
       mouseY: 0,
+
+      starSprites: [],
     }
   },
   mounted() {
@@ -61,6 +63,7 @@ export default {
       this.mouseY = e.clientY / window.innerHeight - 0.5;
     })
 
+    this.createStarSprites()
     this.drawBackground()
   },
   watch: {
@@ -70,6 +73,27 @@ export default {
     },
   },
   methods: {
+    createStarSprites() {
+      for (let color of this.starsColors) {
+        const size = this.starsMaxSize;
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        const gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+
+        gradient.addColorStop(0, color.replace('hsl', 'hsla').replace(')', ', 1)'));
+        gradient.addColorStop(0.2, color.replace('hsl', 'hsla').replace(')', ', 1)'));
+        gradient.addColorStop(0.25, color.replace('hsl', 'hsla').replace(')', ', 0.2)'));
+        gradient.addColorStop(1, color.replace('hsl', 'hsla').replace(')', ', 0)'));
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, size, size);
+
+        this.starSprites.push(canvas)
+      }
+    },
     createStars() {
       this.stars = []
 
@@ -77,10 +101,11 @@ export default {
         this.stars.push({
           x: Math.random() * this.$refs.canvas.width,
           y: Math.random() * this.$refs.canvas.height,
-          r: (Math.random() * (this.startsMaxSize - 0) + this.startsMaxSize) + 0.2,
+          size: Math.random() * (this.starsMaxSize - 1 + 1) + 1,
           alpha: Math.random(),
-          speed: Math.random() * 0.02,
-          color: this.startColors[Math.floor(Math.random() * this.startColors.length)]
+          speed: Math.random() * 0.001 + 0.005,
+          color: this.starsColors[Math.floor(Math.random() * this.starsColors.length)],
+          sprite: this.starSprites[Math.floor(Math.random() * ((this.starSprites.length - 1) - 0 + 1) + 0)],
         })
       }
     },
@@ -93,7 +118,7 @@ export default {
           points: [],
           color: `hsl(${Math.random() * (360 - 0) + 360}, 50%, 50%)`,
           speed: Math.random() * 0.001,
-          alpha: Math.random() * 0.03,
+          alpha: Math.random() * 0.1,
         }
 
         const nebulaSize = (Math.random() * (200 - 0) + 200)
@@ -113,8 +138,6 @@ export default {
 
         this.nebulas.push(nebula)
       }
-
-      console.log(this.nebulas)
     },
     drawStars() {
       const canvas = document.querySelector('#spaceCanvas')
@@ -123,21 +146,27 @@ export default {
       ctx.clearRect(0, 0, this.$refs.canvas.width, this.$refs.canvas.height);
 
       for (const star of this.stars) {
-        const offsetX = this.mouseX * star.r * 10 * this.parallaxStrength;
-        const offsetY = this.mouseY * star.r * 10 * this.parallaxStrength;
+        const offsetX = this.mouseX * star.size * 10 * this.parallaxStrength;
+        const offsetY = this.mouseY * star.size * 10 * this.parallaxStrength;
 
         star.alpha += star.speed;
-        if (star.alpha > 1 || star.alpha < 0) {
-          star.speed *= -1;
+        if (star.alpha > 1) {
+          star.alpha = 1;
+          star.speed = -star.speed;
+        } else if (star.alpha < 0.1) {
+          star.alpha = 0.1;
+          star.speed = -star.speed;
         }
-
-        ctx.beginPath();
-        ctx.filter = "none"
-        ctx.arc(star.x + offsetX, star.y + offsetY, star.r, 0, Math.PI * 2);
-        ctx.fillStyle = star.color.replace('hsl', 'hsla').replace(')', `, ${star.alpha})`)
-        ctx.shadowBlur = 16
-        ctx.shadowColor = star.color.replace('hsl', 'hsla').replace(')', `, ${star.alpha})`)
-        ctx.fill();
+          
+        ctx.save()
+        ctx.globalAlpha = star.alpha
+        ctx.drawImage(
+          star.sprite,
+          (star.x + offsetX) - (star.size / 2),
+          (star.y + offsetY) - (star.size / 2),
+          star.size,
+          star.size)
+        ctx.restore()
       }
 
       return requestAnimationFrame(this.drawStars);
