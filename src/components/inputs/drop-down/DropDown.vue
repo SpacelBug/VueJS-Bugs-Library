@@ -61,11 +61,6 @@
 
 <script>
 export default {
-  /**
-   * Drop Down element
-   * ---
-   * Have 3 different types: single, multi, filtering
-   */
   name: 'DropDown',
   props: {
     // Values
