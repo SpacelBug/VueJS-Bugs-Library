@@ -34,6 +34,7 @@
           v-show="isShowOptions"
       >
         <div
+            v-if="emptyOptionText"
             class="option empty-option"
             @click="$emit('update:modelValue', null); $refs.main.blur()"
         >
@@ -72,7 +73,7 @@ export default {
     options: { type: Array, default: [] },
     // Text fields
     placeholder: { type: String, default: 'select value' },
-    emptyOptionText: { type: String, default: 'empty' },
+    emptyOptionText: { type: String, default: null },
     noOptionsText: { type: String, default: 'have no options' },
     // Size
     width: { type: [Number], default: null },
