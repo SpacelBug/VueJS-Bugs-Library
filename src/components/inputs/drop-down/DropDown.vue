@@ -70,12 +70,6 @@ export default {
     // Values
     modelValue: null,
     options: { type: Array, default: [] },
-    // Type of select
-    type: {
-      type: String, default: 'single', validator: (value) => {
-        return ['single', 'multi', 'filtering'].includes(value)
-      }
-    },
     // Text fields
     placeholder: { type: String, default: 'select value' },
     emptyOptionText: { type: String, default: 'empty' },
