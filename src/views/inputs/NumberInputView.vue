@@ -1,25 +1,34 @@
 <template>
   <div class="component-view">
     <div class="component-various">
-      <NumberInput
-          v-model="values[0]"
-          @focusin="focused[0] = true"
-          @focusout="focused[0] = false"
-      />
-      <NumberInput
-          v-model="values[1]"
-          :fitContent="true"
-          @focusin="focused[1] = true"
-          @focusout="focused[1] = false"
-      />
-      <NumberInput
-          v-model="values[2]"
-          :fitContent="true"
-          @focusin="focused[2] = true"
-          @focusout="focused[2] = false"
-          :min="0"
-          :max="100"
-      />
+      <div class="component-variant">
+        Simple
+        <NumberInput
+            v-model="values[0]"
+            @focusin="focused[0] = true"
+            @focusout="focused[0] = false"
+        />
+      </div>
+      <div class="component-variant">
+        With fitContent="True"
+        <NumberInput
+            v-model="values[1]"
+            :fitContent="true"
+            @focusin="focused[1] = true"
+            @focusout="focused[1] = false"
+        />
+      </div>
+      <div class="component-variant">
+        With fitContent="True", min="0", max="100"
+        <NumberInput
+            v-model="values[2]"
+            :fitContent="true"
+            @focusin="focused[2] = true"
+            @focusout="focused[2] = false"
+            :min="0"
+            :max="100"
+        />
+      </div>
     </div>
 
     <div class="components-data-box">
@@ -32,8 +41,14 @@
       <div class="description">
         <p></p>
         <p><b>Props:</b></p>
-        <p><b>modelValue:</b> v-model prop</p>
-        <p><b>fitContent:</b> </p>
+        <p><b>modelValue:</b> Number</p>
+        v-model prop
+        <p><b>fitContent:</b> Boolean</p>
+        if True, component will stretching for value
+        <p><b>min:</b> Number</p>
+        min value
+        <p><b>max:</b> Number</p>
+        max value
       </div>
     </div>
   </div>
