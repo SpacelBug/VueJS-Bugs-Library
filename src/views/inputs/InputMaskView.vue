@@ -1,19 +1,22 @@
 <template>
   <div class="component-view">
     <div class="components-variants">
-      <InputMask
-          v-model="value"
-          :mask="'999-999-99-99'"
-      />
-      <InputMask
-          v-model="value"
-          :mask="'99-99-99'"
-      />
-      <InputMask
-          v-model="value"
-          :mask="'00:00:00'"
-          :maskChar="'0'"
-      />
+      <div class="component-variant">
+        Setting mask with default maskChar
+        <InputMask
+            v-model="value"
+            :mask="'999-999-99-99'"
+        />
+     </div>
+      <div class="component-variant">
+        Setting mask with maskChar="0" and style="width: 500px"
+        <InputMask
+            v-model="value"
+            :mask="'00:00:00'"
+            :maskChar="'0'"
+            style="width: 500px"
+        />
+      </div>
     </div>
 
     <div class="description">
