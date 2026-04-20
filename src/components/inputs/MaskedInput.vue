@@ -71,12 +71,14 @@ export default {
 }
 
 input {
+  box-sizing: border-box;
   padding: 8px 12px;
   border: none;
   border-radius: 5px;
   outline: none;
   background-color: var(--panels-color);
   color: var(--font-color);
+  width: 100%;
 }
 
 .placeholder {
