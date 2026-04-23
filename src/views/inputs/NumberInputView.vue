@@ -10,21 +10,30 @@
         />
       </div>
       <div class="component-variant">
-        With fitContent="True"
+        Simple style="width: 100px"
         <NumberInput
             v-model="values[1]"
-            :fitContent="true"
             @focusin="focused[1] = true"
             @focusout="focused[1] = false"
+            style="width: 100px"
         />
       </div>
       <div class="component-variant">
-        With fitContent="True", min="0", max="100"
+        With fitContent="True"
         <NumberInput
             v-model="values[2]"
             :fitContent="true"
             @focusin="focused[2] = true"
             @focusout="focused[2] = false"
+        />
+      </div>
+      <div class="component-variant">
+        With fitContent="True", min="0", max="100"
+        <NumberInput
+            v-model="values[3]"
+            :fitContent="true"
+            @focusin="focused[3] = true"
+            @focusout="focused[3] = false"
             :min="0"
             :max="100"
         />
@@ -64,8 +73,8 @@ export default {
   },
   data() {
     return {
-      values: [0, 0, 0],
-      focused: [false, false, false],
+      values: [0, 0, 0, 0],
+      focused: [false, false, false, false],
     }
   }
 }
