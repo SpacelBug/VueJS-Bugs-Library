@@ -82,7 +82,13 @@ export default {
 
 .component-various {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 16px;
+}
+
+.component-variant {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 </style>
