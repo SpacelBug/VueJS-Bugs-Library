@@ -64,13 +64,14 @@ export default {
 
 <style scoped>
 input {
-  field-sizing: v-bind(fieldSizing);
   box-sizing: border-box;
   outline: none;
   border: none;
   border-radius: 5px;
   padding: 8px 16px;
+  field-sizing: v-bind(fieldSizing);
   height: fit-content;
+  width: fit-content;
   background-color: var(--panels-color);
   color: var(--font-color);
 }
