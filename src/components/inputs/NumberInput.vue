@@ -27,6 +27,7 @@ export default {
   methods: {
     async onKeyDown() {
       const excludedKeyCodes = ['Backspace', 'Enter', 'Delete', 'ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown']
+      const number = Number(event.target.value)
 
       if (!excludedKeyCodes.includes(event.key)) {
         event.preventDefault()
@@ -43,8 +44,22 @@ export default {
           this.onInput()
           event.target.setSelectionRange(cursorPos + 1, cursorPos + 1)
         }
+      } else if (event.key === 'ArrowUp') {
+        if (Number.isInteger(number)) {
+          event.preventDefault()
+          if ((this.max !== null) && (number + 1 <= this.max)) {
+            this.$emit('update:modelValue', number + 1)
+          }
+        }
+      } else if (event.key === 'ArrowDown') {
+        if (Number.isInteger(number)) {
+          event.preventDefault()
+          if ((this.min !== null) && (number - 1 >= this.min)) {
+            this.$emit('update:modelValue', number - 1)
+          }
+        }
       } else if (event.key === 'Enter') {
-        await this.$emit('update:modelValue', Number(event.target.value))
+        this.$emit('update:modelValue', number)
       }
     },
     onInput() {
