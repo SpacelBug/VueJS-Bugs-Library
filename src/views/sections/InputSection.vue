@@ -49,6 +49,12 @@
       DropDown
     </router-link>
     <router-link
+        :to="{ name: 'multi-drop-down' }"
+        class="side-link"
+    >
+      MultiDropDown
+    </router-link>
+    <router-link
         :to="{ name: 'slider' }"
         class="side-link"
     >
