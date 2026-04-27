@@ -26,7 +26,7 @@
       >
         {{ placeholder }}
       </div>
-      <div :class="['arrow-head', { 'rotated': isShowOptions }]"/>
+      <div :class="['arrow-head', { 'rotated': isShowOptions }]" />
     </div>
     <transition name="fade">
       <div
@@ -34,9 +34,16 @@
           v-show="isShowOptions"
       >
         <div
+            v-if="emptyOptionText"
+            class="option empty-option"
+            @click="$emit('update:modelValue', null); $refs.main.blur()"
+        >
+          {{ emptyOptionText }}
+        </div>
+        <div
             v-for="(option, index) in options"
             :key="index"
-            :class="['option', {'highlight': keyboardSelectedOptionIndex === index}]"
+            :class="['option', { 'highlight': keyboardSelectedOptionIndex === index }]"
             @click="$emit('update:modelValue', option); $refs.main.blur()"
         >
           {{ option }}
@@ -54,24 +61,14 @@
 
 <script>
 export default {
-  /**
-   * Drop Down element
-   * ---
-   * Have 3 different types: single, multi, filtering
-   */
   name: 'DropDown',
   props: {
     // Values
     modelValue: null,
     options: { type: Array, default: [] },
-    // Type of select
-    type: {
-      type: String, default: 'single', validator: (value) => {
-        return ['single', 'multi', 'filtering'].includes(value)
-      }
-    },
     // Text fields
     placeholder: { type: String, default: 'select value' },
+    emptyOptionText: { type: String, default: null },
     noOptionsText: { type: String, default: 'have no options' },
     // Size
     width: { type: [Number], default: null },
@@ -108,7 +105,7 @@ export default {
       if (['ArrowUp', 'ArrowDown', 'Enter'].includes(event.code)) {
         event.preventDefault()
 
-        if ((event.code === 'ArrowDown') && (this.keyboardSelectedOptionIndex !== (this.options.length - 1)))  {
+        if ((event.code === 'ArrowDown') && (this.keyboardSelectedOptionIndex !== (this.options.length - 1))) {
           this.keyboardSelectedOptionIndex++
         }
         if ((event.code === 'ArrowUp') && (this.keyboardSelectedOptionIndex !== 0)) {
@@ -176,6 +173,10 @@ export default {
   height: fit-content;
   top: v-bind((top + buttonOptionsGap) + 'px');
   white-space: nowrap;
+}
+
+.empty-option {
+  opacity: 0.5;
 }
 
 .option {
