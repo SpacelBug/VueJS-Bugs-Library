@@ -15,6 +15,7 @@
       <div
           v-show="isShowContent"
           class="content"
+          ref="content"
       >
         <slot name="content" />
       </div>
@@ -26,22 +27,45 @@
 export default {
   name: 'Spoiler',
   props: {
-    width: { type: Number, default: 300 }
+    width: { type: Number, default: null }
   },
   data() {
     return {
       isShowContent: false,
+      height: 0,
     };
   },
-  methods: {
-
+  mounted() {
+    this.height = this.getElementHeight(this.$refs.content)
   },
+  methods: {
+    getElementHeight(element) {
+      const clone = element.cloneNode(true);
+
+      clone.style.position = 'absolute';
+      clone.style.visibility = 'hidden';
+      clone.style.display = 'block';
+      clone.style.height = 'auto';
+      clone.style.width = element.parentElement.getBoundingClientRect().width + 'px'
+
+
+      document.body.appendChild(clone);
+
+      const height = clone.offsetHeight;
+
+      document.body.removeChild(clone);
+
+      return height;
+    }
+  }
 };
 </script>
 
 <style scoped>
 .component-box {
-  width: v-bind(width + 'px');
+  display: grid;
+  width: v-bind(width===null ? "100%" : width + 'px');
+  height: fit-content;
 }
 
 .header {
@@ -64,11 +88,15 @@ export default {
   transform: rotate(180deg);
 }
 
+.content {
+  height: fit-content;
+}
+
 /*Animation*/
 
 .drop-enter-from,
 .drop-leave-to {
-  max-height: 0
+  height: 0
 }
 
 .drop-enter-active,
@@ -79,6 +107,6 @@ export default {
 
 .drop-enter-to,
 .drop-leave-from {
-  max-height: 100%;
+  height: v-bind(height + 'px');
 }
 </style>
