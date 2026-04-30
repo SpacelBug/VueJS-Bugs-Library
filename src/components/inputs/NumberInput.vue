@@ -32,17 +32,18 @@ export default {
       if (!excludedKeyCodes.includes(event.key)) {
         event.preventDefault()
 
-        const cursorPos = event.target.selectionStart
+        const cursorStartPos = event.target.selectionStart
+        const cursorEndPos = event.target.selectionEnd
 
-        let firstPart = event.target.value.slice(0, cursorPos)
-        let secondPart = event.target.value.slice(cursorPos)
+        let firstPart = event.target.value.slice(0, cursorStartPos)
+        let secondPart = event.target.value.slice(cursorEndPos)
 
         let result = firstPart + event.key + secondPart
 
         if (/^-?(?:\d+(?:\.\d*)?|\.\d+)$/.test(result)) {
           event.target.value = result
           this.onInput()
-          event.target.setSelectionRange(cursorPos + 1, cursorPos + 1)
+          event.target.setSelectionRange(cursorStartPos + 1, cursorStartPos + 1)
         }
       } else if (event.key === 'ArrowUp') {
         if (Number.isInteger(number)) {
