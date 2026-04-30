@@ -30,6 +30,7 @@ export default {
   name: "AutoComplete",
   props: {
     completeOptions: { type: Array, required: true },
+    maxHeight: { type: Number, default: 300}
   },
   data() {
     return {
@@ -62,6 +63,11 @@ export default {
 </script>
 
 <style scoped>
+.auto-complete-box {
+  position: relative;
+  width: 100%;
+}
+
 input {
   background-color: var(--panels-color);
   border-radius: 5px;
@@ -70,6 +76,7 @@ input {
   color: var(--font-color);
   outline: none;
   text-overflow: ellipsis;
+  margin-bottom: 8px;
 }
 
 .complete-options {
@@ -79,7 +86,8 @@ input {
   flex-direction: column;
   background-color: var(--panels-color);
   border-radius: 5px;
-  max-width: 400px;
+  max-height: v-bind(maxHeight + 'px');
+  overflow: auto;
 }
 
 .option {
