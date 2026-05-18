@@ -31,7 +31,7 @@
       DateInput
     </router-link>
     <router-link
-        to="file-input"
+        :to="{name: 'file-input'}"
         class="side-link"
     >
       FileInput
