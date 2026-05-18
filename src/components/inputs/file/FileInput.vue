@@ -128,7 +128,7 @@ button {
 }
 
 .plus-icon {
-  mask-image: url("./plus-icon.svg");
+  mask-image: url("./plus.svg");
   mask-size: contain;
   background-color: var(--font-color);
   height: 100%;
