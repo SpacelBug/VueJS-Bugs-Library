@@ -80,6 +80,7 @@ export default {
   height: fit-content;
   padding: 8px 16px;
   white-space: nowrap;
+  width: fit-content;
 }
 
 .file-input {
