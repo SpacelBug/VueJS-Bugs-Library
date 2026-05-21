@@ -36,6 +36,12 @@
     >
       Contents
     </router-link>
+    <router-link
+        :to="{ name: 'image-ref-preview' }"
+        class="side-link"
+    >
+      ImageRefPreview
+    </router-link>
   </div>
 </template>
 

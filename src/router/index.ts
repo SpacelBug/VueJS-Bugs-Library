@@ -121,6 +121,11 @@ const router = createRouter({
           name: "contents",
           component: () => import("@/views/content/ContentsView.vue"),
         },
+        {
+          path: "image-ref-preview",
+          name: "image-ref-preview",
+          component: () => import("@/views/content/ImageRefPreviewView.vue"),
+        },
       ],
     },
     {
@@ -136,7 +141,8 @@ const router = createRouter({
     {
       name: "animated-backgrounds",
       path: "/animated-backgrounds",
-      component: () => import("../views/animated-backgrounds/AnimatedBackgrounds.vue"),
+      component: () =>
+        import("../views/animated-backgrounds/AnimatedBackgrounds.vue"),
     },
   ],
 })
