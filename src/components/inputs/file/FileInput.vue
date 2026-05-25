@@ -5,14 +5,14 @@
         hidden
         ref="fileInput"
         :accept="accept"
-        @change="openFile"
+        @input="onChange"
     >
     <div :class="['file-input', { 'short-file-input': view === 'short', 'full-file-input': view === 'full' }]">
       <button
           :class="{'full': view === 'full' }"
-          @click="$refs.fileInput.click()"
+          @click="modelValue ? clearFileInput() : $refs.fileInput.click()"
       >
-        <div class="plus-icon"></div>
+        <div :class="['plus-icon', {'rotate': modelValue}]"/>
       </button>
       <div
           v-if="view !== 'short'"
@@ -58,8 +58,12 @@ export default {
     }
   },
   methods: {
-    openFile(event) {
-      this.$emit('update:modelValue', event.target.files[0])
+    onChange() {
+      this.$emit('update:modelValue', this.$refs.fileInput.files[0])
+    },
+    clearFileInput() {
+      this.$refs.fileInput.value = null
+      this.onChange()
     }
   }
 }
@@ -76,6 +80,7 @@ export default {
   height: fit-content;
   padding: 8px 16px;
   white-space: nowrap;
+  width: fit-content;
 }
 
 .file-input {
@@ -128,10 +133,14 @@ button {
 }
 
 .plus-icon {
-  mask-image: url("./plus-icon.svg");
+  mask-image: url("./plus.svg");
   mask-size: contain;
   background-color: var(--font-color);
   height: 100%;
   aspect-ratio: 1/1;
+}
+
+.rotate {
+  transform: rotate(45deg);
 }
 </style>
