@@ -66,14 +66,15 @@ export default {
       let parentElement = this.$el.parentElement
 
       while (parentElement) {
-        if (parentElement.style.position === 'relative') {
-          break
+        const style = window.getComputedStyle(parentElement)
+        if (style.position === 'relative') {
+          return parentElement
         }
 
         parentElement = parentElement.parentElement
       }
 
-      return parentElement
+      return null
     },
     drawDirection() {
       let verticalDirection = event.clientY < (window.innerHeight / 2) ? 'toBottom' : 'toTop'
