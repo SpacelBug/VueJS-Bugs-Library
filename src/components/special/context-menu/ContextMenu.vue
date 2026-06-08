@@ -66,14 +66,15 @@ export default {
       let parentElement = this.$el.parentElement
 
       while (parentElement) {
-        if (parentElement.style.position === 'relative') {
-          break
+        const style = window.getComputedStyle(parentElement)
+        if (style.position === 'relative') {
+          return parentElement
         }
 
         parentElement = parentElement.parentElement
       }
 
-      return parentElement
+      return null
     },
     drawDirection() {
       let verticalDirection = event.clientY < (window.innerHeight / 2) ? 'toBottom' : 'toTop'
@@ -88,30 +89,36 @@ export default {
     },
     async showContextMenu() {
       await (this.isShow = true)
+      
+      const relativeParent = this.findFirstRelativeParent()
 
-      const relativeParent = this.position !== 'fixed' ? this.findFirstRelativeParent() : null
       let cursorPosX = null
       let cursorPosY = null
-
-      if (relativeParent) {
-        cursorPosX = this.getRelativeCursorPos(relativeParent)[0]
-        cursorPosY = this.getRelativeCursorPos(relativeParent)[1]
+      
+      if (this.position === "fixed") {
+        cursorPosX = event.x
+        cursorPosY = event.y
       } else {
-        cursorPosX = event.pageX
-        cursorPosY = event.pageY
-      }
+        if (relativeParent) {
+          cursorPosX = this.getRelativeCursorPos(relativeParent)[0] - window.scrollX
+          cursorPosY = this.getRelativeCursorPos(relativeParent)[1] - window.scrollY
+        } else {
+          cursorPosX = event.pageX
+          cursorPosY = event.pageY
+        }
+      } 
 
       if (this.drawDirection().horizontalDirection === 'toLeft') {
         this.posStringHorizontal = `left: ${cursorPosX}px`
       } else {
-        let width = relativeParent ? relativeParent.getBoundingClientRect().width : window.innerWidth
+        let width = relativeParent && (this.position !== "fixed") ? relativeParent.getBoundingClientRect().width : window.innerWidth
         this.posStringHorizontal = `right: ${width - cursorPosX}px`
       }
 
       if (this.drawDirection().verticalDirection === 'toBottom') {
         this.posStringVertical = `top: ${cursorPosY}px`
       } else {
-        let height = relativeParent ? relativeParent.getBoundingClientRect().height : window.innerHeight
+        let height = relativeParent && (this.position !== "fixed") ? relativeParent.getBoundingClientRect().height : window.innerHeight
         this.posStringVertical = `bottom: ${height - cursorPosY}px`
       }
 

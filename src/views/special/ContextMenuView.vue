@@ -5,22 +5,47 @@
           class="component-variant"
           @contextmenu.prevent="$refs.contextMenuFirst.showContextMenu()"
       >
-        Have no relative parent
+        Have no relative parent (absolute)
         <ContextMenu
             :options="options"
             ref="contextMenuFirst"
         />
       </div>
+
       <div
           class="component-variant"
           @contextmenu.prevent="$refs.contextMenuSecond.showContextMenu()"
           style="position: relative;"
       >
-        Have relative parent
+        Have relative parent (absolute)
+        <ContextMenu
+            :options="options"
+            ref="contextMenuSecond"
+        />
+      </div>
+
+      <div
+          class="component-variant"
+          @contextmenu.prevent="$refs.contextMenuThird.showContextMenu()"
+      >
+        Have no relative parent (fixed)
         <ContextMenu
             :options="options"
             :position="'fixed'"
-            ref="contextMenuSecond"
+            ref="contextMenuThird"
+        />
+      </div>
+
+      <div
+          class="component-variant"
+          @contextmenu.prevent="$refs.contextMenuForth.showContextMenu()"
+          style="position: relative;"
+      >
+        Have relative parent (fixed)
+        <ContextMenu
+            :options="options"
+            :position="'fixed'"
+            ref="contextMenuForth"
         />
       </div>
     </div>
@@ -83,8 +108,8 @@ export default {
 }
 
 .component-variants {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 16px;
   width: 100%;
 }
