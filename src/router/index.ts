@@ -17,6 +17,11 @@ const router = createRouter({
           component: () => import("../views/inputs/DropDownView.vue"),
         },
         {
+          name: "multi-drop-down",
+          path: "multi-drop-down",
+          component: () => import("../views/inputs/MultiDropDownView.vue"),
+        },
+        {
           name: "time-input",
           path: "time-input",
           component: () => import("../views/inputs/TimeInputView.vue"),
