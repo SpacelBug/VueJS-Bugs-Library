@@ -64,14 +64,14 @@ export default {
   name: 'DropDown',
   props: {
     // Values
-    modelValue: null,
+    modelValue: {type : [String, Number, Object, null], default: null},
     options: { type: Array, default: [] },
     // Text fields
     placeholder: { type: String, default: 'select value' },
     emptyOptionText: { type: String, default: null },
     noOptionsText: { type: String, default: 'have no options' },
     // Size
-    width: { type: [Number], default: null },
+    width: { type: [Number, String], default: null },
     buttonOptionsGap: { type: Number, default: 8 }
   },
   computed: {
