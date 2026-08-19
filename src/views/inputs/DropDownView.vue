@@ -32,6 +32,19 @@
           v-model="testValue"
           :width="'100%'"
       />
+
+      <hr>
+
+      Work with objects
+
+      <div class="component-wrap">
+        <drop-down
+            v-model="testValueObject"
+            :options="testObjectOptions"
+            :width="200"
+        />
+        <b>value:</b> {{ testValueObject }}
+      </div>
     </div>
 
     <div class="description">
@@ -40,8 +53,9 @@
         <p>Custom drop down with specific params</p>
         Right click on drop down clear modelValue
         <p><b>Props:</b></p>
-        <p><u>modelValue:</u> String</p> v-model option
-        <p><u>options:</u> Array</p> list of values
+        <p><u>modelValue:</u> String | Number | Object </p> v-model option
+        <p><u>labelKey:</u> String [default="label"] </p> using when options is list of object 
+        <p><u>options:</u> Array</p> list of values (could be a list of objects)
         <p><u>placeholder:</u> String</p> display when value don`t select
         <p><u>emptyOptionText:</u> String</p> text value for option witch clear value
         <p><u>noOptionsText:</u> String</p> text witch display of list of options is empty
@@ -70,12 +84,24 @@ export default {
         'Whale',
         'Test very long value'
       ],
+      testValueObject: null,
+      testObjectOptions: [
+        {label: "Dog", id: 0, name: "Max"},
+        {label: 'Cat', id: 1, name: "Sam"},
+        {label: 'Frog', id: 2, name: "Lance"},
+        {label: 'Whale', id: 3, name: "Mobbi"},
+        {label: 'Test very long value', id: 4, name: null}
+      ]
     }
   }
 };
 </script>
 
 <style scoped>
+hr {
+  width: 100%;
+}
+
 .component-view {
   display: flex;
   flex-direction: row;
@@ -93,5 +119,12 @@ export default {
 
 .description {
   width: 400px;
+}
+
+.component-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
 }
 </style>

@@ -18,7 +18,7 @@
           v-if="modelValue"
           class="selected-option"
       >
-        {{ modelValue }}
+        {{ getLabel(modelValue) }}
       </div>
       <div
           v-else
@@ -46,7 +46,7 @@
             :class="['option', { 'highlight': keyboardSelectedOptionIndex === index }]"
             @click="$emit('update:modelValue', option); $refs.main.blur()"
         >
-          {{ option }}
+          {{ getLabel(option) }}
         </div>
         <div
             v-if="options.length === 0"
@@ -65,6 +65,7 @@ export default {
   props: {
     // Values
     modelValue: {type : [String, Number, Object, null], default: null},
+    labelKey: {type: [Number, String], default: 'label'},
     options: { type: Array, default: [] },
     // Text fields
     placeholder: { type: String, default: 'select value' },
@@ -116,6 +117,13 @@ export default {
           this.$emit('update:modelValue', this.options[this.keyboardSelectedOptionIndex])
           this.$refs.main.blur()
         }
+      }
+    },
+    getLabel(value) {
+      if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+        return value[this.labelKey]
+      } else {
+        return value
       }
     }
   }
