@@ -55,6 +55,12 @@
       MultiDropDown
     </router-link>
     <router-link
+        :to="{ name: 'filter-drop-down' }"
+        class="side-link"
+    >
+      FilterDropDown
+    </router-link>
+    <router-link
         :to="{ name: 'slider' }"
         class="side-link"
     >
