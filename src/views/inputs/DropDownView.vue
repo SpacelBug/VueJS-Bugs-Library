@@ -62,7 +62,7 @@ export default {
   },
   data() {
     return {
-      testValue: false,
+      testValue: null,
       testOptions: [
         'Dog',
         'Cat',
