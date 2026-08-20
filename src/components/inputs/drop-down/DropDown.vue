@@ -119,6 +119,10 @@ export default {
         }
       }
     },
+    /**
+     * Gets the label for a given option based on the labelKey prop or returns the value itself if it's not an object.
+     * @param value - The option value.
+     */
     getLabel(value) {
       if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
         return value[this.labelKey]
