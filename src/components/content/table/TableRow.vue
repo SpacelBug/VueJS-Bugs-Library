@@ -49,6 +49,11 @@ export default {
 </script>
 
 <style scoped>
+
+tr:hover {
+  background-color: color-mix(in srgb, var(--accent-color) 20%, transparent)
+}
+
 td {
   border: solid 1px var(--border-color);
   padding: 4px 8px;
