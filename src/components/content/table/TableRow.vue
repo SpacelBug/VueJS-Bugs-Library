@@ -1,5 +1,5 @@
 <template>
-  <tr @click="$emit('rowClick', row)">
+  <tr>
     <template
         v-if="Array.isArray(row)"
         v-for="(cell, index) in row"
@@ -30,7 +30,7 @@
 <script>
 export default {
   name: 'TableRow',
-  emits: ['rowClick', 'cellClick'],
+  emits: ['cellClick'],
   props: {
     header: Array,
     row: [Array, Object],
