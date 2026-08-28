@@ -18,7 +18,7 @@
           v-if="modelValue"
           class="selected-option"
       >
-        {{ modelValue }}
+        {{ getLabel(modelValue) }}
       </div>
       <div
           v-else
@@ -46,7 +46,7 @@
             :class="['option', { 'highlight': keyboardSelectedOptionIndex === index }]"
             @click="$emit('update:modelValue', option); $refs.main.blur()"
         >
-          {{ option }}
+          {{ getLabel(option) }}
         </div>
         <div
             v-if="options.length === 0"
@@ -64,14 +64,15 @@ export default {
   name: 'DropDown',
   props: {
     // Values
-    modelValue: null,
+    modelValue: {type : [String, Number, Object, null], default: null},
+    labelKey: {type: [Number, String], default: 'label'},
     options: { type: Array, default: [] },
     // Text fields
     placeholder: { type: String, default: 'select value' },
     emptyOptionText: { type: String, default: null },
     noOptionsText: { type: String, default: 'have no options' },
     // Size
-    width: { type: [Number], default: null },
+    width: { type: [Number, String], default: null },
     buttonOptionsGap: { type: Number, default: 8 }
   },
   computed: {
@@ -116,6 +117,17 @@ export default {
           this.$emit('update:modelValue', this.options[this.keyboardSelectedOptionIndex])
           this.$refs.main.blur()
         }
+      }
+    },
+    /**
+     * Gets the label for a given option based on the labelKey prop or returns the value itself if it's not an object.
+     * @param value - The option value.
+     */
+    getLabel(value) {
+      if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+        return value[this.labelKey]
+      } else {
+        return value
       }
     }
   }
@@ -205,7 +217,7 @@ export default {
 }
 
 .arrow-head {
-  mask-image: url("@/assets/icons/SmallArrowHead.svg");
+  mask-image: url("./ArrowHead.svg");
   mask-size: contain;
   background-color: var(--font-color);
   height: 20px;
