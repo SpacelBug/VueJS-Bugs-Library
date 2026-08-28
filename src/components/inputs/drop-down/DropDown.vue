@@ -217,7 +217,7 @@ export default {
 }
 
 .arrow-head {
-  mask-image: url("@/assets/icons/SmallArrowHead.svg");
+  mask-image: url("./ArrowHead.svg");
   mask-size: contain;
   background-color: var(--font-color);
   height: 20px;
