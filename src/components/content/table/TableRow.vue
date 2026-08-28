@@ -13,7 +13,7 @@
         v-else-if="typeof row === 'object'"
         v-for="headerCell, index in header"
     >
-      <td @click="$emit('cellClick', cell)">
+      <td @click="$emit('cellClick', row[headerCell.name])">
         {{ row[headerCell.name] }}
       </td>
     </template>

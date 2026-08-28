@@ -15,70 +15,67 @@
         </th>
       </tr>
     </thead>
+
     <tbody>
       <template v-for="(row, index) in data">
         <TableRow
-            v-if="rowVisibility(index)"
             ref="rows"
             v-bind="$attrs"
             :header="header"
             :row="row"
+            @click="$emit('rowClick', row)"
+            @cell-click="(value) => $emit('cellClick', value)"
         />
       </template>
     </tbody>
-    <tfoot v-if="limitedRows || pagination">
-      <tr>
-        <td :colspan="header.length">
-          <button
-              v-if="limitedRows && showedRows < data.length"
-              @click="showedRows += limitedRows"
-          >Show more</button>
-          <div
-              v-if="pagination"
-              class="pages"
-          >
-            <button
-                v-for="value in paginationStructure"
-                :class="{'active-page': this.page === value}"
-                @click="page = value"
-            >
-              {{ value }}
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tfoot>
   </table>
 </template>
 
 <script>
-import { getConstantValue } from 'typescript';
 import TableRow from './TableRow.vue';
 
 export default {
   name: 'Table',
-  emits: ['headerClick'],
+  emits: ['headerClick', 'rowClick', 'cellClick', 'interceptLast'],
   props: {
     /**
      * Table header. Could be an array of strings or array of objects.
+     * If array of objects, each object should have a name and type property.
+     * If array of strings, each string will be used as the header name and will be connected to the data by index.
      * @example
-     * ['Header', 'Header', 'Header']
+     * ['Header0', 'Header1', 'Header2']
      * or
      * [
-     *  {name: 'Header', type: 'String'}, 
-     *  {name: 'Header', type: 'String'},
-     *  {name: 'Header', type: 'String'}
+     *  {name: 'Header0', type: 'String'}, 
+     *  {name: 'Header1', type: 'String'},
+     *  {name: 'Header2', type: 'String'}
      * ]
      */
     header: { type: [Array, Object] },
     /**
      * Table data. Length of row should be equal header length
+     * Could be an array of arrays with values or array of objects. 
+     * If array of objects, each object should have a key equal to the same name as the header name.
+     * @example
+     * [
+     *  ['Value', 'Value', 'Value'], 
+     *  ['Value', 'Value', 'Value']
+     * ]
+     * or
+     * [
+     * {Header0: 'Value', Header1: 'Value', Header2: 'Value'},
+     * {Header0: 'Value', Header1: 'Value', Header2: 'Value'},
+     * {Header0: 'Value', Header1: 'Value', Header2: 'Value'},
+     * ]
      */
     data: { type: [Array, [Object]] },
 
-    pagination: { type: Number, default: null },
-    infinityScroll: { type: Boolean, default: false},
-    limitedRows: { type: Number, default: null },
+    limit: { type: Number, default: null },
+    scrollBehavior: {
+      type: String, default: "infinityScroll", validator: (value) => {
+        return ['infinityScroll', 'pagination', 'showMore'].includes(value)
+      }
+    },
   },
   components: {
     TableRow,
@@ -90,12 +87,19 @@ export default {
       intersectionObserver: new IntersectionObserver((entries, observer) => {
         if (entries[0].isIntersecting) {
           this.intersectionObserver.disconnect()
-          this.intersectionObserver.observe(this.$refs.rows[this.$refs.rows.length - 1].$el)
-          this.showedRows++
+
+          this.$emit('interceptLast', this.data[this.$refs.rows.length - 1])
         } else {
-          console.log(entries)
+          // console.log(entries)
         }
       }),
+    }
+  },
+  watch: {
+    data: { 
+      handler() {
+        this.intersectionObserver.observe(this.$refs.rows[this.$refs.rows.length - 1].$el)
+      }, deep: true
     }
   },
   async mounted() {
@@ -106,12 +110,7 @@ export default {
       }
     }
 
-    if (this.limitedRows) {
-      this.showedRows = this.limitedRows
-    } else if (this.infinityScroll) {
-      this.showedRows = 1
-      this.intersectionObserver.observe(this.$refs.table)
-    }
+    this.intersectionObserver.observe(this.$refs.rows[this.$refs.rows.length - 1].$el)
   },
   computed: {
     pagesCount() {
@@ -146,20 +145,6 @@ export default {
     }
   },
   methods: {
-    rowVisibility(index) {
-      if (this.showedRows) {
-        return index < this.showedRows
-      } else if (this.pagination) {
-        if (!this.page) {
-          this.page = 1
-        }
-        return (index < (this.page * 10)) && (index >= ((this.page * 10) - this.pagination))
-      } else if (this.infinityScroll) {
-        return index < this.showedRows
-      } else {
-        return true
-      }
-    }
   },
 }
 </script>
