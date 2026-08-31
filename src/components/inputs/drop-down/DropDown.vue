@@ -66,7 +66,20 @@ export default {
     // Values
     modelValue: {type : [String, Number, Object, null], default: null},
     labelKey: {type: [Number, String], default: 'label'},
-    options: { type: Array, default: [] },
+    options: { type: Array, default: [], validator(options) {
+      let types = new Set()
+      
+      for (const option of options) {
+        types.add(typeof(option))
+      }
+
+      if (types.size > 1) {
+        console.error('The "options" parameter must be uniform')
+        return false
+      }
+
+      return true
+    }},
     // Text fields
     placeholder: { type: String, default: 'select value' },
     emptyOptionText: { type: String, default: null },
