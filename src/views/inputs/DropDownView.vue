@@ -42,6 +42,18 @@
             v-model="testValueObject"
             :options="testObjectOptions"
             :width="200"
+            style="background-color: dimgray;"
+        />
+        <b>value:</b> {{ testValueObject }}
+      </div>
+
+      Check validation
+
+      <div class="component-wrap">
+        <drop-down
+            v-model="testValueObject"
+            :options="testObjectOptionsBroken"
+            :width="200"
         />
         <b>value:</b> {{ testValueObject }}
       </div>
@@ -51,7 +63,8 @@
       <h3>Drop-Down component</h3>
       <div class="description">
         <p>Custom drop down with specific params</p>
-        Right click on drop down clear modelValue
+        <p>Right click on drop down clear modelValue</p>
+        <p>Component background-color and color could be set by style attr (style="background-color: dimgray;")</p>
         <p><b>Props:</b></p>
         <p><u>modelValue:</u> String | Number | Object </p> v-model option
         <p><u>labelKey:</u> String [default="label"] </p> using when options is list of object 
@@ -91,7 +104,12 @@ export default {
         {label: 'Frog', id: 2, name: "Lance"},
         {label: 'Whale', id: 3, name: "Mobbi"},
         {label: 'Test very long value', id: 4, name: null}
-      ]
+      ],
+      testObjectOptionsBroken: [
+        { label: 'Frog', id: 2, name: "Lance" },
+        { label: 'Test very long value', id: 4, name: null },
+        "string"
+      ],
     }
   }
 };
