@@ -140,6 +140,8 @@ export default {
   display: flex;
   flex-direction: column;
   width: v-bind(computedWidth);
+  background-color: var(--panels-color);
+  border-radius: 5px;
 }
 
 .selected {
@@ -150,12 +152,12 @@ export default {
   gap: 8px;
   cursor: pointer;
   padding: 8px 16px;
-  background-color: var(--panels-color);
   border-radius: 5px;
   width: 100%;
   min-width: 100%;
   height: fit-content;
   box-sizing: border-box;
+  background-color: inherit;
 }
 
 .selected-option {
@@ -176,7 +178,7 @@ export default {
   z-index: 1;
   box-sizing: border-box;
   overflow: hidden;
-  background-color: var(--panels-color);
+  background-color: inherit;
   border-radius: 5px;
   padding: 4px 16px;
   gap: 4px;
