@@ -54,7 +54,7 @@
           {{ getLabel(option) }}
         </div>
         <div
-            v-if="options.length === 0"
+            v-if="options && options.length === 0"
             class="empty"
         >
           {{ noOptionsText }}
