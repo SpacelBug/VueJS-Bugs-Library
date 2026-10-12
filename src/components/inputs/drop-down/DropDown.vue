@@ -4,21 +4,23 @@
       @focusin="isShowOptions = true"
       @focusout="isShowOptions = false"
       @mousedown.right.prevent
-      :title="modelValue"
+      :title="selectedOption"
       ref="main"
       tabindex="-1"
   >
     <div
         class="selected"
         ref="selected"
-        @click.right.prevent="$emit('update:modelValue', null)"
-        @mousedown.left.prevent="isShowOptions ? $refs.main.blur() : $refs.main.focus()"
+        @click.right.prevent="updateModelValue(null)"
+        @mousedown.left.prevent="
+          isShowOptions ? $refs.main.blur() : $refs.main.focus()
+          "
     >
       <div
-          v-if="modelValue"
+          v-if="selectedOption"
           class="selected-option"
       >
-        {{ getLabel(modelValue) }}
+        {{ getLabel(selectedOption) }}
       </div>
       <div
           v-else
@@ -26,7 +28,7 @@
       >
         {{ placeholder }}
       </div>
-      <div :class="['arrow-head', { 'rotated': isShowOptions }]" />
+      <div :class="['arrow-head', { rotated: isShowOptions }]" />
     </div>
     <transition name="fade">
       <div
@@ -36,15 +38,18 @@
         <div
             v-if="emptyOptionText"
             class="option empty-option"
-            @click="$emit('update:modelValue', null); $refs.main.blur()"
+            @click="updateModelValue(null); $refs.main.blur()"
         >
           {{ emptyOptionText }}
         </div>
         <div
             v-for="(option, index) in options"
             :key="index"
-            :class="['option', { 'highlight': keyboardSelectedOptionIndex === index }]"
-            @click="$emit('update:modelValue', option); $refs.main.blur()"
+            :class="[
+              'option',
+              { highlight: keyboardSelectedOptionIndex === index },
+            ]"
+            @click="updateModelValue(option); $refs.main.blur()"
         >
           {{ getLabel(option) }}
         </div>
@@ -61,75 +66,116 @@
 
 <script>
 export default {
-  name: 'DropDown',
+  name: "DropDown",
+  emits: ['update:modelValue', 'update:value'],
   props: {
     // Values
-    modelValue: {type : [String, Number, Object, null], default: null},
-    labelKey: {type: [Number, String], default: 'label'},
-    options: { type: Array, default: [], validator(options) {
-      let types = new Set()
-      
-      for (const option of options) {
-        types.add(typeof(option))
-      }
+    modelValue: { type: [String, Number, Object, null], default: null },
+    value: { type: [String, Number, null], default: null},
+    // Specific keys for work with objects
+    labelKey: { type: [Number, String], default: "label" }, // values by this key will be show in drop-down
+    valueKey: { type: [Number, String], default: null }, // value by this keu will be return by v-model:value
+    //  Variants for drop=down values
+    options: {
+      type: Array,
+      default: [],
+      validator(options) {
+        let types = new Set()
 
-      if (types.size > 1) {
-        console.error('The "options" parameter must be uniform')
-        return false
-      }
+        for (const option of options) {
+          types.add(typeof option)
+        }
 
-      return true
-    }},
+        if (types.size > 1) {
+          console.error('The "options" parameter must be uniform')
+          return false
+        }
+
+        return true
+      },
+    },
     // Text fields
-    placeholder: { type: String, default: 'select value' },
+    placeholder: { type: String, default: "select value" },
     emptyOptionText: { type: String, default: null },
-    noOptionsText: { type: String, default: 'have no options' },
+    noOptionsText: { type: String, default: "have no options" },
     // Size
     width: { type: [Number, String], default: null },
-    buttonOptionsGap: { type: Number, default: 8 }
+    buttonOptionsGap: { type: Number, default: 8 },
   },
   computed: {
     /**
-     * Dropped part top pos 
+     * Dropped part top pos
      */
     top() {
       return this.$refs.selected.getBoundingClientRect().height
     },
     computedWidth() {
-      return this.width === null ? 'fit-content' : this.width + 'px'
-    }
+      return this.width === null ? "fit-content" : this.width + "px"
+    },
   },
   data() {
     return {
       isShowOptions: false,
+      selectedOption: null,
       keyboardSelectedOptionIndex: -1,
     }
   },
+  mounted() {
+    if (this.value && this.valueKey) {
+      this.setDefaultByKeyedValue(this.valueKey, this.value)
+    }
+  },
   watch: {
+    modelValue(value) {
+      this.selectedOption = value
+      if (this.valueKey) {
+        this.$emit("update:value", this.selectedOption[this.valueKey])
+      }
+    },
+    value(value) {
+      if ((this.value !== null) && (this.valueKey !== null)) {
+        this.setDefaultByKeyedValue(this.valueKey, this.value)
+      }
+    },
     isShowOptions(value) {
       if (value) {
-        document.addEventListener('keydown', this.onKeyPress)
+        document.addEventListener("keydown", this.onKeyPress)
       } else {
-        document.removeEventListener('keydown', this.onKeyPress)
+        document.removeEventListener("keydown", this.onKeyPress)
       }
-    }
+    },
   },
   methods: {
     onKeyPress() {
-      if (['ArrowUp', 'ArrowDown', 'Enter'].includes(event.code)) {
+      if (["ArrowUp", "ArrowDown", "Enter"].includes(event.code)) {
         event.preventDefault()
 
-        if ((event.code === 'ArrowDown') && (this.keyboardSelectedOptionIndex !== (this.options.length - 1))) {
+        if (
+          event.code === "ArrowDown" &&
+          this.keyboardSelectedOptionIndex !== this.options.length - 1
+        ) {
           this.keyboardSelectedOptionIndex++
         }
-        if ((event.code === 'ArrowUp') && (this.keyboardSelectedOptionIndex !== 0)) {
+        if (
+          event.code === "ArrowUp" &&
+          this.keyboardSelectedOptionIndex !== 0
+        ) {
           this.keyboardSelectedOptionIndex--
         }
 
-        if (event.code === 'Enter') {
-          this.$emit('update:modelValue', this.options[this.keyboardSelectedOptionIndex])
+        if (event.code === "Enter") {
+          this.updateModelValue(
+            this.options[this.keyboardSelectedOptionIndex],
+          )
           this.$refs.main.blur()
         }
+      }
+    },
+    updateModelValue(value) {
+      this.$emit('update:modelValue', value)
+
+      if ((this.valueKey !== null) && (typeof value === "object")) {
+        this.$emit('update:value', value[this.valueKey])
       }
     },
     /**
@@ -137,14 +183,32 @@ export default {
      * @param value - The option value.
      */
     getLabel(value) {
-      if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+      if (
+        value !== null &&
+        typeof value === "object" &&
+        !Array.isArray(value)
+      ) {
         return value[this.labelKey]
       } else {
         return value
       }
+    },
+    /**
+     * Value should be unique, or first will be set. Use it only for list of objects. Not simple list!
+     * @param key 
+     * @param value 
+     */
+    setDefaultByKeyedValue(key, value) {
+      for (let option of this.options) {
+        if (option[key] === value) {
+          this.selectedOption = option
+          this.updateModelValue(option)
+          break
+        }
+      }
     }
-  }
-};
+  },
+}
 </script>
 <style scoped>
 .main-box {
@@ -198,7 +262,7 @@ export default {
   width: 100%;
   min-width: fit-content;
   height: fit-content;
-  top: v-bind((top + buttonOptionsGap) + 'px');
+  top: v-bind((top + buttonOptionsGap) + "px");
   white-space: nowrap;
 }
 

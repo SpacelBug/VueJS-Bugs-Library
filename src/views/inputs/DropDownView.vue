@@ -57,6 +57,44 @@
         />
         <b>value:</b> {{ testValueObject }}
       </div>
+      
+      With value key
+
+      <div class="component-wrap">
+        <drop-down
+            v-model="testValueObject"
+            v-model:value="testValueObjectValueKey"
+            :options="testObjectOptionsValueKey"
+            :width="200"
+            :value-key="'name'"
+        />
+        <b>value:</b> {{ testValueObjectValueKey }}
+      </div>
+
+      Without v-model, only v-model:value
+
+      <div class="component-wrap">
+        <drop-down
+            v-model:value="testValueObjectValueKey"
+            :options="testObjectOptionsValueKey"
+            :width="200"
+            :value-key="'name'"
+        />
+        <b>value:</b> {{ testValueObjectValueKey }}
+      </div>
+
+      Check setting option by value
+
+      <div class="component-wrap">
+        <drop-down
+            v-model="testValueObject"
+            v-model:value="testValueObjectValue"
+            :options="testObjectOptionsValueKey"
+            :width="200"
+            :value-key="'name'"
+        />
+        <b>value:</b> {{ testValueObjectValueKey }}
+      </div>
     </div>
 
     <div class="description">
@@ -67,7 +105,9 @@
         <p>Component background-color and color could be set by style attr (style="background-color: dimgray;")</p>
         <p><b>Props:</b></p>
         <p><u>modelValue:</u> String | Number | Object </p> v-model option
+        <p><u>value:</u> String | Number </p> v-model:value option
         <p><u>labelKey:</u> String [default="label"] </p> using when options is list of object 
+        <p><u>valueKey:</u> String </p>
         <p><u>options:</u> Array</p> list of values (could be a list of objects)
         <p><u>placeholder:</u> String</p> display when value don`t select
         <p><u>emptyOptionText:</u> String</p> text value for option witch clear value
@@ -98,6 +138,8 @@ export default {
         'Test very long value'
       ],
       testValueObject: null,
+      testValueObjectValueKey: null,
+      testValueObjectValue: 'Lance',
       testObjectOptions: [
         {label: "Dog", id: 0, name: "Max"},
         {label: 'Cat', id: 1, name: "Sam"},
@@ -110,6 +152,13 @@ export default {
         { label: 'Test very long value', id: 4, name: null },
         "string"
       ],
+      testObjectOptionsValueKey: [
+        { label: "Dog", id: 0, name: "Max" },
+        { label: 'Cat', id: 1, name: "Sam" },
+        { label: 'Frog', id: 2, name: "Lance" },
+        { label: 'Whale', id: 3, name: "Mobbi" },
+        { label: 'Test very long value', id: 4, name: null }
+      ]
     }
   }
 };
