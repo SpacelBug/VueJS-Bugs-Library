@@ -10,6 +10,15 @@
         />
       </div>
       <div class="component-variant">
+        <div class="caption">Register is important</div>
+        <filter-drop-down
+            v-model="selectedOption"
+            :options="options"
+            :width="200"
+            :register-is-important="true"
+        />
+      </div>
+      <div class="component-variant">
         <div class="caption">Default width with emptyOptionText = 'unselect'</div>
         <filter-drop-down
             v-model="selectedOption"

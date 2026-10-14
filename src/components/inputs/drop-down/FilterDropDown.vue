@@ -89,9 +89,9 @@ export default {
 
         for (const value of this.options) {
           if (this.registerIsImportant) {
-            value.toLocaleLowerCase().includes(this.inputtedValue.toLocaleLowerCase()) ? filtered.push(value) : null
-          } else {
             value.includes(this.inputtedValue) ? filtered.push(value) : null
+          } else {
+            value.toLocaleLowerCase().includes(this.inputtedValue.toLocaleLowerCase()) ? filtered.push(value) : null
           }
         }
 
