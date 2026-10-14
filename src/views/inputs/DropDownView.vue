@@ -2,6 +2,16 @@
   <div class="component-view">
     <div class="component-variants">
 
+      <h3>Simple list</h3>
+
+      Default values check
+
+      <drop-down
+          v-model="testDefaultValue"
+          :options="testOptions"
+          :width="200"
+      />
+
       Const width by setting width prop = 200
 
       <drop-down
@@ -33,9 +43,20 @@
           :width="'100%'"
       />
 
+      Only icon variant
+
+      <drop-down
+          v-model="testValue"
+          :options="testOptions"
+          :width="200"
+          :only-icon="true"
+      />
+
       <hr>
 
-      Work with objects
+      <h3>Work with list of objects objects</h3>
+
+      Return object from options
 
       <div class="component-wrap">
         <drop-down
@@ -47,7 +68,7 @@
         <b>value:</b> {{ testValueObject }}
       </div>
 
-      Check validation
+      Check validation (check error in console)
 
       <div class="component-wrap">
         <drop-down
@@ -58,7 +79,7 @@
         <b>value:</b> {{ testValueObject }}
       </div>
       
-      With value key
+      With value key. Return keyed value
 
       <div class="component-wrap">
         <drop-down
@@ -95,6 +116,20 @@
         />
         <b>value:</b> {{ testValueObjectValueKey }}
       </div>
+
+      Only icon variant
+
+      <div class="component-wrap">
+        <drop-down
+            v-model:value="withoutMainVModelValue"
+            :options="withoutMainVModelOptions"
+            :width="200"
+            :value-key="'name'"
+            :only-icon="true"
+        />
+        <b>value:</b> {{ withoutMainVModelValue }}
+      </div>
+
     </div>
 
     <div class="description">
@@ -112,6 +147,7 @@
         <p><u>placeholder:</u> String</p> display when value don`t select
         <p><u>emptyOptionText:</u> String</p> text value for option witch clear value
         <p><u>noOptionsText:</u> String</p> text witch display of list of options is empty
+        <p><u>onlyIcon:</u> Boolean</p>
         <p><u>width:</u> Number</p> width of component
         <p><u>buttonOptionsGap: </u>Number</p> gap (in pixels) between options
       </div>
@@ -130,6 +166,7 @@ export default {
   data() {
     return {
       testValue: null,
+      testDefaultValue: 'Frog',
       testOptions: [
         'Dog',
         'Cat',
@@ -137,6 +174,7 @@ export default {
         'Whale',
         'Test very long value'
       ],
+
       testValueObject: null,
       testValueObjectValueKey: null,
       testValueObjectValue: 'Lance',
@@ -153,6 +191,15 @@ export default {
         "string"
       ],
       testObjectOptionsValueKey: [
+        { label: "Dog", id: 0, name: "Max" },
+        { label: 'Cat', id: 1, name: "Sam" },
+        { label: 'Frog', id: 2, name: "Lance" },
+        { label: 'Whale', id: 3, name: "Mobbi" },
+        { label: 'Test very long value', id: 4, name: null }
+      ],
+
+      withoutMainVModelValue: null,
+      withoutMainVModelOptions: [
         { label: "Dog", id: 0, name: "Max" },
         { label: 'Cat', id: 1, name: "Sam" },
         { label: 'Frog', id: 2, name: "Lance" },

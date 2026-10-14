@@ -8,7 +8,16 @@
       ref="main"
       tabindex="-1"
   >
+    <div 
+        v-if="onlyIcon"         
+        ref="selected"
+        :class="['only-icon', 'arrow-head', { rotated: isShowOptions }]"
+        @mousedown.left.prevent="
+          isShowOptions ? $refs.main.blur() : $refs.main.focus()
+        "
+    />
     <div
+        v-else
         class="selected"
         ref="selected"
         @click.right.prevent="updateModelValue(null)"
@@ -98,6 +107,7 @@ export default {
     placeholder: { type: String, default: "select value" },
     emptyOptionText: { type: String, default: null },
     noOptionsText: { type: String, default: "have no options" },
+    onlyIcon: { type: Boolean, default: false },
     // Size
     width: { type: [Number, String], default: null },
     buttonOptionsGap: { type: Number, default: 8 },
@@ -110,7 +120,7 @@ export default {
       return this.$refs.selected.getBoundingClientRect().height
     },
     computedWidth() {
-      return this.width === null ? "fit-content" : this.width + "px"
+      return ((this.width === null) || this.onlyIcon) ? "fit-content" : this.width + "px"
     },
   },
   data() {
@@ -121,6 +131,7 @@ export default {
     }
   },
   mounted() {
+    this.selectedOption = this.modelValue
     if (this.value && this.valueKey) {
       this.setDefaultByKeyedValue(this.valueKey, this.value)
     }
@@ -217,8 +228,8 @@ export default {
   display: flex;
   flex-direction: column;
   width: v-bind(computedWidth);
-  background-color: var(--panels-color);
   border-radius: 5px;
+  background-color: var(--panels-color);
 }
 
 .selected {
@@ -234,7 +245,7 @@ export default {
   min-width: 100%;
   height: fit-content;
   box-sizing: border-box;
-  background-color: inherit;
+  background-color: var(--panels-color);
 }
 
 .selected-option {
