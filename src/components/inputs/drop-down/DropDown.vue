@@ -140,7 +140,7 @@ export default {
     modelValue(value) {
       this.selectedOption = value
       if (this.valueKey) {
-        this.$emit("update:value", this.selectedOption[this.valueKey])
+        this.$emit("update:value", this.selectedOption ? this.selectedOption[this.valueKey] : null)
       }
     },
     value(value) {
@@ -184,9 +184,13 @@ export default {
     },
     updateModelValue(value) {
       this.$emit('update:modelValue', value)
+      this.selectedOption = value
 
-      if ((this.valueKey !== null) && (typeof value === "object")) {
-        this.$emit('update:value', value[this.valueKey])
+      if (
+        (this.valueKey !== null) && 
+        (typeof value === "object")
+      ) {
+        this.$emit('update:value', value ? value[this.valueKey] : null)
       }
     },
     /**
