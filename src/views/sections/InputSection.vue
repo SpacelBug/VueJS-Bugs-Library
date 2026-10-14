@@ -19,7 +19,7 @@
       AreaInput
     </router-link>
     <router-link
-        :to="{name: 'time-input'}"
+        :to="{ name: 'time-input' }"
         class="side-link"
     >
       TimeInput
@@ -35,6 +35,12 @@
         class="side-link"
     >
       FileInput
+    </router-link>
+    <router-link
+        :to="{ name: 'auto-complete' }"
+        class="side-link"
+    >
+      AutoComplete
     </router-link>
     <router-link
         :to="{ name: 'switch' }"
