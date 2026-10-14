@@ -2,22 +2,22 @@
   <div
       class="main-box"
       @mousedown.right.prevent
-      :title="modelValue"
+      :title="selectedOption"
       ref="main"
       tabindex="-1"
   >
     <div
         class="selected"
         ref="selected"
-        @click.right.prevent="$emit('update:modelValue', null)"
+        @click.right.prevent="updateModelValue(null)"
     >
       <input
-          :value="isShowOptions ? inputtedValue : modelValue"
+          :value="isShowOptions ? inputtedValue : getLabel(selectedOption)"
           :placeholder="placeholder"
-          ref="input"
           @input="inputtedValue = $refs.input.value"
-          @focusin="isShowOptions = true, inputtedValue = modelValue"
+          @focusin="isShowOptions = true, inputtedValue = getLabel(selectedOption)"
           @focusout="isShowOptions = false; inputtedValue = null"
+          ref="input"
           class="selected-option"
       >
       <div
@@ -41,9 +41,9 @@
             v-for="(option, index) in filteredOptions"
             :key="index"
             :class="['option', { 'highlight': keyboardSelectedOptionIndex === index }]"
-            @click="$emit('update:modelValue', option); $refs.main.blur()"
+            @click="updateModelValue(option); $refs.main.blur()"
         >
-          {{ option }}
+          {{ getLabel(option) }}
         </div>
         <div
             v-if="filteredOptions.length === 0"
@@ -59,10 +59,33 @@
 <script>
 export default {
   name: 'DropDown',
+  emits: ['update:modelValue', 'update:value'],
   props: {
     // Values
-    modelValue: null,
-    options: { type: Array, default: null },
+    modelValue: { type: [String, Number, Object, null], default: null },
+    value: { type: [String, Number, null], default: null },
+    // Specific keys for work with objects
+    labelKey: { type: [Number, String], default: "label" }, // values by this key will be show in drop-down
+    valueKey: { type: [Number, String], default: null }, // value by this keu will be return by v-model:value
+    //  Variants for drop=down values
+    options: {
+      type: Array,
+      default: [],
+      validator(options) {
+        let types = new Set()
+
+        for (const option of options) {
+          types.add(typeof option)
+        }
+
+        if (types.size > 1) {
+          console.error('The "options" parameter must be uniform')
+          return false
+        }
+
+        return true
+      },
+    },
     // Text fields
     placeholder: { type: String, default: 'select value' },
     emptyOptionText: { type: String, default: null },
@@ -89,9 +112,17 @@ export default {
 
         for (const value of this.options) {
           if (this.registerIsImportant) {
-            value.includes(this.inputtedValue) ? filtered.push(value) : null
+            if (typeof value === "object") {
+              value[this.labelKey].includes(this.inputtedValue) ? filtered.push(value) : null
+            } else {
+              value.includes(this.inputtedValue) ? filtered.push(value) : null
+            }
           } else {
-            value.toLocaleLowerCase().includes(this.inputtedValue.toLocaleLowerCase()) ? filtered.push(value) : null
+            if (typeof value === "object") {
+              value[this.labelKey].toLocaleLowerCase().includes(this.inputtedValue.toLocaleLowerCase()) ? filtered.push(value) : null
+            } else {
+              value.toLocaleLowerCase().includes(this.inputtedValue.toLocaleLowerCase()) ? filtered.push(value) : null
+            }
           }
         }
 
@@ -104,11 +135,29 @@ export default {
   data() {
     return {
       isShowOptions: false,
+      selectedOption: null,
       keyboardSelectedOptionIndex: -1,
       inputtedValue: null,
     }
   },
+  mounted() {
+    this.selectedOption = this.modelValue
+    if (this.value && this.valueKey) {
+      this.setDefaultByKeyedValue(this.valueKey, this.value)
+    }
+  },
   watch: {
+    modelValue(value) {
+      this.selectedOption = value
+      if (this.valueKey) {
+        this.$emit("update:value", this.selectedOption[this.valueKey])
+      }
+    },
+    value(value) {
+      if ((this.value !== null) && (this.valueKey !== null)) {
+        this.setDefaultByKeyedValue(this.valueKey, this.value)
+      }
+    },
     isShowOptions(value) {
       if (value) {
         document.addEventListener('keydown', this.onKeyPress)
@@ -136,6 +185,33 @@ export default {
 
         if (event.code === 'Escape') {
           this.$refs.input.blur()
+        }
+      }
+    },
+    updateModelValue(value) {
+      this.$emit('update:modelValue', value)
+
+      if ((this.valueKey !== null) && (typeof value === "object")) {
+        this.$emit('update:value', value[this.valueKey])
+      }
+    },
+    getLabel(value) {
+      if (
+        value !== null &&
+        typeof value === "object" &&
+        !Array.isArray(value)
+      ) {
+        return value[this.labelKey]
+      } else {
+        return value
+      }
+    },
+    setDefaultByKeyedValue(key, value) {
+      for (let option of this.options) {
+        if (option[key] === value) {
+          this.selectedOption = option
+          this.updateModelValue(option)
+          break
         }
       }
     }

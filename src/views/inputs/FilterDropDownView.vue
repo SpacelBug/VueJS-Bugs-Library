@@ -1,6 +1,9 @@
 <template>
   <div class="component-view">
     <div class="component-variants">
+
+      <h3>Options is list of values</h3>
+
       <div class="component-variant">
         <div class="caption">Const width by setting width prop = 200</div>
         <filter-drop-down
@@ -34,7 +37,23 @@
             :width="'100%'"
         />
       </div>
+
+      <h3>Options is list of objects</h3>
+
+      <div class="component-variant">
+        <div class="caption">Simple example</div>
+        <filter-drop-down
+            v-model="selectedObjectOption"
+            v-model:value="selectedObjectValue"
+            :value-key="'name'"
+            :options="objectOptions"
+            :width="'100%'"
+        />
+        <p><b>Result option:</b> {{ selectedObjectOption }}</p>
+        <p><b>Result value:</b> {{ selectedObjectValue }}</p>
+      </div>
     </div>
+
     <div class="description">
       <h3>Filter Drop-Down component</h3>
       <div>
@@ -59,12 +78,14 @@ export default {
     return {
       options: ["Frog", "Cat", "Dog", "Whale"],
       objectOptions: [
-        { value: "1", label: "Cat" },
-        { value: "2", label: "Frog" },
-        { value: "3", label: "Whale" },
-        { value: "4", label: "Dog" }
+        { value: "1", label: "Cat", name: "Tom" },
+        { value: "2", label: "Frog", name: "Lance" },
+        { value: "3", label: "Whale", name: "Mobbi" },
+        { value: "4", label: "Dog", name: "Max" }
       ],
       selectedOption: null,
+      selectedObjectOption: null,
+      selectedObjectValue: null,
     }
   },
 }
