@@ -27,24 +27,40 @@ export default {
   methods: {
     async onKeyDown() {
       const excludedKeyCodes = ['Backspace', 'Enter', 'Delete', 'ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown']
+      const number = Number(event.target.value)
 
       if (!excludedKeyCodes.includes(event.key)) {
         event.preventDefault()
 
-        const cursorPos = event.target.selectionStart
+        const cursorStartPos = event.target.selectionStart
+        const cursorEndPos = event.target.selectionEnd
 
-        let firstPart = event.target.value.slice(0, cursorPos)
-        let secondPart = event.target.value.slice(cursorPos)
+        let firstPart = event.target.value.slice(0, cursorStartPos)
+        let secondPart = event.target.value.slice(cursorEndPos)
 
         let result = firstPart + event.key + secondPart
 
         if (/^-?(?:\d+(?:\.\d*)?|\.\d+)$/.test(result)) {
           event.target.value = result
           this.onInput()
-          event.target.setSelectionRange(cursorPos + 1, cursorPos + 1)
+          event.target.setSelectionRange(cursorStartPos + 1, cursorStartPos + 1)
+        }
+      } else if (event.key === 'ArrowUp') {
+        if (Number.isInteger(number)) {
+          event.preventDefault()
+          if ((this.max !== null) && (number + 1 <= this.max)) {
+            this.$emit('update:modelValue', number + 1)
+          }
+        }
+      } else if (event.key === 'ArrowDown') {
+        if (Number.isInteger(number)) {
+          event.preventDefault()
+          if ((this.min !== null) && (number - 1 >= this.min)) {
+            this.$emit('update:modelValue', number - 1)
+          }
         }
       } else if (event.key === 'Enter') {
-        await this.$emit('update:modelValue', Number(event.target.value))
+        this.$emit('update:modelValue', number)
       }
     },
     onInput() {
@@ -64,13 +80,14 @@ export default {
 
 <style scoped>
 input {
-  field-sizing: v-bind(fieldSizing);
   box-sizing: border-box;
   outline: none;
   border: none;
   border-radius: 5px;
   padding: 8px 16px;
+  field-sizing: v-bind(fieldSizing);
   height: fit-content;
+  width: fit-content;
   background-color: var(--panels-color);
   color: var(--font-color);
 }
