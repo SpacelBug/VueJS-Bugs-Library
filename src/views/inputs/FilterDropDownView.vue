@@ -51,6 +51,12 @@
         />
         <p><b>Result option:</b> {{ selectedObjectOption }}</p>
         <p><b>Result value:</b> {{ selectedObjectValue }}</p>
+        <filter-drop-down
+            v-model:value="selectedObjectValue"
+            :value-key="'name'"
+            :options="objectOptions"
+            :width="'100%'"
+        />
       </div>
     </div>
 
@@ -60,7 +66,17 @@
         <p>Custom drop down with input for filter options</p>
         Right click on drop down clear modelValue
         <p><b>Props:</b></p>
-        <p><u>modelValue:</u> String</p> v-model option
+        <p><u>modelValue:</u> [String, Number, Object] </p> v-model option
+        <p><u>value:</u> [String, Number, Object]</p> v-model:title option
+        <p><u>labelKey:</u> String</p> if option is object describe what will be display in drop down
+        <p><u>valueKey:</u> String</p> if option is object describe what will be return by v-model:value
+        <p><u>options:</u> Array</p> list of options. could be a simple list or list of objects
+        <p><u>placeholder:</u> String</p> text witch display when value is empty
+        <p><u>emptyOptionText:</u> String</p> text for option witch clear drop down
+        <p><u>noOptionsText:</u> String</p> text for empty drop down
+        <p><u>width:</u> [Number, String]</p> setting width. cold be a number or string, for something like "100%"
+        <p><u>buttonOptionsGap:</u> Integer</p> gap between options
+        <p><u>registerIsImportant:</u> Boolean</p> for filtering
       </div>
     </div>
   </div>
