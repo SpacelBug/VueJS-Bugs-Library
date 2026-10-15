@@ -91,7 +91,7 @@ export default {
     emptyOptionText: { type: String, default: null },
     noOptionsText: { type: String, default: 'have no options' },
     // Size
-    width: { type: [Number], default: null },
+    width: { type: [Number, String], default: null },
     buttonOptionsGap: { type: Number, default: 8 },
     // 
     registerIsImportant: {type: Boolean, default: false}
