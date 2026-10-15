@@ -150,7 +150,7 @@ export default {
     modelValue(value) {
       this.selectedOption = value
       if (this.valueKey) {
-        this.$emit("update:value", this.selectedOption[this.valueKey])
+        this.$emit("update:value", value ? this.selectedOption[this.valueKey] : null)
       }
     },
     value(value) {
@@ -192,7 +192,7 @@ export default {
       this.$emit('update:modelValue', value)
 
       if ((this.valueKey !== null) && (typeof value === "object")) {
-        this.$emit('update:value', value[this.valueKey])
+        this.$emit('update:value', value ? value[this.valueKey] : null)
       }
     },
     getLabel(value) {
