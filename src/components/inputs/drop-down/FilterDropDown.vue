@@ -21,7 +21,8 @@
           class="selected-option"
       >
       <div
-          @click="$refs.input.focus()"
+          @mousedown.prevent
+          @click.self.prevent="isShowOptions ? $refs.input.blur() : $refs.input.focus()"
           :class="['arrow-head', { 'rotated': isShowOptions }]"
       />
     </div>
@@ -41,7 +42,8 @@
             v-for="(option, index) in filteredOptions"
             :key="index"
             :class="['option', { 'highlight': keyboardSelectedOptionIndex === index }]"
-            @click="updateModelValue(option); $refs.main.blur()"
+            @mousedown.prevent
+            @click="updateModelValue(option); $refs.input.blur(); isShowOptions = false"
         >
           {{ getLabel(option) }}
         </div>
