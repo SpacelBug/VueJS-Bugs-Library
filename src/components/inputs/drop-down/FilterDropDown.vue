@@ -16,7 +16,7 @@
           :placeholder="placeholder"
           @input="inputtedValue = $refs.input.value"
           @focusin="isShowOptions = true, inputtedValue = getLabel(selectedOption)"
-          @focusout="isShowOptions = false; inputtedValue = null"
+          @focusout="isShowOptions = false"
           ref="input"
           class="selected-option"
       >
