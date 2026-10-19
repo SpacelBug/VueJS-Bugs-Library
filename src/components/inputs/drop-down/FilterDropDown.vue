@@ -48,7 +48,7 @@
           {{ getLabel(option) }}
         </div>
         <div
-            v-if="filteredOptions.length === 0"
+            v-if="(filteredOptions === null) || (filteredOptions.length === 0)"
             class="empty"
         >
           {{ noOptionsText }}
@@ -96,6 +96,7 @@ export default {
     width: { type: [Number, String], default: null },
     buttonOptionsGap: { type: Number, default: 8 },
     // 
+    disabled: { type: Boolean, default: false },
     registerIsImportant: {type: Boolean, default: false}
   },
   computed: {
@@ -181,8 +182,13 @@ export default {
         }
 
         if (event.code === 'Enter') {
-          this.$emit('update:modelValue', this.options[this.keyboardSelectedOptionIndex])
-          this.$refs.input.blur()
+          if (this.filteredOptions.length === 1) {
+            this.$emit('update:modelValue', this.filteredOptions[0])
+            this.$refs.input.blur()
+          } else if ((this.filteredOptions.length > 1) && (this.keyboardSelectedOptionIndex !== -1)) {
+            this.$emit('update:modelValue', this.filteredOptions[this.keyboardSelectedOptionIndex])
+            this.$refs.input.blur()
+          }
         }
 
         if (event.code === 'Escape') {
@@ -322,6 +328,7 @@ input {
   color: var(--font-color);
   font-size: inherit;
   width: 100%;
+  height: 100%;
 }
 
 /*Animation*/
