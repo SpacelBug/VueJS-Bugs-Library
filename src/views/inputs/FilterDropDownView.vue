@@ -19,6 +19,7 @@
             :options="options"
             :width="200"
             :register-is-important="true"
+            :uppercase="true"
         />
       </div>
       <div class="component-variant">
@@ -37,6 +38,8 @@
             :width="'100%'"
         />
       </div>
+
+      <p><b>Result:</b> {{ selectedOption }}</p>
 
       <h3>Options is list of objects</h3>
 

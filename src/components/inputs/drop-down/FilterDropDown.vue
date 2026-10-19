@@ -90,6 +90,7 @@ export default {
     },
     // Text fields
     placeholder: { type: String, default: 'select value' },
+    uppercase: { type: Boolean, default: false },
     emptyOptionText: { type: String, default: null },
     noOptionsText: { type: String, default: 'have no options' },
     // Size
@@ -329,6 +330,7 @@ input {
   font-size: inherit;
   width: 100%;
   height: 100%;
+  text-transform: v-bind(uppercase ? 'uppercase': 'unset');
 }
 
 /*Animation*/
