@@ -134,6 +134,13 @@ export default {
       } else {
         return this.options
       }
+    },
+    availHeight() {
+      if (this.$el.getBoundingClientRect().y > 0) {
+        return window.innerHeight - this.$el.getBoundingClientRect().y
+      } else {
+        return 300
+      }
     }
   },
   data() {
@@ -277,6 +284,7 @@ export default {
   width: 100%;
   min-width: fit-content;
   height: fit-content;
+  max-height: v-bind(availHeight + "px");
   top: v-bind((top + buttonOptionsGap) + 'px');
   white-space: nowrap;
 }
