@@ -7,6 +7,7 @@
         tabindex="0"
         :style="`${posStringHorizontal}; ${posStringVertical}`"
         @focusout="isShow = false"
+        @contextmenu.prevent
     >
       <ContextOption
           v-for="option in options"
