@@ -122,6 +122,13 @@ export default {
     computedWidth() {
       return ((this.width === null) || this.onlyIcon) ? "fit-content" : this.width + "px"
     },
+    availHeight() {
+      if (this.$el.getBoundingClientRect().y > 0) {
+        return (window.innerHeight - this.$el.getBoundingClientRect().y) / 2
+      } else {
+        return 300
+      }
+    }
   },
   data() {
     return {
@@ -277,6 +284,7 @@ export default {
   width: 100%;
   min-width: fit-content;
   height: fit-content;
+  max-height: v-bind(availHeight + "px");
   top: v-bind((top + buttonOptionsGap) + "px");
   white-space: nowrap;
 }
