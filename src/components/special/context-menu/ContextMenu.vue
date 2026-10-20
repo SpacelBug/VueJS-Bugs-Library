@@ -133,6 +133,7 @@ export default {
     onOptionClick(option) {
       if (option.hasOwnProperty('handler')) {
         option.handler()
+        this.hideContextMenu()
       }
     },
     onDocumentWheel() {
