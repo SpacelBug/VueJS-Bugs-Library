@@ -1,6 +1,6 @@
 <template>
   <div
-      class="main-box"
+      :class="['main-box', {'disabled': disabled}]"
       @focusin="isShowOptions = true"
       @focusout="isShowOptions = false"
       @mousedown.right.prevent
@@ -108,6 +108,7 @@ export default {
     emptyOptionText: { type: String, default: null },
     noOptionsText: { type: String, default: "have no options" },
     onlyIcon: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: false },
     // Size
     width: { type: [Number, String], default: null },
     buttonOptionsGap: { type: Number, default: 8 },
@@ -243,6 +244,12 @@ export default {
   background-color: var(--panels-color);
 }
 
+.disabled {
+  pointer-events: none;
+  background-color: transparent;
+  border: 1px solid var(--panels-color);
+}
+
 .selected {
   display: flex;
   flex-direction: row;
@@ -256,7 +263,7 @@ export default {
   min-width: 100%;
   height: fit-content;
   box-sizing: border-box;
-  background-color: var(--panels-color);
+  background-color: inherit;
 }
 
 .selected-option {

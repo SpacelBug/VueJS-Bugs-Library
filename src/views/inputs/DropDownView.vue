@@ -12,6 +12,15 @@
           :width="200"
       />
 
+      Disabled
+
+      <drop-down
+          v-model="testValue"
+          :options="testOptions"
+          :width="200"
+          :disabled="true"
+      />
+
       Const width by setting width prop = 200
 
       <drop-down
@@ -148,6 +157,7 @@
         <p><u>emptyOptionText:</u> String</p> text value for option witch clear value
         <p><u>noOptionsText:</u> String</p> text witch display of list of options is empty
         <p><u>onlyIcon:</u> Boolean</p>
+        <p><u>disabled:</u> Boolean</p>
         <p><u>width:</u> Number</p> width of component
         <p><u>buttonOptionsGap: </u>Number</p> gap (in pixels) between options
       </div>
