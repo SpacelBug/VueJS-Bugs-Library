@@ -89,8 +89,6 @@ export default {
       return [event.pageX - rect.x, event.pageY - rect.y]
     },
     async showContextMenu() {
-      await (this.isShow = true)
-      
       const relativeParent = this.findFirstRelativeParent()
 
       let cursorPosX = null
@@ -122,6 +120,9 @@ export default {
         let height = relativeParent && (this.position !== "fixed") ? relativeParent.getBoundingClientRect().height : window.innerHeight
         this.posStringVertical = `bottom: ${height - cursorPosY}px`
       }
+
+      this.isShow = true
+      await this.$nextTick()
 
       this.$refs.contextMenu.focus({ preventScroll: true })
     },
