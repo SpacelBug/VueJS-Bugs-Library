@@ -32,6 +32,11 @@ const router = createRouter({
           component: () => import("../views/inputs/DateInputView.vue"),
         },
         {
+          name: "datetime-input",
+          path: "datetime-input",
+          component: () => import("../views/inputs/DatetimeInputView.vue")
+        },
+        {
           name: "slider",
           path: "slider",
           component: () => import("../views/inputs/SliderView.vue"),
