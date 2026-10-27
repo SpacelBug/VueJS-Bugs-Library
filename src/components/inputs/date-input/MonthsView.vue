@@ -5,7 +5,7 @@
         @click="onMonthClick(index)"
         :class="[
           'month-cell',
-          { 'active-month-cell': index === changingValue.getMonth() },
+          { 'active-month-cell': modelValue ? (index === modelValue.getMonth()) && (modelValue.getFullYear() === changingValue.getFullYear()) : false },
         ]"
     >
       {{ month }}
@@ -16,8 +16,10 @@
 <script>
 export default {
   name: "MonthsView",
-  emits: ["update:changingValue"],
+  emits: ["update:modelValue", "update:changingValue"],
   props: {
+    isEndPanel: { type: Boolean, required: true },
+    modelValue: { type: Date, required: true },
     changingValue: { type: Date, required: true },
   },
   data() {
@@ -46,6 +48,10 @@ export default {
       this.activeMode = this.accuracy === "dates" ? "dates" : "month"
 
       this.$emit("update:changingValue", currentDate)
+
+      if (this.isEndPanel) {
+        this.$emit("update:modelValue", currentDate)
+      }
     }
   }
 }
@@ -72,6 +78,6 @@ export default {
 }
 
 .active-month-cell {
-  background-color: var(--background-color);
+  background-color: var(--accent-color);
 }
 </style>

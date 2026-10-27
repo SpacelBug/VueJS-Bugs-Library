@@ -10,20 +10,20 @@
     </div>
     <div class="wrapper">
       <transition name="dates">
-        <div class="dates" :key="datesList[0]">
+        <div class="dates" :key="changingValue ? changingValue.getMonth() : changingValue">
           <div
               v-for="date in datesList"
               :class="[
                 'date-cell',
                 {
                   'active-date-cell':
-                    changingValue.getTime() === date.getTime(),
+                    modelValue ? modelValue.getTime() === date.getTime() : false,
                   'other-month':
                     changingValue.getMonth() !== date.getMonth(),
                 },
               ]"
               :title="date"
-              @mousedown="$emit('update:changingValue', date)"
+              @mousedown="onCellClick(date)"
           >
             {{ date.getDate().toString().padStart(2, "0") }}
           </div>
@@ -36,20 +36,19 @@
 <script>
 export default {
   name: "DatesView",
-  emits: ["update:changingValue"],
+  emits: ["update:modelValue", "update:changingValue"],
   props: {
+    modelValue: { type: Date, required: true },
     changingValue: { type: Date, required: true },
   },
   data() {
     return {
-      panelValue: null,
       dayNames: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
       datesList: [],
       listChangeDirection: 0,
     }
   },
   mounted() {
-    this.panelValue = new Date(this.changingValue)
     this.createDatesList()
   },
   watch: {
@@ -64,6 +63,10 @@ export default {
     }
   },
   methods: {
+    onCellClick(date) {
+      this.$emit('update:changingValue', date)
+      this.$emit('update:modelValue', date)
+    },
     createDatesList() {
       let list = []
 
@@ -123,7 +126,8 @@ export default {
   background-color: var(--background-color);
 }
 
-.active-date-cell {
+.active-date-cell,
+.active-date-cell:hover {
   background-color: var(--accent-color);
 }
 

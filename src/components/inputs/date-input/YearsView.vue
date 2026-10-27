@@ -26,7 +26,9 @@
 export default {
   name: "YearsView",
   props: {
-    changingValue: { type: Date }
+    isEndPanel: { type: Boolean, required: true },
+    modelValue: { type: Date, required: true },
+    changingValue: { type: Date, required: true }
   },
   mounted() {
     this.createNewYearsList()
@@ -83,6 +85,8 @@ export default {
       currentDate.setFullYear(year)
 
       this.$emit("update:changingValue", currentDate)
+      
+      if (this.isEndPanel) this.$emit("update:modelValue", currentDate)
     }
   }
 }
@@ -112,7 +116,7 @@ export default {
 }
 
 .active-year-cell {
-  background-color: var(--background-color);
+  background-color: var(--accent-color);
 }
 
 .year-cell:hover {

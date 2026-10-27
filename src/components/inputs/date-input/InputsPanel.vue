@@ -1,6 +1,7 @@
 <template>
   <div class="inputs-panel">
     <input
+        v-if="accuracy == 'dates'"
         type="text"
         :value="date"
         ref="dateInput"
@@ -8,16 +9,18 @@
         @keydown="onInputKeydown"
         @keypress.enter="onEnterPress"
         @input="dateCheck"
+        @focusout="onDateBlur"
     >
     <input
+        v-if="accuracy == 'dates' || accuracy === 'month'"
         type="text"
         v-model="month"
         ref="monthInput"
         @click="$refs.monthInput.select()"
-        @mousedown=""
         @keydown="onInputKeydown"
         @keypress.enter="onEnterPress"
         @input="monthCheck"
+        @focusout="onMonthBlur"
     >
     <input
         type="text"
@@ -36,7 +39,12 @@
 export default {
   name: "InputsPanel",
   props: {
-    modelValue: { type: Date, required: true },
+    accuracy: {
+      type: String,
+      default: "dates",
+      validator: (value) => ["dates", "month", "years"].includes(value),
+    },
+    modelValue: { type: [Date, null], required: true },
   },
   data() {
     return {
@@ -46,9 +54,11 @@ export default {
     }
   },
   beforeMount() {
-    this.date = this.modelValue.getDate().toString().padStart(2, '0')
-    this.month = (this.modelValue.getMonth() + 1).toString().padStart(2, '0')
-    this.year = this.modelValue.getFullYear().toString()
+    if (this.modelValue) {
+      this.date = this.modelValue.getDate().toString().padStart(2, '0')
+      this.month = (this.modelValue.getMonth() + 1).toString().padStart(2, '0')
+      this.year = this.modelValue.getFullYear().toString()
+    }
   },
   computed: {
     maxDate() {      
@@ -63,9 +73,15 @@ export default {
   },
   watch: {
     modelValue(newValue) {
-      this.date = newValue.getDate().toString().padStart(2, '0')
-      this.month = (newValue.getMonth() + 1).toString().padStart(2, '0')
-      this.year = newValue.getFullYear().toString()
+      if (this.modelValue) {
+        this.date = newValue.getDate().toString().padStart(2, '0')
+        this.month = (newValue.getMonth() + 1).toString().padStart(2, '0')
+        this.year = newValue.getFullYear().toString()
+      } else {
+        this.date = null
+        this.month = null
+        this.year = null
+      }
     },
     month(newValue) {
       if (this.year !== null) {
@@ -100,6 +116,13 @@ export default {
       }
     },
     updateModelValue() {
+      if (this.accuracy === 'years') {
+        this.date = 1
+        this.month = 1
+      } else if (this.accuracy === 'month') {
+        this.date = 1
+      }
+
       if (
         (this.date !== null) && 
         (this.month !== null) && 
@@ -118,13 +141,15 @@ export default {
         this.date = this.maxDate.toString().padStart(2, '0')
       }
 
-      this.updateModelValue()
+      event.target.blur()
     },
-    dateCheck() {
+    async dateCheck() {
       const value = this.$refs.dateInput.value
 
-      if (value > 31) {
-        this.date = 31
+      if (value > this.maxDate) {
+        await this.$nextTick(()=>{
+          this.date = this.maxDate
+        })
         this.$refs.monthInput.focus()
         this.$refs.monthInput.select()
       } else if ((value > 3) || value.length === 2) {
@@ -132,6 +157,13 @@ export default {
         this.$refs.monthInput.focus()
         this.$refs.monthInput.select()
       }
+    },
+    onDateBlur() {
+      const value = this.$refs.dateInput.value
+      if (value) {
+        this.date = value.padStart(2, '0')
+      }
+      this.updateModelValue()
     },
     monthCheck() {
       const value = this.$refs.monthInput.value
@@ -145,6 +177,13 @@ export default {
         this.$refs.yearInput.select()
       }
     },
+    onMonthBlur() {
+      const value = this.$refs.monthInput.value
+      if (value) {
+        this.month = value.padStart(2, '0')
+      }
+      this.updateModelValue()
+    },
     yearCheck() {
       const value = this.$refs.yearInput.value
       if (value.length >= 4) {
@@ -153,7 +192,13 @@ export default {
     },
     onYearBlur() {
       const value = this.$refs.yearInput.value
-      this.year = value.padStart(4, '0')
+      if (value) {
+        if (value.length === 2) {
+          this.year = '20' + value
+        } else {
+          this.year = value.padStart(4, '0')
+        }
+      }
       this.updateModelValue()
     }
   },

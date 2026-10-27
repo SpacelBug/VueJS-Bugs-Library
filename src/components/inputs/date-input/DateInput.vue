@@ -2,10 +2,11 @@
   <div class="main-box">
     <div class="date-input">
       <div class="caption">
-        <inputs-panel 
-            v-model="changingValue"
-            @update:modelValue="$emit('update:modelValue', $event)"
+        <inputs-panel
             v-if="keyboardInput"
+            :model-value="selectedValue"
+            :accuracy="accuracy"
+            @update:modelValue="onInputPanelUpdate"
         />
         <template v-else>
           {{ caption }}
@@ -24,8 +25,8 @@
         ref="interactivePanel"
         @keydown.prevent="onInteractivePanelKeyPress"
         @keydown.enter="(event) => { event.target.blur() }"
-        @keydown.escape="(event) => { event.target.blur() }"
-        @focusout="isShowInteractivePanel = false; $emit('update:modelValue', clearTime(changingValue))"
+        @keydown.escape="(event) => { selectedValue = modelValue; event.target.blur() }"
+        @focusout="onFocusOut"
     >
       <div class="header">
         <span
@@ -51,28 +52,33 @@
         <transition-group name="distancing">
           <dates-view
               v-if="activeMode === 'dates'"
+              v-model="selectedValue"
               :changingValue="changingValue"
               @update:changingValue="changingValue = $event"
           />
 
           <months-view
               v-else-if="activeMode === 'month'"
+              v-model="selectedValue"
+              :is-end-panel="accuracy === 'month'"
               :changingValue="changingValue"
-              @update:changingValue="changingValue = $event"
+              @update:changingValue="changingValue = $event; accuracy === 'dates' ? activeMode = 'dates' : null"
           />
 
           <years-view
               v-else-if="activeMode === 'years'"
               ref="yearsView"
+              v-model="selectedValue"
+              :is-end-panel="accuracy === 'years'"
               :changingValue="changingValue"
-              @update:changingValue="changingValue = $event"
+              @update:changingValue="changingValue = $event;['dates', 'month'].includes(accuracy) ? activeMode = 'month' : null"
           />
         </transition-group>
       </div>
-      
+
       <div class="footer">
         <span
-            @click="changingValue = new Date()"
+            @click="changingValue = new Date(); selectedValue = new Date()"
             class="today"
         >Today</span>
       </div>
@@ -85,6 +91,7 @@ import InputsPanel from "./InputsPanel.vue"
 import DatesView from "./DatesView.vue"
 import MonthsView from "./MonthsView.vue"
 import YearsView from "./YearsView.vue"
+import { setBlockTracking } from "vue";
 
 export default {
   name: "DateInput",
@@ -99,7 +106,7 @@ export default {
     /**
      * Set model value of date input, will be updated on blur of interactive panel
      */
-    modelValue: { type: Date, required: true },
+    modelValue: { type: [Date, null], required: true },
     /**
      * Set accuracy of date input
      */
@@ -108,11 +115,6 @@ export default {
       default: "dates",
       validator: (value) => ["dates", "month", "years"].includes(value),
     },
-    /**
-     * Set min and max values for date input
-     */
-    min: { type: Date, default: null },
-    max: { type: Date, default: null },
 
     keyboardInput: { type: Boolean, default: false },
   },
@@ -150,26 +152,23 @@ export default {
     }
   },
   beforeMount() {
-    this.changingValue = new Date(this.modelValue)
+    if (
+      (Object.prototype.toString.call(this.modelValue) !== "[object Date]") &&
+      (this.modelValue !== null)
+    ) {
+      throw new Error("Model value must be a Date object or null")
+    }
+
+    if (this.modelValue) {
+      if (!this.checkTime(this.modelValue)) {
+        console.warn('[BL component warn]: Time check error: Datetime input value should be zero time')
+      }
+
+      this.selectedValue = new Date(this.modelValue)
+      this.changingValue = new Date(this.modelValue)
+    }
   },
   computed: {
-    datesList() {
-      let list = []
-
-      let startDate = new Date(this.changingValue)
-      startDate.setDate(1)
-
-      while (startDate.getDay() !== 1) {
-        startDate.setDate(startDate.getDate() - 1)
-      }
-
-      while (list.length < 7 * 6) {
-        list.push(new Date(startDate))
-        startDate.setDate(startDate.getDate() + 1)
-      }
-
-      return list
-    },
     caption() {
       if (!this.changingValue) {
         if (this.accuracy === "dates") {
@@ -197,15 +196,28 @@ export default {
   },
   watch: {
     modelValue(valueNew, valueOld) {
-      if (Object.prototype.toString.call(valueNew) !== "[object Date]") {
+      if (
+        (Object.prototype.toString.call(valueNew) !== "[object Date]") &&
+        (valueNew !== null)
+      ) {
         throw new Error("Model value must be a Date object")
       }
 
       this.changingValue = this.modelValue
+      this.selectedValue = this.modelValue
     },
   },
   methods: {
+    checkTime(datetime) {
+      if (datetime.getHours() !== 0) return false
+      if (datetime.getMinutes() !== 0) return false
+      if (datetime.getSeconds() !== 0) return false
+      if (datetime.getMilliseconds() !== 0) return false
+      return true
+    },
     clearTime(datetime) {
+      if (datetime === null) return null
+
       return new Date(
         datetime.getFullYear(),
         this.accuracy === "years" ? 0 : datetime.getMonth(),
@@ -233,6 +245,14 @@ export default {
       } else if (this.activeMode === "years") {
         this.$refs.yearsView.createNewYearsList(value)
       }
+    },
+    onFocusOut() {
+      this.isShowInteractivePanel = false
+      this.changingValue = this.selectedValue
+      this.$emit('update:modelValue', this.clearTime(this.selectedValue))
+    },
+    onInputPanelUpdate(value) {
+      this.$emit('update:modelValue', this.clearTime(value))
     },
     onInteractivePanelKeyPress() {
       let currentDate = new Date(this.changingValue)
