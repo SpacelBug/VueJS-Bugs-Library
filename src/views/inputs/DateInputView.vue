@@ -109,8 +109,8 @@
 </template>
 
 <script>
-import DateInput from "@/components/inputs/date-input/DateInput.vue"
-import InputsPanel from "@/components/inputs/date-input/InputsPanel.vue"
+import DateInput from "@/components/inputs/datetime-input/DateInput.vue"
+import InputsPanel from "@/components/inputs/datetime-input/InputsPanel.vue"
 
 export default {
   name: "DateInputView",
