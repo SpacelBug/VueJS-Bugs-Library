@@ -16,7 +16,7 @@
       <slot name="time-place"/>
       <div
           class="calendar-icon"
-          @click="onInputClick"
+          @mousedown.prevent="onInputClick"
       />
     </div>
 
@@ -230,14 +230,18 @@ export default {
         0,
       )
     },
-    onInputClick() {
-      this.isShowInteractivePanel = true
-      this.changingValue = this.modelValue
-        ? new Date(this.modelValue)
-        : new Date()
-      this.$nextTick(() => {
+    async onInputClick() {
+      if (document.activeElement === this.$refs.interactivePanel) {
+        this.$refs.interactivePanel.blur()
+      } else {
+        await this.$nextTick(() => {
+          this.changingValue = this.modelValue
+            ? new Date(this.modelValue)
+            : new Date()
+          this.isShowInteractivePanel = true
+        })
         this.$refs.interactivePanel.focus()
-      })
+      }
     },
     onArrowClick(value) {
       if (this.activeMode === "dates") {
