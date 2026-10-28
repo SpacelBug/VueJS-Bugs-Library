@@ -1,39 +1,41 @@
 <template>
   <div class="inputs-panel">
     <input
-        v-if="accuracy == 'dates'"
         type="text"
-        :value="date"
-        ref="dateInput"
-        placeholder="дд"
-        @click="$refs.dateInput.select()"
+        v-model="year"
+        ref="yearInput"
+        placeholder="yyyy"
+        @click="$refs.yearInput.select()"
         @keydown="onInputKeydown"
         @keypress.enter="onEnterPress"
-        @input="dateCheck"
-        @focusout="onDateBlur"
+        @input="yearCheck"
+        @focusout="onYearBlur"
     >
+    <div v-if="accuracy === 'dates'" class="divider">-</div>
     <input
         v-if="accuracy == 'dates' || accuracy === 'month'"
         type="text"
         v-model="month"
         ref="monthInput"
-        placeholder="мм"
+        placeholder="mm"
         @click="$refs.monthInput.select()"
         @keydown="onInputKeydown"
         @keypress.enter="onEnterPress"
         @input="monthCheck"
         @focusout="onMonthBlur"
     >
+    <div class="divider" v-if="['dates', 'month'].includes(accuracy)">-</div>
     <input
+        v-if="accuracy == 'dates'"
         type="text"
-        v-model="year"
-        ref="yearInput"
-        placeholder="гггг"
-        @click="$refs.yearInput.select()"
+        :value="date"
+        ref="dateInput"
+        placeholder="dd"
+        @click="$refs.dateInput.select()"
         @keydown="onInputKeydown"
         @keypress.enter="onEnterPress"
-        @input="yearCheck"
-        @focusout="onYearBlur"
+        @input="dateCheck"
+        @focusout="onDateBlur"
     >
   </div>
 </template>
@@ -153,12 +155,10 @@ export default {
         await this.$nextTick(()=>{
           this.date = this.maxDate
         })
-        this.$refs.monthInput.focus()
-        this.$refs.monthInput.select()
+        this.$refs.dateInput.blur()
       } else if ((value > 3) || value.length === 2) {
         this.date = value.padStart(2, '0')
-        this.$refs.monthInput.focus()
-        this.$refs.monthInput.select()
+        this.$refs.dateInput.blur()
       }
     },
     onDateBlur() {
@@ -167,17 +167,18 @@ export default {
         this.date = value.padStart(2, '0')
       }
       this.updateModelValue()
+      this.$emit("dateFocusout")
     },
     monthCheck() {
       const value = this.$refs.monthInput.value
       if (value > 12) {
         this.month = "12"
-        this.$refs.yearInput.focus()
-        this.$refs.yearInput.select()
+        this.$refs.dateInput.focus()
+        this.$refs.dateInput.select()
       } else if ((value >= 2) || value.length === 2) {
         this.month = value.padStart(2, '0')
-        this.$refs.yearInput.focus()
-        this.$refs.yearInput.select()
+        this.$refs.dateInput.focus()
+        this.$refs.dateInput.select()
       }
     },
     onMonthBlur() {
@@ -191,6 +192,8 @@ export default {
       const value = this.$refs.yearInput.value
       if (value.length >= 4) {
         this.$refs.yearInput.blur()
+        this.$refs.monthInput.focus()
+        this.$refs.monthInput.select()
       }
     },
     onYearBlur() {
@@ -211,19 +214,18 @@ export default {
 <style scoped>
 .inputs-panel {
   display: flex;
-  gap: 10px;
+  align-items: center;
 }
 
 input {
   text-align: center;
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid var(--font-color);
   color: var(--font-color);
   width: 2ch;
 }
 
-input:last-child {
+input:first-child {
   width: 4ch;
 }
 </style>
