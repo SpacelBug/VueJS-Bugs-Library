@@ -173,8 +173,7 @@ export default {
     caption() {
       if (!this.changingValue) {
         if (this.accuracy === "dates") {
-          return "ДД-ММ-ГГГГ"
-          return "DD-MM-YYYY"
+          return "yyyy-mm-dd"
         } else if (this.accuracy === "month") {
           return "________ ____"
         } else if (this.accuracy === "years") {
@@ -188,7 +187,7 @@ export default {
           .toString()
           .padStart(2, "0")
         const year = this.changingValue.getFullYear()
-        return `${date}-${month}-${year}`
+        return `${year}-${month}-${date}`
       } else if (this.accuracy === "month") {
         return `${this.monthNames[this.changingValue.getMonth()]} ${this.changingValue.getFullYear()}`
       } else if (this.accuracy === "years") {
