@@ -175,6 +175,11 @@ export default {
   },
   methods: {
     checkValue(max, nextElement = null) {
+      if (event.key === 'Enter') {
+        event.target.blur()
+        return event.target.value
+      }
+
       if (!isNaN(event.key)) {
         if (window.getSelection().type === "Range") {
           event.target.value = 0
@@ -186,21 +191,21 @@ export default {
           resultValue = max
         }
 
-        if (resultValue > Math.trunc(max / 10)) {
-          if (nextElement) {
-            nextElement.focus()
-            nextElement.select()
-          } else {
-            event.target.blur()
+        if (max < 100) {
+          if (resultValue > Math.trunc(max / 10)) {
+            if (nextElement) {
+              nextElement.focus()
+            } else {
+              event.target.blur()
+            }
           }
-        }
 
-        if (event.target.value.length == 2) {
-          if (nextElement) {
-            nextElement.focus()
-            nextElement.select()
-          } else {
-            event.target.blur()
+          if (event.target.value.length == 2) {
+            if (nextElement) {
+              nextElement.focus()
+            } else {
+              event.target.blur()
+            }
           }
         }
 
