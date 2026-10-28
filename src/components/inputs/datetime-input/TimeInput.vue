@@ -5,28 +5,52 @@
           type="text"
           ref="hours"
           :value="hours !== null ? hours.toString().padStart(2, '0') : null"
-          @click="$event.target.select()"
           placeholder="00"
-          @keydown.prevent="hours = checkValue(23, $refs.minutes); updateModelValue()"
+          @keypress.prevent
+          @keydown.prevent="hours = checkValue(23, $refs.minutes)"
+          @focusin="$event.target.select()"
+          @focusout="updateModelValue()"
       >
-      <span class="divider">:</span>
-      <input
-          type="text"
-          ref="minutes"
-          :value="minutes !== null ? minutes.toString().padStart(2, '0') : null"
-          @click="$event.target.select()"
-          placeholder="00"
-          @keydown.prevent="minutes = checkValue(59, $refs.seconds); updateModelValue()"
-      >
-      <span class="divider">:</span>
-      <input
-          type="text"
-          ref="seconds"
-          :value="seconds !== null ? seconds.toString().padStart(2, '0') : null"
-          @click="$event.target.select()"
-          placeholder="00"
-          @keydown.prevent="seconds = checkValue(59); updateModelValue()"
-      >
+      <template v-if="['minutes', 'milliseconds', 'seconds'].includes(accuracy)">
+        <span class="divider">:</span>
+        <input
+            type="text"
+            ref="minutes"
+            :value="minutes !== null ? minutes.toString().padStart(2, '0') : null"
+            placeholder="00"
+            @keypress.prevent
+            @keydown.prevent="minutes = checkValue(59, $refs.seconds)"
+            @focusin="$event.target.select()"
+            @focusout="updateModelValue()"
+        >
+      </template>
+      <template v-if="['milliseconds', 'seconds'].includes(accuracy)">
+        <span class="divider">:</span>
+        <input
+            type="text"
+            ref="seconds"
+            :value="seconds !== null ? seconds.toString().padStart(2, '0') : null"
+            placeholder="00"
+            @keypress.prevent
+            @keydown.prevent="seconds = checkValue(59)"
+            @focusin="$event.target.select()"
+            @focusout="updateModelValue()"
+        >
+      </template>
+      <template v-if="accuracy === 'milliseconds'">
+        <span class="divider">:</span>
+        <input
+            type="text"
+            ref="milliseconds"
+            placeholder="000"
+            class="milliseconds-input"
+            :value="milliseconds !== null ? milliseconds.toString().padStart(2, '0') : null"
+            @keypress.prevent
+            @keydown.prevent="milliseconds = checkValue(999)"
+            @focusin="$event.target.select()"
+            @focusout="updateModelValue()"
+        >
+      </template>
     </div>
     <div
         v-if="isShowInteractive"
@@ -85,6 +109,9 @@ export default {
   name: 'TimeInput',
   emits: ['update:modelValue'],
   props: {
+    accuracy: { type: String, default: 'seconds', validator: (value) => {
+      return ['hours', 'minutes', 'seconds', 'milliseconds'].includes(value)
+    }},
     modelValue: {
       default: new Date(),
       validator: (value) => {
@@ -113,6 +140,7 @@ export default {
       hours: null,
       minutes: null,
       seconds: null,
+      milliseconds: null,
 
       isShowInteractive: false,
     }
@@ -122,14 +150,17 @@ export default {
       this.hours = this.modelValue.split(':')[0]
       this.minutes = this.modelValue.split(':')[1]
       this.seconds = this.modelValue.split(':')[2]
+      this.milliseconds = this.modelValue.split(':')[3]
     } else if (this.modelValue instanceof Date) {
       this.hours = this.modelValue.getHours()
-      this.minutes = this.modelValue.getMinutes()
-      this.seconds = this.modelValue.getSeconds()
+      this.minutes = ['minutes', 'milliseconds', 'seconds'].includes(this.accuracy) ? this.modelValue.getMinutes() : 0
+      this.seconds = ['milliseconds', 'seconds'].includes(this.accuracy) ? this.modelValue.getSeconds() : 0
+      this.milliseconds = this.accuracy === 'milliseconds' ? this.modelValue.getMilliseconds() : 0
     } else if (this.modelValue instanceof Object) {
       this.hours = this.modelValue.hours
       this.minutes = this.modelValue.minutes
       this.seconds = this.modelValue.seconds
+      this.milliseconds = this.modelValue.milliseconds
     }
   },
   computed: {
@@ -214,12 +245,13 @@ export default {
         return null
       }
     },
-    updateModelValue() {
+    async updateModelValue() {
+      await this.$nextTick()
       if ((typeof this.modelValue === "string") || (this.modelValue instanceof String)) {
         this.$emit('update:modelValue', `${this.hours}:${this.minutes}:${this.seconds}`)
       } else if (this.modelValue instanceof Date) {
         let date = new Date(this.modelValue)
-        date.setHours(this.hours, this.minutes, this.seconds)
+        date.setHours(this.hours, this.minutes, this.seconds, this.milliseconds)
         this.$emit('update:modelValue', date)
       } else if (this.modelValue instanceof Object) {
         this.$emit('update:modelValue', { hours: this.hours, minutes: this.minutes, seconds: this.seconds })
@@ -276,6 +308,10 @@ input {
   height: fit-content;
   color: var(--font-color);
   user-select: all;
+}
+
+.milliseconds-input {
+  width: 3ch;
 }
 
 .interactive-time-input {
