@@ -7,6 +7,7 @@
             :model-value="selectedValue"
             :accuracy="accuracy"
             @update:modelValue="onInputPanelUpdate"
+            @date-focusout="this.$emit('dateFocusout')"
         />
         <template v-else>
           {{ caption }}
