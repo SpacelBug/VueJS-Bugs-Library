@@ -257,6 +257,7 @@ export default {
   padding: 8px 16px;
   border-radius: 5px;
   height: fit-content;
+  width: fit-content;
 }
 
 .time-text {
