@@ -85,6 +85,23 @@
             :keyboard-input="true"
         />
       </div>
+
+      <div class="grouped-variants">
+        <h3>Only icon variant</h3>
+
+        <p><b>Result:</b> {{ nullValue }}</p>
+
+        <DateInput
+            v-model="nullValue"
+            :only-icon="true"
+        />
+
+        <DateInput
+            v-model="nullValue"
+            :keyboard-input="true"
+            :only-icon="true"
+        />
+      </div>
     </div>
 
     <div class="description">
@@ -103,6 +120,7 @@
           <li><b>years:</b> allows to select only year</li>
         </ul>
         <p><b>keyboard-input:</b> boolean, allows to input date via text</p>
+        <p><b>only-icon:</b> boolean, if true, hide caption and inputs panel</p>
       </div>
     </div>
   </div>

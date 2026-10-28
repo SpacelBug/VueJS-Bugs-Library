@@ -1,7 +1,7 @@
 <template>
   <div class="main-box">
     <div class="date-input">
-      <div class="caption">
+      <div class="caption" v-if="!onlyIcon">
         <inputs-panel
             v-if="keyboardInput"
             :model-value="selectedValue"
@@ -118,6 +118,8 @@ export default {
     },
 
     keyboardInput: { type: Boolean, default: false },
+
+    onlyIcon: { type: Boolean, default: false }
   },
   data() {
     return {
