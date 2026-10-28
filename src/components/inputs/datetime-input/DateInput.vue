@@ -328,7 +328,6 @@ export default {
 
 .date-input {
   box-sizing: border-box;
-  cursor: pointer;
   display: flex;
   gap: 8px;
   justify-content: center;
