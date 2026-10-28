@@ -11,7 +11,10 @@
         @input="yearCheck"
         @focusout="onYearBlur"
     >
-    <div v-if="accuracy === 'dates'" class="divider">-</div>
+    <div
+        class="divider"
+        v-if="['dates', 'month'].includes(accuracy)"
+    >-</div>
     <input
         v-if="accuracy == 'dates' || accuracy === 'month'"
         type="text"
@@ -24,7 +27,10 @@
         @input="monthCheck"
         @focusout="onMonthBlur"
     >
-    <div class="divider" v-if="['dates', 'month'].includes(accuracy)">-</div>
+    <div
+        v-if="accuracy === 'dates'"
+        class="divider"
+    >-</div>
     <input
         v-if="accuracy == 'dates'"
         type="text"
@@ -66,7 +72,7 @@ export default {
     }
   },
   computed: {
-    maxDate() {      
+    maxDate() {
       if ((this.year !== null) && (this.month !== null)) {
         const year = parseInt(this.year)
         const month = parseInt(this.month) - 1
@@ -110,10 +116,10 @@ export default {
         !(
           (event.key >= "0" && event.key <= "9") ||
           event.key === "Backspace" ||
-          event.key === "Delete" || 
+          event.key === "Delete" ||
           event.key === "ArrowLeft" ||
-          event.key === "ArrowRight" || 
-          event.key === "Tab" || 
+          event.key === "ArrowRight" ||
+          event.key === "Tab" ||
           event.key === "Enter"
         )
       ) {
@@ -129,8 +135,8 @@ export default {
       }
 
       if (
-        (this.date !== null) && 
-        (this.month !== null) && 
+        (this.date !== null) &&
+        (this.month !== null) &&
         (this.year !== null)
       ) {
         const newDate = new Date(
@@ -152,7 +158,7 @@ export default {
       const value = this.$refs.dateInput.value
 
       if (value > this.maxDate) {
-        await this.$nextTick(()=>{
+        await this.$nextTick(() => {
           this.date = this.maxDate
         })
         this.$refs.dateInput.blur()
