@@ -97,7 +97,7 @@ import { setBlockTracking } from "vue";
 
 export default {
   name: "DateInput",
-  emits: ["update:modelValue"],
+  emits: ["update:modelValue", "dateFocusout"],
   components: {
     InputsPanel,
     DatesView,
