@@ -12,6 +12,7 @@
           {{ caption }}
         </template>
       </div>
+      <slot name="time-place"/>
       <div
           class="calendar-icon"
           @click="onInputClick"
