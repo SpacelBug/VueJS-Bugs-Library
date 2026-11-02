@@ -459,8 +459,9 @@ export default {
   justify-content: end;
 }
 
-.today {
+.today:hover {
   cursor: pointer;
+  color: var(--accent-color);
 }
 
 /**Icons**/
