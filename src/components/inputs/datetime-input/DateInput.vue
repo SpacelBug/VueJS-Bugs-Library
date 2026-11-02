@@ -157,9 +157,10 @@ export default {
   beforeMount() {
     if (
       (Object.prototype.toString.call(this.modelValue) !== "[object Date]") &&
-      (this.modelValue !== null)
+      (this.modelValue !== null) &&
+      (this.modelValue !== undefined)
     ) {
-      throw new Error("Model value must be a Date object or null")
+      throw new Error(`Model value must be a Date object, null or undefined, not "${this.modelValue}"`)
     }
 
     if (this.modelValue) {
@@ -201,9 +202,10 @@ export default {
     modelValue(valueNew, valueOld) {
       if (
         (Object.prototype.toString.call(valueNew) !== "[object Date]") &&
-        (valueNew !== null)
+        (valueNew !== null) &&
+        (valueNew !== undefined)
       ) {
-        throw new Error("Model value must be a Date object")
+        throw new Error(`Model value must be a Date object, not "${valueNew}"`)
       }
 
       this.changingValue = this.modelValue
