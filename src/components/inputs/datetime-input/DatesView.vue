@@ -90,6 +90,8 @@ export default {
 
 <style scoped>
 .dates-box {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
 }
