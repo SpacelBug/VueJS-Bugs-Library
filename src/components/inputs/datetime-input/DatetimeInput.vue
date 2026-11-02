@@ -46,6 +46,14 @@ export default {
     this.dateValue = new Date(this.modelValue)
     this.timeValue = new Date(this.modelValue)
   },
+  watch: {
+    modelValue(value) {
+      this.dateValue = value ? new Date(value) : null
+      if (value) {
+        this.timeValue = new Date(value)
+      }
+    },
+  },
   methods: {
     onDateFocusout() {
       this.$refs.timeInput.$refs.hours.focus()
