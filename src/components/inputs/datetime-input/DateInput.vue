@@ -16,7 +16,9 @@
       <slot name="time-place"/>
       <div
           class="calendar-icon"
-          @mousedown.prevent="onInputClick"
+          @mousedown.left.prevent="onInputClick"
+          @mousedown.right="$emit('update:modelValue', null)"
+          @contextmenu.prevent
       />
     </div>
 
